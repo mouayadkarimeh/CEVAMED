@@ -1,1 +1,5 @@
 .env
+data/grascco_texts/
+__pycache__/
+*.pyc
+*.pyo
