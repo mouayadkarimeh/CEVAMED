@@ -1,10 +1,11 @@
+"""Create fixed-question groundtruth data from GRASCCO annotations."""
+
 from __future__ import annotations
 
-from dataclasses import dataclass
-from pathlib import Path
 import csv
 import json
-import re
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Iterable
 
 
@@ -15,10 +16,15 @@ FIXED_QUESTIONS = {
     "discharge_date": "Wann wurde der Patient entlassen?",
 }
 
-DATE_RE = r"\d{1,2}\.\d{1,2}\.\d{2,4}"
+LABEL_TO_QUESTION = {
+    "PatientName": "patient_name",
+    "PatientGeburtsdatum": "birth_date",
+    "AufnahmeDatum": "admission_date",
+    "EntlassDatum": "discharge_date",
+}
 
 
-@dataclass
+@dataclass(frozen=True)
 class Reference:
     content: str
     start_index: int
@@ -32,165 +38,199 @@ class Reference:
         }
 
 
-def _load_json(path: Path) -> dict:
+
+
+
+def _load_json(path: Path):
     with path.open("r", encoding="utf-8") as file:
         return json.load(file)
 
 
 def _extract_sofa_string(payload: dict) -> str:
-    feature_structures = payload.get("%FEATURE_STRUCTURES", [])
-    for item in feature_structures:
-        if item.get("%TYPE") == "uima.cas.Sofa":
-            return str(item.get("sofaString", "")).lstrip("\ufeff")
+    for feature in payload.get("%FEATURE_STRUCTURES", []):
+        if feature.get("%TYPE") == "uima.cas.Sofa":
+            return str(feature.get("sofaString", "")).lstrip("\ufeff")
     return ""
 
 
-def convert_grascco_json_to_text_files(json_dir: Path, text_dir: Path) -> list[Path]:
-    text_dir.mkdir(parents=True, exist_ok=True)
-    output_files: list[Path] = []
-
-    for json_path in sorted(json_dir.glob("*_phi.json")):
-        payload = _load_json(json_path)
-        text = _extract_sofa_string(payload)
-        if not text.strip():
-            continue
-
-        text_filename = json_path.stem.replace("_phi", "")
-        text_path = text_dir / text_filename
-        text_path.write_text(text, encoding="utf-8")
-        output_files.append(text_path)
-
-    return output_files
+def _extract_annotations(payload: dict) -> list[dict[str, object]]:
+    result = []
+    for feature in payload.get("%FEATURE_STRUCTURES", []):
+        if "PHI" in str(feature.get("%TYPE", "")):
+            result.append({
+                "kind": str(feature.get("kind", "")),
+                "begin": feature.get("begin"),
+                "end": feature.get("end"),
+            })
+    return result
 
 
-def _capture_group_reference(match: re.Match[str], group_index: int = 1) -> Reference:
-    start_index, end_index = match.span(group_index)
-    content = match.group(group_index).strip()
-    return Reference(content=content, start_index=start_index, end_index=end_index)
+def _extract_label_studio_annotations(entry: dict) -> list[dict[str, object]]:
+    result = []
+    for annotation in entry.get("annotations", []):
+        for item in annotation.get("result", []):
+            value = item.get("value", {})
+            labels = value.get("labels", [])
+            if labels:
+                result.append({
+                    "kind": str(labels[0]),
+                    "begin": value.get("start"),
+                    "end": value.get("end"),
+                })
+    return result
 
 
-def _extract_patient_name(text: str) -> Reference | None:
-    patterns = [
-        r"Patient\s*:\s*([^\n,]+)",
-        r"Name\s*:\s*([^\n,]+)",
-    ]
-    for pattern in patterns:
-        match = re.search(pattern, text, flags=re.IGNORECASE)
-        if match:
-            return _capture_group_reference(match, 1)
+def _reference(text: str, annotation: dict[str, object]) -> Reference | None:
+    try:
+        begin = int(annotation["begin"])
+        end = int(annotation["end"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    if not 0 <= begin < end <= len(text):
+        return None
+    return Reference(text[begin:end], begin, end)
+
+
+def _date_question(text: str, reference: Reference) -> str | None:
+    context = text[max(0, reference.start_index - 80):reference.end_index + 80].lower()
+    if any(word in context for word in ("geburtsdatum", "geb.", "geburtstag", "geburts-")):
+        return "birth_date"
+    if any(word in context for word in ("aufnahme", "aufgenommen", "aufnahmedatum")):
+        return "admission_date"
+    if any(word in context for word in ("entlassung", "entlassungsdatum", "entlassen")):
+        return "discharge_date"
     return None
 
 
-def _extract_birth_date(text: str) -> Reference | None:
-    patterns = [
-        rf"(?:geb\.?|Geburtsdatum)\s*[:.]?\s*({DATE_RE})",
-        rf"Geb\.?\s*:\s*({DATE_RE})",
-    ]
-    for pattern in patterns:
-        match = re.search(pattern, text, flags=re.IGNORECASE)
-        if match:
-            return _capture_group_reference(match, 1)
-    return None
-
-
-def _extract_admission_and_discharge(text: str) -> tuple[Reference | None, Reference | None]:
-    range_patterns = [
-        rf"Station[aä]rer\s+Aufenthalt\s*:\s*({DATE_RE})\s*(?:bis|\-|–)\s*({DATE_RE})",
-        rf"Aufenthalt\s*:\s*({DATE_RE})\s*(?:bis|\-|–)\s*({DATE_RE})",
-    ]
-    for pattern in range_patterns:
-        match = re.search(pattern, text, flags=re.IGNORECASE)
-        if match:
-            return _capture_group_reference(match, 1), _capture_group_reference(match, 2)
-
-    admission_patterns = [
-        rf"Aufnahme(?:datum)?\s*:\s*({DATE_RE})",
-        rf"aufgenommen\s+am\s+({DATE_RE})",
-    ]
-    discharge_patterns = [
-        rf"Entlass(?:ung|ungsdatum)?\s*:\s*({DATE_RE})",
-        rf"entlassen\s+am\s+({DATE_RE})",
-    ]
-
-    admission_ref = None
-    discharge_ref = None
-
-    for pattern in admission_patterns:
-        match = re.search(pattern, text, flags=re.IGNORECASE)
-        if match:
-            admission_ref = _capture_group_reference(match, 1)
-            break
-
-    for pattern in discharge_patterns:
-        match = re.search(pattern, text, flags=re.IGNORECASE)
-        if match:
-            discharge_ref = _capture_group_reference(match, 1)
-            break
-
-    return admission_ref, discharge_ref
-
-
-def _question_rows_for_document(corpus_path: Path, text: str) -> Iterable[dict[str, str]]:
-    patient_name = _extract_patient_name(text)
-    birth_date = _extract_birth_date(text)
-    admission_date, discharge_date = _extract_admission_and_discharge(text)
-
-    mapping: list[tuple[str, Reference | None]] = [
-        (FIXED_QUESTIONS["patient_name"], patient_name),
-        (FIXED_QUESTIONS["birth_date"], birth_date),
-        (FIXED_QUESTIONS["admission_date"], admission_date),
-        (FIXED_QUESTIONS["discharge_date"], discharge_date),
-    ]
-
-    for question, reference in mapping:
+def _question_rows_for_annotations(
+    corpus_path: Path,
+    text: str,
+    annotations: Iterable[dict[str, object]],
+) -> Iterable[dict[str, str]]:
+    references: dict[str, list[Reference]] = {}
+    for annotation in annotations:
+        reference = _reference(text, annotation)
         if reference is None:
             continue
-        yield {
-            "question": question,
-            "references": json.dumps([reference.to_dict()], ensure_ascii=False),
-            "corpus_id": str(corpus_path),
-        }
+
+        kind = str(annotation.get("kind", ""))
+        question_key = LABEL_TO_QUESTION.get(kind)
+        if kind == "NAME_PATIENT":
+            question_key = "patient_name"
+        elif kind == "DATE":
+            question_key = _date_question(text, reference)
+        if question_key is not None:
+            references.setdefault(question_key, []).append(reference)
+
+    for question_key, question in FIXED_QUESTIONS.items():
+        if references.get(question_key):
+            yield {
+                "question": question,
+                "references": json.dumps(
+                    [reference.to_dict() for reference in references[question_key]],
+                    ensure_ascii=False,
+                ),
+                "corpus_id": str(corpus_path),
+            }
 
 
-def generate_fixed_questions_csv(text_files: Iterable[Path], csv_path: Path) -> int:
+def _question_rows_for_document_from_payload(
+    corpus_path: Path,
+    payload: dict,
+) -> Iterable[dict[str, str]]:
+    yield from _question_rows_for_annotations(
+        corpus_path,
+        _extract_sofa_string(payload),
+        _extract_annotations(payload),
+    )
+
+
+def _question_rows_for_label_studio_entry(
+    corpus_path: Path,
+    entry: dict,
+    text: str,
+) -> Iterable[dict[str, str]]:
+    yield from _question_rows_for_annotations(
+        corpus_path,
+        text,
+        _extract_label_studio_annotations(entry),
+    )
+
+
+def _document_name(entry: dict) -> str:
+    name = Path(str(entry.get("file_upload", ""))).name
+    if "-" in name:
+        name = name.split("-", 1)[1]
+    if name:
+        return name
+    return Path(str(entry.get("data", {}).get("text", ""))).name
+
+
+def _resolve_label_studio_text(entry: dict, text_dir: Path) -> Path | None:
+    name = _document_name(entry)
+    candidates = [text_dir / name]
+    if name.endswith(".txt"):
+        candidates.append(text_dir / name[:-4])
+    return next((path for path in candidates if path.is_file()), None)
+
+
+def _write_rows(rows: Iterable[dict[str, str]], csv_path: Path) -> int:
     csv_path.parent.mkdir(parents=True, exist_ok=True)
-    row_count = 0
-
+    count = 0
     with csv_path.open("w", encoding="utf-8", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=["question", "references", "corpus_id"])
         writer.writeheader()
+        for row in rows:
+            writer.writerow(row)
+            count += 1
+    return count
 
-        for text_file in text_files:
-            text = text_file.read_text(encoding="utf-8")
-            for row in _question_rows_for_document(text_file, text):
-                writer.writerow(row)
-                row_count += 1
 
-    return row_count
+def generate_fixed_questions_csv_from_json(
+    json_files: Iterable[Path],
+    csv_path: Path,
+) -> int:
+    rows = (
+        row
+        for path in json_files
+        for row in _question_rows_for_document_from_payload(path, _load_json(path))
+    )
+    return _write_rows(rows, csv_path)
+
+
+def generate_fixed_questions_csv(text_files: Iterable[Path], csv_path: Path) -> int:
+    """Create the CSV header; plain text files contain no groundtruth spans."""
+    return _write_rows([], csv_path)
 
 
 def build_fixed_grascco_eval_dataset(
-    json_dir: Path,
+    annotations_path: Path,
     text_dir: Path,
     questions_csv_path: Path,
 ) -> tuple[int, int]:
-    text_files = convert_grascco_json_to_text_files(json_dir, text_dir)
-    question_rows = generate_fixed_questions_csv(text_files, questions_csv_path)
-    return len(text_files), question_rows
+    loaded = _load_json(annotations_path) if annotations_path.is_file() else []
+    if not isinstance(loaded, list):
+        return 0, 0
+
+    rows = []
+    documents = 0
+    for entry in loaded:
+        text_path = _resolve_label_studio_text(entry, text_dir)
+        if text_path is None:
+            continue
+        text = text_path.read_text(encoding="utf-8")
+        rows.extend(_question_rows_for_label_studio_entry(text_path, entry, text))
+        documents += 1
+    return documents, _write_rows(rows, questions_csv_path)
 
 
 if __name__ == "__main__":
-    repo_root = Path(__file__).resolve().parents[2]
-    json_input_dir = repo_root / "data" / "data-json" / "grascco-json" / "grascco_phi_annotation_json"
-    text_output_dir = repo_root / "data" / "processed" / "grascco_texts"
-    questions_csv_output = repo_root / "data" / "processed" / "grascco_fixed_questions.csv"
-
-    converted_count, rows_count = build_fixed_grascco_eval_dataset(
-        json_dir=json_input_dir,
-        text_dir=text_output_dir,
-        questions_csv_path=questions_csv_output,
+    root = Path(__file__).resolve().parents[2]
+    documents, rows = build_fixed_grascco_eval_dataset(
+        root / "data" / "data-json" / "grascco-test.json",
+        root / "data" / "row",
+        root / "data" / "processed" / "grascco_fixed_questions.csv",
     )
-
-    print(f"Converted JSON documents: {converted_count}")
-    print(f"Generated fixed question rows: {rows_count}")
-    print(f"Questions CSV: {questions_csv_output}")
+    print(f"Documents with text: {documents}")
+    print(f"Groundtruth rows: {rows}")
+    print(f"Fixed questions CSV: {root / 'data' / 'processed' / 'grascco_fixed_questions.csv'}")

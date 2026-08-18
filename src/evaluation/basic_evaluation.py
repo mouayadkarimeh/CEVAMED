@@ -8,6 +8,8 @@ import numpy as np
 from typing import List
 from importlib import resources
 import re
+import unicodedata
+from bisect import bisect_left
 
 try:
     from chunking_evaluation.utils import rigorous_document_search, get_openai_embedding_function
@@ -124,7 +126,7 @@ def find_target_with_flexible_whitespace(document: str, target: str, start_curso
     if not tokens:
         return None
 
-    pattern = r"\\s+".join(re.escape(token) for token in tokens)
+    pattern = r"\s+".join(re.escape(token) for token in tokens)
 
     local_match = re.search(pattern, document[start_cursor:])
     if local_match is not None:
@@ -135,6 +137,46 @@ def find_target_with_flexible_whitespace(document: str, target: str, start_curso
         return global_match.start(), global_match.end()
 
     return None
+
+def _alnum_normalize_with_map(text: str):
+    normalized_chars = []
+    index_map = []
+    for original_index, char in enumerate(text):
+        normalized = unicodedata.normalize("NFKC", char)
+        for norm_char in normalized:
+            if norm_char.isalnum():
+                normalized_chars.append(norm_char.casefold())
+                index_map.append(original_index)
+    return "".join(normalized_chars), index_map
+
+def find_target_with_alnum_normalization(
+    document: str,
+    target: str,
+    doc_alnum: str,
+    doc_alnum_map: list[int],
+    start_cursor: int = 0,
+):
+    target_alnum, _ = _alnum_normalize_with_map(target)
+    if len(target_alnum) < 20:
+        return None
+
+    alnum_start_cursor = bisect_left(doc_alnum_map, start_cursor)
+    start_index = doc_alnum.find(target_alnum, alnum_start_cursor)
+    if start_index == -1:
+        start_index = doc_alnum.find(target_alnum)
+        if start_index == -1:
+            return None
+
+    end_index = start_index + len(target_alnum) - 1
+    original_start = doc_alnum_map[start_index]
+    original_end = doc_alnum_map[end_index] + 1
+    return original_start, original_end
+
+def _dcg(relevances):
+    score = 0.0
+    for rank, rel in enumerate(relevances, start=1):
+        score += (2**float(rel) - 1) / np.log2(rank + 1)
+    return score
 
 class BaseEvaluation:
     def __init__(self, questions_csv_path: str, chroma_db_path=None, corpora_id_paths=None):
@@ -191,6 +233,7 @@ class BaseEvaluation:
             current_metadatas = []
             current_documents_found = []
             search_cursor = 0
+            corpus_alnum, corpus_alnum_map = _alnum_normalize_with_map(corpus)
             for document in current_documents:
                 try:
                     start_index = corpus.find(document, search_cursor)
@@ -201,10 +244,20 @@ class BaseEvaluation:
                         if flexible_match is not None:
                             start_index, end_index = flexible_match
                         else:
-                            result = rigorous_document_search(corpus, document)
-                            if result is None:
-                                raise ValueError("Could not locate chunk in corpus")
-                            _, start_index, end_index = result
+                            alnum_match = find_target_with_alnum_normalization(
+                                corpus,
+                                document,
+                                corpus_alnum,
+                                corpus_alnum_map,
+                                start_cursor=search_cursor,
+                            )
+                            if alnum_match is not None:
+                                start_index, end_index = alnum_match
+                            else:
+                                result = rigorous_document_search(corpus, document)
+                                if result is None:
+                                    raise ValueError("Could not locate chunk in corpus")
+                                _, start_index, end_index = result
                     else:
                         end_index = start_index + len(document)
                     search_cursor = max(search_cursor, end_index)
@@ -290,6 +343,11 @@ class BaseEvaluation:
         iou_scores = []
         recall_scores = []
         precision_scores = []
+        f1_scores = []
+        hit_at_k_scores = []
+        mrr_scores = []
+        ndcg_at_k_scores = []
+        fragmentation_scores = []
         for (index, row), highlighted_chunk_count, metadatas in zip(self.questions_df.iterrows(), highlighted_chunks_count, question_metadatas):
             # Unpack question and references
             # question, references = question_references
@@ -300,12 +358,23 @@ class BaseEvaluation:
             numerator_sets = []
             denominator_chunks_sets = []
             unused_highlights = [(x['start_index'], x['end_index']) for x in references]
+            ref_ranges = [(int(x['start_index']), int(x['end_index'])) for x in references]
+            reference_total = sum_of_ranges(ref_ranges)
+            k = max(0, int(highlighted_chunk_count))
+            top_k_metadatas = metadatas[:k]
 
-            for metadata in metadatas[:highlighted_chunk_count]:
+            chunk_relevances = []
+            hit_indices = []
+            relevant_chunk_count = 0
+
+            for rank_index, metadata in enumerate(top_k_metadatas, start=1):
                 # Unpack chunk start and end indices
                 chunk_start, chunk_end, chunk_corpus_id = metadata['start_index'], metadata['end_index'], metadata['corpus_id']
 
+                chunk_intersections = []
+
                 if chunk_corpus_id != corpus_id:
+                    chunk_relevances.append(0.0)
                     continue
                 
                 # for reference, ref_start, ref_end in references:
@@ -317,6 +386,7 @@ class BaseEvaluation:
                     intersection = intersect_two_ranges((chunk_start, chunk_end), (ref_start, ref_end))
                     
                     if intersection is not None:
+                        chunk_intersections = union_ranges(chunk_intersections + [intersection]) if chunk_intersections else [intersection]
                         # Remove intersection from unused highlights
                         unused_highlights = difference(unused_highlights, intersection)
 
@@ -325,6 +395,16 @@ class BaseEvaluation:
                         
                         # Add chunk to denominator sets
                         denominator_chunks_sets = union_ranges([(chunk_start, chunk_end)] + denominator_chunks_sets)
+
+                if chunk_intersections:
+                    relevant_chunk_count += 1
+                    hit_indices.append(rank_index)
+
+                if reference_total > 0 and chunk_intersections:
+                    chunk_rel = sum_of_ranges(chunk_intersections) / reference_total
+                else:
+                    chunk_rel = 0.0
+                chunk_relevances.append(chunk_rel)
             
 
             if numerator_sets:
@@ -333,7 +413,7 @@ class BaseEvaluation:
                 numerator_value = 0
 
             recall_denominator = sum_of_ranges([(x['start_index'], x['end_index']) for x in references])
-            precision_denominator = sum_of_ranges([(x['start_index'], x['end_index']) for x in metadatas[:highlighted_chunk_count]])
+            precision_denominator = sum_of_ranges([(x['start_index'], x['end_index']) for x in top_k_metadatas])
             iou_denominator = precision_denominator + sum_of_ranges(unused_highlights)
 
             recall_score = (numerator_value / recall_denominator) if recall_denominator > 0 else 0
@@ -345,7 +425,35 @@ class BaseEvaluation:
             iou_score = (numerator_value / iou_denominator) if iou_denominator > 0 else 0
             iou_scores.append(iou_score)
 
-        return iou_scores, recall_scores, precision_scores
+            if (precision_score + recall_score) > 0:
+                f1_score = 2 * precision_score * recall_score / (precision_score + recall_score)
+            else:
+                f1_score = 0.0
+            f1_scores.append(f1_score)
+
+            hit_at_k = 1.0 if hit_indices else 0.0
+            hit_at_k_scores.append(hit_at_k)
+
+            reciprocal_rank = 1.0 / hit_indices[0] if hit_indices else 0.0
+            mrr_scores.append(reciprocal_rank)
+
+            dcg = _dcg(chunk_relevances)
+            idcg = _dcg(sorted(chunk_relevances, reverse=True))
+            ndcg_at_k = (dcg / idcg) if idcg > 0 else 0.0
+            ndcg_at_k_scores.append(ndcg_at_k)
+
+            fragmentation_scores.append(float(relevant_chunk_count))
+
+        return {
+            "iou_scores": iou_scores,
+            "recall_scores": recall_scores,
+            "precision_scores": precision_scores,
+            "f1_scores": f1_scores,
+            "hit_at_k_scores": hit_at_k_scores,
+            "mrr_scores": mrr_scores,
+            "ndcg_at_k_scores": ndcg_at_k_scores,
+            "fragmentation_scores": fragmentation_scores,
+        }
 
     def _chunker_to_collection(self, chunker, embedding_function, chroma_db_path:str = None, collection_name:str = None):
         collection = None
@@ -487,7 +595,15 @@ class BaseEvaluation:
         # Retrieve the documents based on sorted embeddings
         retrievals = collection.query(query_embeddings=list(sorted_embeddings), n_results=maximum_n)
 
-        iou_scores, recall_scores, precision_scores = self._scores_from_dataset_and_retrievals(retrievals['metadatas'], highlighted_chunks_count)
+        score_dict = self._scores_from_dataset_and_retrievals(retrievals['metadatas'], highlighted_chunks_count)
+        iou_scores = score_dict["iou_scores"]
+        recall_scores = score_dict["recall_scores"]
+        precision_scores = score_dict["precision_scores"]
+        f1_scores = score_dict["f1_scores"]
+        hit_at_k_scores = score_dict["hit_at_k_scores"]
+        mrr_scores = score_dict["mrr_scores"]
+        ndcg_at_k_scores = score_dict["ndcg_at_k_scores"]
+        fragmentation_scores = score_dict["fragmentation_scores"]
 
 
         corpora_scores = {
@@ -499,13 +615,23 @@ class BaseEvaluation:
                     "precision_omega_scores": [],
                     "iou_scores": [],
                     "recall_scores": [],
-                    "precision_scores": []
+                    "precision_scores": [],
+                    "f1_scores": [],
+                    "hit_at_k_scores": [],
+                    "mrr_scores": [],
+                    "ndcg_at_k_scores": [],
+                    "fragmentation_scores": []
                 }
             
             corpora_scores[row['corpus_id']]['precision_omega_scores'].append(brute_iou_scores[index])
             corpora_scores[row['corpus_id']]['iou_scores'].append(iou_scores[index])
             corpora_scores[row['corpus_id']]['recall_scores'].append(recall_scores[index])
             corpora_scores[row['corpus_id']]['precision_scores'].append(precision_scores[index])
+            corpora_scores[row['corpus_id']]['f1_scores'].append(f1_scores[index])
+            corpora_scores[row['corpus_id']]['hit_at_k_scores'].append(hit_at_k_scores[index])
+            corpora_scores[row['corpus_id']]['mrr_scores'].append(mrr_scores[index])
+            corpora_scores[row['corpus_id']]['ndcg_at_k_scores'].append(ndcg_at_k_scores[index])
+            corpora_scores[row['corpus_id']]['fragmentation_scores'].append(fragmentation_scores[index])
 
 
         brute_iou_mean = np.mean(brute_iou_scores)
@@ -519,6 +645,21 @@ class BaseEvaluation:
 
         precision_mean = np.mean(precision_scores)
         precision_std = np.std(precision_scores)
+
+        f1_mean = np.mean(f1_scores)
+        f1_std = np.std(f1_scores)
+
+        hit_at_k_mean = np.mean(hit_at_k_scores)
+        hit_at_k_std = np.std(hit_at_k_scores)
+
+        mrr_mean = np.mean(mrr_scores)
+        mrr_std = np.std(mrr_scores)
+
+        ndcg_at_k_mean = np.mean(ndcg_at_k_scores)
+        ndcg_at_k_std = np.std(ndcg_at_k_scores)
+
+        fragmentation_mean = np.mean(fragmentation_scores)
+        fragmentation_std = np.std(fragmentation_scores)
 
         # print("Recall scores: ", recall_scores)
         # print("Precision scores: ", precision_scores)
@@ -534,5 +675,15 @@ class BaseEvaluation:
             "precision_omega_mean": brute_iou_mean,
             "precision_omega_std": brute_iou_std,
             "precision_mean": precision_mean,
-            "precision_std": precision_std
+            "precision_std": precision_std,
+            "f1_mean": f1_mean,
+            "f1_std": f1_std,
+            "hit_at_k_mean": hit_at_k_mean,
+            "hit_at_k_std": hit_at_k_std,
+            "mrr_mean": mrr_mean,
+            "mrr_std": mrr_std,
+            "ndcg_at_k_mean": ndcg_at_k_mean,
+            "ndcg_at_k_std": ndcg_at_k_std,
+            "fragmentation_mean": fragmentation_mean,
+            "fragmentation_std": fragmentation_std
         }

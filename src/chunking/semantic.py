@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
+import re
 import sys
 from typing import Dict, List
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-from langchain_text_splitters import SentenceTransformersTokenTextSplitter
 from sentence_transformers import SentenceTransformer
 
 sys.path.append(str(Path(__file__).resolve().parents[2]))
@@ -73,7 +73,12 @@ def results_plot(distances: list[float], breakpoint_distance_threshold: float) -
 
 
 class SemanticChunker(TextSplitter):
-    """Port of the original Kamradt-style semantic chunker using HF MiniLM embeddings."""
+    """Semantic chunker using sentence embeddings and distance breakpoints.
+    
+    CRITICAL: This implementation extracts EXACT SUBSTRINGS from the original text
+    without any transformation (no lowercase, no unicode normalization, no whitespace
+    changes). This ensures perfect alignment with ground truth for evaluation.
+    """
 
     def __init__(
         self,
@@ -92,32 +97,153 @@ class SemanticChunker(TextSplitter):
         self.epsilon = epsilon
         self.embedding_batch_size = embedding_batch_size
         self._embedding_model = SentenceTransformer(self.model_name, device=self.device)
+        import tiktoken
 
-        self.splitter = SentenceTransformersTokenTextSplitter(
-            chunk_overlap=0,
-            model_name=self.model_name,
-            tokens_per_chunk=min_chunk_size,
-            model_kwargs={"device": self.device},
-        )
-        self.tokenizer = self.splitter.tokenizer
+        self._tokenizer = tiktoken.get_encoding("cl100k_base")
+        self._allowed_special = set()
+        self._disallowed_special = "all"
+
+    def _split_into_sentences(self, text: str) -> List[Dict[str, object]]:
+        """Split text into sentences while tracking their exact byte positions.
+        
+        Uses regex to split on sentence boundaries (., !, ?) followed by whitespace.
+        Preserves exact character positions for later substring extraction.
+        """
+        # Regex: split on .!? followed by one or more whitespace
+        sentence_pattern = re.compile(r'(?<=[.!?])\s+')
+        
+        sentences_with_positions = []
+        current_pos = 0
+        
+        # Split while tracking positions
+        parts = sentence_pattern.split(text)
+        
+        for part in parts:
+            if not part.strip():
+                # Skip empty parts but track position
+                current_pos += len(part)
+                continue
+            
+            # Find this part in original text starting from current position
+            start_pos = text.find(part, current_pos)
+            if start_pos == -1:
+                # Fallback: shouldn't happen, but handle gracefully
+                start_pos = current_pos
+            
+            end_pos = start_pos + len(part)
+            
+            sentences_with_positions.append({
+                "sentence": part,
+                "start": start_pos,
+                "end": end_pos,
+                "index": len(sentences_with_positions)
+            })
+            
+            current_pos = end_pos
+        
+        return sentences_with_positions
 
     def _count_tokens(self, text: str) -> int:
-        try:
-            return len(self.tokenizer.encode(text, add_special_tokens=False))
-        except TypeError:
-            return len(self.tokenizer.encode(text))
+        """Count tokens with the same tokenizer used for token-based boundaries."""
+        return len(
+            self._tokenizer.encode(
+                text,
+                allowed_special=self._allowed_special,
+                disallowed_special=self._disallowed_special,
+            )
+        )
+
+    def _token_end_positions(self, text: str) -> List[int]:
+        """Return character offsets after each complete UTF-8 token."""
+        token_ids = self._tokenizer.encode(
+            text,
+            allowed_special=self._allowed_special,
+            disallowed_special=self._disallowed_special,
+        )
+        encoded = bytearray()
+        positions: List[int] = []
+
+        for token_id in token_ids:
+            encoded.extend(self._tokenizer.decode_single_token_bytes(token_id))
+            try:
+                position = len(encoded.decode("utf-8"))
+            except UnicodeDecodeError:
+                # A token can end in the middle of a multibyte character.
+                continue
+            positions.append(position)
+
+        if positions and positions[-1] != len(text):
+            positions.append(len(text))
+        elif not positions and text:
+            positions.append(len(text))
+        return positions
+
+    def _split_group_by_tokens(
+        self,
+        text: str,
+        start: int,
+        end: int,
+        token_budget: int,
+    ) -> List[str]:
+        """Split an oversized semantic group at exact token boundaries."""
+        group_text = text[start:end]
+        token_end_positions = self._token_end_positions(group_text)
+        if not token_end_positions:
+            return [group_text] if group_text.strip() else []
+
+        chunks: List[str] = []
+        chunk_start = 0
+        token_start = 0
+        token_count = len(token_end_positions)
+
+        while token_start < token_count:
+            token_end = min(token_start + token_budget, token_count)
+            char_end = token_end_positions[token_end - 1]
+            chunk = group_text[chunk_start:char_end]
+            if chunk.strip():
+                chunks.append(chunk)
+            chunk_start = char_end
+            token_start = token_end
+
+        return chunks
+
+    def _append_group(
+        self,
+        text: str,
+        group: List[Dict[str, object]],
+        token_budget: int,
+        chunks: List[str],
+    ) -> None:
+        """Append a semantic group, enforcing the token budget exactly."""
+        if not group:
+            return
+
+        group_start = int(group[0]["start"])
+        group_end = int(group[-1]["end"])
+        group_text = text[group_start:group_end]
+
+        if self._count_tokens(group_text) <= token_budget:
+            if group_text.strip():
+                chunks.append(group_text)
+            return
+
+        chunks.extend(self._split_group_by_tokens(text, group_start, group_end, token_budget))
 
     @staticmethod
     def combine_sentences(sentences: List[Dict[str, object]], buffer_size: int = 3) -> List[Dict[str, object]]:
+        """Add combined sentence context (with buffer) for embedding calculation."""
         for i in range(len(sentences)):
             combined_sentence = ""
 
+            # Add preceding sentences (buffer)
             for j in range(i - buffer_size, i):
                 if j >= 0:
                     combined_sentence += str(sentences[j]["sentence"]) + " "
 
+            # Add center sentence
             combined_sentence += str(sentences[i]["sentence"])
 
+            # Add following sentences (buffer)
             for j in range(i + 1, i + 1 + buffer_size):
                 if j < len(sentences):
                     combined_sentence += " " + str(sentences[j]["sentence"])
@@ -127,6 +253,7 @@ class SemanticChunker(TextSplitter):
         return sentences
 
     def _embed_texts(self, texts: List[str]) -> np.ndarray:
+        """Compute embeddings for a list of texts using the model."""
         embeddings = self._embedding_model.encode(
             texts,
             batch_size=self.embedding_batch_size,
@@ -137,6 +264,7 @@ class SemanticChunker(TextSplitter):
         return np.asarray(embeddings)
 
     def calculate_sentence_embeddings(self, sentences: List[Dict[str, object]]) -> List[Dict[str, object]]:
+        """Calculate embeddings for combined sentences."""
         texts = [str(sentence["combined_sentence"]) for sentence in sentences]
         embeddings = self._embed_texts(texts)
 
@@ -146,9 +274,11 @@ class SemanticChunker(TextSplitter):
         return sentences
 
     def calculate_cosine_distances(self, sentences: List[Dict[str, object]]):
+        """Calculate cosine distances between consecutive sentence embeddings."""
         distances: list[float] = []
         embedding_matrix = None
 
+        # Process in batches
         for index in range(0, len(sentences), self.embedding_batch_size):
             batch_sentences = sentences[index : index + self.embedding_batch_size]
             batch_texts = [str(sentence["combined_sentence"]) for sentence in batch_sentences]
@@ -162,12 +292,15 @@ class SemanticChunker(TextSplitter):
         if embedding_matrix is None:
             return distances, sentences
 
+        # Normalize embeddings
         norms = np.linalg.norm(embedding_matrix, axis=1, keepdims=True)
         norms[norms == 0] = 1.0
         embedding_matrix = embedding_matrix / norms
 
+        # Compute similarity matrix
         similarity_matrix = np.dot(embedding_matrix, embedding_matrix.T)
 
+        # Calculate distances between consecutive sentences
         for i in range(len(sentences) - 1):
             similarity = similarity_matrix[i, i + 1]
             distance = float(1 - similarity)
@@ -177,6 +310,7 @@ class SemanticChunker(TextSplitter):
         return distances, sentences
 
     def _find_breakpoint_threshold(self, distances: List[float], number_of_cuts: int) -> float:
+        """Binary search to find distance threshold that gives desired number of cuts."""
         lower_limit = 0.0
         upper_limit = 1.0
         distances_np = np.asarray(distances, dtype=float)
@@ -193,42 +327,70 @@ class SemanticChunker(TextSplitter):
 
         return threshold
 
-    @staticmethod
-    def _chunks_from_threshold(sentences: List[Dict[str, object]], distances: List[float], threshold: float) -> List[str]:
-        indices_above_thresh = [i for i, distance in enumerate(distances) if distance > threshold]
-        start_index = 0
-        chunks: List[str] = []
-
-        for index in indices_above_thresh:
-            end_index = index
-            group = sentences[start_index : end_index + 1]
-            combined_text = " ".join(str(item["sentence"]) for item in group)
-            chunks.append(combined_text)
-            start_index = index + 1
-
-        if start_index < len(sentences):
-            combined_text = " ".join(str(item["sentence"]) for item in sentences[start_index:])
-            chunks.append(combined_text)
-
-        return chunks
-
     def split_text(self, text: str) -> List[str]:
-        sentences_strips = self.splitter.split_text(text)
-        sentences = [{"sentence": sentence, "index": i} for i, sentence in enumerate(sentences_strips)]
+        """Split text using semantic similarity, returning EXACT substrings.
+        
+        Process:
+        1. Split text into sentences using regex (preserving positions)
+        2. Calculate embeddings for sentences with context
+        3. Find distance threshold based on desired chunk size
+        4. Group sentences at breakpoints
+        5. Extract exact substrings from original text
+        
+        Returns:
+            List of chunks that are exact substrings from the original text
+        """
+        # Step 1: Split into sentences while tracking positions
+        sentences = self._split_into_sentences(text)
 
-        if not sentences:
-            return []
+        if len(sentences) < 2:
+            # Too few sentences to chunk semantically
+            return [text] if text.strip() else []
 
-        sentences = self.combine_sentences(sentences, 3)
+        # Step 2: Add context for embedding calculation
+        sentences = self.combine_sentences(sentences, buffer_size=3)
+
+        # Step 3: Calculate embeddings and distances
         distances, sentences = self.calculate_cosine_distances(sentences)
 
-        total_tokens = sum(self._count_tokens(sentence["sentence"]) for sentence in sentences)
-        number_of_cuts = total_tokens // self.avg_chunk_size
+        if not distances:
+            # No distances calculated
+            return [text] if text.strip() else []
+
+        # Step 4: Find optimal threshold from the real token count
+        total_tokens = self._count_tokens(text)
+        number_of_cuts = max(1, total_tokens // self.avg_chunk_size)
 
         threshold = self._find_breakpoint_threshold(distances, number_of_cuts)
-        return self._chunks_from_threshold(sentences, distances, threshold)
+
+        # Step 5: Find breakpoint indices
+        indices_above_thresh = [i for i, distance in enumerate(distances) if distance > threshold]
+
+        # Step 6: Group sentences at breakpoints and extract exact substrings
+        start_idx = 0
+        chunks: List[str] = []
+
+        for break_idx in indices_above_thresh:
+            # Group sentences from start_idx to break_idx (inclusive)
+            group = sentences[start_idx : break_idx + 1]
+
+            if not group:
+                continue
+
+            self._append_group(text, group, self.avg_chunk_size, chunks)
+
+            start_idx = break_idx + 1
+
+        # Add remaining sentences as final chunk
+        if start_idx < len(sentences):
+            group = sentences[start_idx:]
+            if group:
+                self._append_group(text, group, self.avg_chunk_size, chunks)
+
+        return [c for c in chunks if c and c.strip()]
 
     def chunk(self, text: str) -> List[str]:
+        """Alias for split_text for compatibility."""
         return self.split_text(text)
 
 
@@ -260,7 +422,7 @@ Der 60-jährige Patient wurde am 02.08.2026 über die Notaufnahme wegen akut auf
 
 Am Aufnahmetag erfolgte die dringliche Herzkatheteruntersuchung (Koronarangiographie). Hierbei zeigte sich eine 90%ige, exzentrische und thrombusbehaftete Stenose im mittleren Segment der RIVA. Die übrigen Gefäße wiesen lediglich wanderfüllende Unregelmäßigkeiten auf, mit Ausnahme einer 50%igen Stenose der RCX. Es erfolgte die erfolgreiche perkutane transluminale Koronarangioplastie (PTCA) der RIVA-Läsion mit Implantation eines Drug-Eluting-Stents (DES, Xience 3.5 x 18 mm). Das angiographische Endergebnis zeigte einen ungestörten TIMI-III-Fluss ohne Dissektionszeichen.
 
-Der postinterventionelle Verlauf auf der kardiologischen Überwachungsstation (IMC) gestaltete sich komplikationslos. Es traten keine Rhythmusstörungen, Nachblutungen an der Schleusen-Punktionsstelle (A. femoralis rechts) oder ischämische Rezidive auf. Der Patient war frühzeitig mobilisierbar und ab dem zweiten postinterventionellen Tag beschwerdefrei.
+Der postinterventionielle Verlauf auf der kardiologischen Überwachungsstation (IMC) gestaltete sich komplikationslos. Es traten keine Rhythmusstörungen, Nachblutungen an der Schleusen-Punktionsstelle (A. femoralis rechts) oder ischämische Rezidive auf. Der Patient war frühzeitig mobilisierbar und ab dem zweiten postinterventionellen Tag beschwerdefrei.
 
 LABORBEFUNDE (Auswahl vom 09.08.2026):
 Hb: 13.8 g/dl, Leukozyten: 8.4 G/l, Thrombozyten: 245 G/l. Kreatinin: 0.95 mg/dl, eGFR: 84 ml/min/1.73m². CRP: 4.2 mg/l. hs-Troponin T prä-Entlassung: 34 ng/l (rückläufig). LDL-Cholesterin: 124 mg/dl, HbA1c: 6.8 %. Potasium: 4.1 mmol/l.
@@ -290,14 +452,13 @@ Oberarzt der kardiologischen Station
 
     semantic_chunker = SemanticChunker()
     chunks = semantic_chunker.split_text(text)
-    sentences = [{"sentence": sentence, "index": i} for i, sentence in enumerate(semantic_chunker.splitter.split_text(text))]
-    sentences = semantic_chunker.combine_sentences(sentences, 3)
-    distances, _ = semantic_chunker.calculate_cosine_distances(sentences)
-    total_tokens = sum(semantic_chunker._count_tokens(sentence["sentence"]) for sentence in sentences)
-    threshold = semantic_chunker._find_breakpoint_threshold(distances, total_tokens // semantic_chunker.avg_chunk_size)
 
-    print("Chunks:")
+    print(f"Semantic Chunker: {len(chunks)} chunks\n")
+    
+    # Verify all chunks are exact substrings
     for i, chunk in enumerate(chunks, 1):
-        print(f"{i}. {chunk}")
+        in_text = chunk in text
+        status = "✓" if in_text else "✗"
+        print(f"{status} Chunk {i}: len={len(chunk)}")
 
-    results_plot(distances, threshold)
+    print(f"\nAll chunks exact substrings: {all(chunk in text for chunk in chunks)}")

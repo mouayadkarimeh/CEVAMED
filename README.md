@@ -8,22 +8,14 @@ Adaptiert aus [brandonstarxel/chunking_evaluation](https://github.com/brandonsta
 ### Ablauf lokal starten
 
 ```bash
-# 1. GRASCCO JSON → Textdateien konvertieren und Evaluation starten
-python scripts/run_evaluation.py
+# 1. Evaluation mit den vorhandenen Textdateien und Annotationen starten
+python -m src.evaluation.run_grascco_fixed_eval
 
 # Mit anderen Optionen:
-python scripts/run_evaluation.py --chunker recursive --chunk-size 400 --overlap 50
+python -m src.evaluation.run_grascco_fixed_eval
 
 # Ergebnis als JSON speichern:
-python scripts/run_evaluation.py --output results.json
-```
-
-Nur Konvertierung (ohne Evaluation):
-
-```bash
-python scripts/convert_grascco_json.py \
-    --input  data/data-json/grascco-json/grascco_phi_annotation_json \
-    --output data/grascco_texts
+python -m src.evaluation.run_grascco_fixed_eval
 ```
 
 ### Evaluierte Fragen
@@ -44,13 +36,12 @@ python scripts/convert_grascco_json.py \
 
 ```
 scripts/
-  convert_grascco_json.py   # JSON → TXT + meta.json
   run_evaluation.py         # kompletter Pipeline-Run
 
 src/evaluation/
-  grascco_evaluator.py      # adaptiertes Framework (kein OpenAI)
+  run_grascco_fixed_eval.py # Evaluation mit Annotationen und data/row
 
 data/
-  data-json/grascco-json/   # originale GRASCCO JSON-Dateien
-  grascco_texts/            # generiert – nicht im Repo versioniert
+  data-json/                 # originale GRASCCO Annotationen
+  row/                       # vorhandene Dokumenttexte für Chunking
 ```

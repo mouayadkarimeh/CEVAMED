@@ -1,0 +1,146 @@
+{
+  "dataset": {
+    "documents_with_text": 60,
+    "question_rows": 218
+  },
+  "profiles": {
+    "basic": {
+      "fixed_token": {
+        "iou_mean": 0.0,
+        "recall_mean": 0.0,
+        "precision_omega_mean": 0.01601815085977961,
+        "precision_mean": 0.0,
+        "f1_mean": 0.0,
+        "hit_at_k_mean": 0.0,
+        "mrr_mean": 0.0,
+        "ndcg_at_k_mean": 0.0,
+        "fragmentation_mean": 0.0
+      },
+      "recursive": {
+        "iou_mean": 0.0,
+        "recall_mean": 0.0,
+        "precision_omega_mean": 0.03075541080507885,
+        "precision_mean": 0.0,
+        "f1_mean": 0.0,
+        "hit_at_k_mean": 0.0,
+        "mrr_mean": 0.0,
+        "ndcg_at_k_mean": 0.0,
+        "fragmentation_mean": 0.0
+      },
+      "hierarchical": {
+        "iou_mean": 0.0009759906304899473,
+        "recall_mean": 0.0045871559633027525,
+        "precision_omega_mean": 0.12333364589510652,
+        "precision_mean": 0.0009759906304899473,
+        "f1_mean": 0.0016095284081764042,
+        "hit_at_k_mean": 0.0045871559633027525,
+        "mrr_mean": 0.0045871559633027525,
+        "ndcg_at_k_mean": 0.0045871559633027525,
+        "fragmentation_mean": 0.0045871559633027525
+      },
+      "semantic": {
+        "iou_mean": 0.0,
+        "recall_mean": 0.0,
+        "precision_omega_mean": 0.024539947877578617,
+        "precision_mean": 0.0,
+        "f1_mean": 0.0,
+        "hit_at_k_mean": 0.0,
+        "mrr_mean": 0.0,
+        "ndcg_at_k_mean": 0.0,
+        "fragmentation_mean": 0.0
+      }
+    },
+    "general": {
+      "fixed_token": {
+        "iou_mean": 1.5069500536474218e-05,
+        "recall_mean": 0.0022935779816513763,
+        "precision_omega_mean": 0.01601815085977961,
+        "precision_mean": 1.51191692923624e-05,
+        "f1_mean": 3.004031410152425e-05,
+        "hit_at_k_mean": 0.0045871559633027525,
+        "mrr_mean": 0.0009174311926605505,
+        "ndcg_at_k_mean": 0.0017745541616263375,
+        "fragmentation_mean": 0.0045871559633027525
+      },
+      "recursive": {
+        "iou_mean": 2.980432108466053e-05,
+        "recall_mean": 0.0045871559633027525,
+        "precision_omega_mean": 0.03075541080507885,
+        "precision_mean": 2.980432108466053e-05,
+        "f1_mean": 5.9223844596631774e-05,
+        "hit_at_k_mean": 0.0045871559633027525,
+        "mrr_mean": 0.0009174311926605505,
+        "ndcg_at_k_mean": 0.0017745541616263378,
+        "fragmentation_mean": 0.0045871559633027525
+      },
+      "hierarchical": {
+        "iou_mean": 0.00037738670257863574,
+        "recall_mean": 0.027522935779816515,
+        "precision_omega_mean": 0.12333364589510652,
+        "precision_mean": 0.00037738670257863574,
+        "f1_mean": 0.0007435903601195773,
+        "hit_at_k_mean": 0.027522935779816515,
+        "mrr_mean": 0.012767584097859327,
+        "ndcg_at_k_mean": 0.01641921501124243,
+        "fragmentation_mean": 0.027522935779816515
+      },
+      "semantic": {
+        "iou_mean": 0.0003984625219695325,
+        "recall_mean": 0.013761467889908258,
+        "precision_omega_mean": 0.024539947877578617,
+        "precision_mean": 0.0003984625219695325,
+        "f1_mean": 0.0007658169565051568,
+        "hit_at_k_mean": 0.013761467889908258,
+        "mrr_mean": 0.005733944954128441,
+        "ndcg_at_k_mean": 0.007763926904661964,
+        "fragmentation_mean": 0.013761467889908258
+      }
+    },
+    "synthetic": {
+      "fixed_token": {
+        "iou_mean": 7.579570329317172e-06,
+        "recall_mean": 0.0022935779816513763,
+        "precision_omega_mean": 0.01601815085977961,
+        "precision_mean": 7.592115132907568e-06,
+        "f1_mean": 1.5134133828118617e-05,
+        "hit_at_k_mean": 0.0045871559633027525,
+        "mrr_mean": 0.0009174311926605505,
+        "ndcg_at_k_mean": 0.0017745541616263375,
+        "fragmentation_mean": 0.0045871559633027525
+      },
+      "recursive": {
+        "iou_mean": 0.00018886114233684635,
+        "recall_mean": 0.04396024464831805,
+        "precision_omega_mean": 0.03075541080507885,
+        "precision_mean": 0.0001888844688490721,
+        "f1_mean": 0.0003760211787291084,
+        "hit_at_k_mean": 0.045871559633027525,
+        "mrr_mean": 0.0062672928498616574,
+        "ndcg_at_k_mean": 0.014961414536085868,
+        "fragmentation_mean": 0.045871559633027525
+      },
+      "hierarchical": {
+        "iou_mean": 0.0001471627830225613,
+        "recall_mean": 0.03211009174311927,
+        "precision_omega_mean": 0.12333364589510652,
+        "precision_mean": 0.0001471627830225613,
+        "f1_mean": 0.0002927855880852334,
+        "hit_at_k_mean": 0.03211009174311927,
+        "mrr_mean": 0.01353211009174312,
+        "ndcg_at_k_mean": 0.018053192933756294,
+        "fragmentation_mean": 0.03211009174311927
+      },
+      "semantic": {
+        "iou_mean": 0.00034519988960150767,
+        "recall_mean": 0.05504587155963303,
+        "precision_omega_mean": 0.024539947877578617,
+        "precision_mean": 0.00034519988960150767,
+        "f1_mean": 0.00068426716744531,
+        "hit_at_k_mean": 0.05504587155963303,
+        "mrr_mean": 0.011038299111693604,
+        "ndcg_at_k_mean": 0.020912076395392408,
+        "fragmentation_mean": 0.05504587155963303
+      }
+    }
+  }
+}

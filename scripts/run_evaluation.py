@@ -1,7 +1,7 @@
 """End-to-end evaluation pipeline for GraSCCo clinical documents.
 
 Steps performed automatically:
-  1. Convert GRASCCO JSON → plain text (``data/grascco_texts/``)
+    1. Read document text directly from ``data/row/``
   2. Chunk every document with the chosen chunker
   3. Run the evaluation framework (BM25 retrieval, IoU + Recall metrics)
   4. Print / save results
@@ -29,7 +29,6 @@ from pathlib import Path
 _ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(_ROOT))
 
-from scripts.convert_grascco_json import convert
 from src.evaluation.grascco_evaluator import GraSCCoEvaluation, FIXED_QUESTIONS
 
 
@@ -117,14 +116,9 @@ def main() -> None:
         help="Number of chunks to retrieve per query (default: 5)",
     )
     parser.add_argument(
-        "--input",
-        default="data/data-json/grascco-json/grascco_phi_annotation_json",
-        help="GRASCCO JSON source directory",
-    )
-    parser.add_argument(
         "--texts-dir",
-        default="data/grascco_texts",
-        help="Directory for intermediate plain-text files",
+        default="data/row",
+        help="Directory containing the source plain-text files",
     )
     parser.add_argument(
         "--output",
@@ -133,17 +127,12 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    input_dir = Path(args.input) if Path(args.input).is_absolute() else _ROOT / args.input
     texts_dir = Path(args.texts_dir) if Path(args.texts_dir).is_absolute() else _ROOT / args.texts_dir
 
-    # ------------------------------------------------------------------ #
-    # Step 1: Convert JSON → text                                         #
-    # ------------------------------------------------------------------ #
     print("=" * 60)
-    print("Step 1 – Converting GRASCCO JSON → plain text")
+    print("Step 1 – Reading source text files")
     print("=" * 60)
-    n = convert(input_dir, texts_dir)
-    print(f"→ {n} document(s) converted.\n")
+    print(f"→ Using {texts_dir}.\n")
 
     # ------------------------------------------------------------------ #
     # Step 2: Build chunker                                               #

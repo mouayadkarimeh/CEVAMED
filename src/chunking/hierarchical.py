@@ -7,47 +7,82 @@ from .base import BaseChunker
 
 
 class HierarchicalChunker(BaseChunker):
-    """Document -> section -> paragraph -> sentence chunking."""
+    """Document -> section -> paragraph -> sentence chunking.
+    
+    Returns exact substrings from the original document to preserve exact character positions.
+    """
 
     def __init__(self, max_sentence_group_size: int = 400) -> None:
         self.max_sentence_group_size = max_sentence_group_size
 
-    def _split_sections(self, text: str) -> List[tuple[str, str]]:
-        lines = text.splitlines()
-        sections: List[tuple[str, str]] = []
-        current_title = "Dokument"
-        bucket: List[str] = []
-        header_re = re.compile(r"^(#+\s*)?(Anamnese|Befund|Diagnose|Therapie|Verlauf|Medikation)\b", re.IGNORECASE)
-
-        for line in lines:
-            if header_re.match(line.strip()):
-                if bucket:
-                    sections.append((current_title, "\n".join(bucket).strip()))
-                    bucket = []
-                current_title = line.strip("# ") or current_title
-            else:
-                bucket.append(line)
-        if bucket:
-            sections.append((current_title, "\n".join(bucket).strip()))
-        return [(t, b) for t, b in sections if b]
-
-    @staticmethod
-    def _split_sentences(text: str) -> List[str]:
-        parts = re.split(r"(?<=[.!?])\s+", text.strip())
-        return [part.strip() for part in parts if part.strip()]
-
     def split_text(self, text: str) -> List[str]:
-        output: List[str] = []
-        for _, section_body in self._split_sections(text):
-            paragraphs = [p.strip() for p in section_body.split("\n\n") if p.strip()]
-            for paragraph in paragraphs:
-                buffer: List[str] = []
-                for sentence in self._split_sentences(paragraph) or [paragraph]:
-                    candidate = " ".join(buffer + [sentence]).strip()
-                    if buffer and len(candidate) > self.max_sentence_group_size:
-                        output.append(" ".join(buffer).strip())
-                        buffer = []
-                    buffer.append(sentence)
-                if buffer:
-                    output.append(" ".join(buffer).strip())
-        return [chunk for chunk in output if chunk]
+        """Split text hierarchically while preserving exact substrings.
+        
+        Returns chunks that are exact substrings of the input text.
+        """
+        chunks = []
+        
+        # Split into paragraphs (separated by double newlines)
+        paragraph_pattern = r'\n\n+'
+        para_splits = [(m.start(), m.end()) for m in re.finditer(paragraph_pattern, text)]
+        
+        paragraph_ranges = []
+        prev_end = 0
+        for para_start, para_end in para_splits:
+            if para_start > prev_end:
+                paragraph_ranges.append((prev_end, para_start))
+            prev_end = para_end
+        if prev_end < len(text):
+            paragraph_ranges.append((prev_end, len(text)))
+        
+        # Process each paragraph
+        for para_start, para_end in paragraph_ranges:
+            para_text = text[para_start:para_end]
+            if not para_text.strip():
+                continue
+            
+            # Split into sentences
+            sent_pattern = r'(?<=[.!?])\s+'
+            sent_splits = [(m.start(), m.end()) for m in re.finditer(sent_pattern, para_text)]
+            
+            sentence_ranges = []
+            prev_end = 0
+            for sent_start, sent_end in sent_splits:
+                if sent_start > prev_end:
+                    sentence_ranges.append((prev_end, sent_start))
+                prev_end = sent_end
+            if prev_end < len(para_text):
+                sentence_ranges.append((prev_end, len(para_text)))
+            
+            # Group sentences into chunks
+            buffer_start = None
+            buffer_end = None
+            
+            for sent_start, sent_end in sentence_ranges:
+                sent_text = para_text[sent_start:sent_end].strip()
+                if not sent_text:
+                    continue
+                
+                # Calculate what the chunk would be if we add this sentence
+                if buffer_start is None:
+                    buffer_start = sent_start
+                    buffer_end = sent_end
+                else:
+                    candidate_text = para_text[buffer_start:sent_end]
+                    if len(candidate_text) <= self.max_sentence_group_size:
+                        buffer_end = sent_end
+                    else:
+                        # Chunk is full, save it and start new
+                        chunk = text[para_start + buffer_start:para_start + buffer_end].strip()
+                        if chunk:
+                            chunks.append(chunk)
+                        buffer_start = sent_start
+                        buffer_end = sent_end
+            
+            # Save last chunk
+            if buffer_start is not None:
+                chunk = text[para_start + buffer_start:para_start + buffer_end].strip()
+                if chunk:
+                    chunks.append(chunk)
+        
+        return [c for c in chunks if c]
