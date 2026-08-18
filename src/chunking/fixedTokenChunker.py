@@ -19,7 +19,10 @@ from typing import (
     TypeVar,
     Union,
 )
-from base import BaseChunker
+try:
+    from .base import BaseChunker
+except ImportError:  # pragma: no cover - direct script execution fallback
+    from base import BaseChunker
 import matplotlib.pyplot as plt
 
 

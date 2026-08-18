@@ -3,8 +3,7 @@ from __future__ import annotations
 from typing import List
 import re
 
-from .base import BaseChunker, Chunk
-from src.utils.preprocessing import split_sentences
+from .base import BaseChunker
 
 
 class HierarchicalChunker(BaseChunker):
@@ -32,30 +31,23 @@ class HierarchicalChunker(BaseChunker):
             sections.append((current_title, "\n".join(bucket).strip()))
         return [(t, b) for t, b in sections if b]
 
-    def chunk(self, text: str) -> List[Chunk]:
-        output: List[Chunk] = []
-        for section_title, section_body in self._split_sections(text):
+    @staticmethod
+    def _split_sentences(text: str) -> List[str]:
+        parts = re.split(r"(?<=[.!?])\s+", text.strip())
+        return [part.strip() for part in parts if part.strip()]
+
+    def split_text(self, text: str) -> List[str]:
+        output: List[str] = []
+        for _, section_body in self._split_sections(text):
             paragraphs = [p.strip() for p in section_body.split("\n\n") if p.strip()]
-            for paragraph_index, paragraph in enumerate(paragraphs):
+            for paragraph in paragraphs:
                 buffer: List[str] = []
-                for sentence in split_sentences(paragraph) or [paragraph]:
+                for sentence in self._split_sentences(paragraph) or [paragraph]:
                     candidate = " ".join(buffer + [sentence]).strip()
                     if buffer and len(candidate) > self.max_sentence_group_size:
-                        output.append(
-                            Chunk(
-                                text=" ".join(buffer),
-                                index=len(output),
-                                metadata={"section": section_title, "paragraph": paragraph_index, "level": "sentence_group"},
-                            )
-                        )
+                        output.append(" ".join(buffer).strip())
                         buffer = []
                     buffer.append(sentence)
                 if buffer:
-                    output.append(
-                        Chunk(
-                            text=" ".join(buffer),
-                            index=len(output),
-                            metadata={"section": section_title, "paragraph": paragraph_index, "level": "sentence_group"},
-                        )
-                    )
-        return output
+                    output.append(" ".join(buffer).strip())
+        return [chunk for chunk in output if chunk]

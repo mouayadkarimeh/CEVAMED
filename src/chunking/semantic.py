@@ -9,19 +9,14 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 from langchain_text_splitters import SentenceTransformersTokenTextSplitter
+from sentence_transformers import SentenceTransformer
 
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 try:
-    from .base import TextSplitter
+    from .fixedTokenChunker import TextSplitter
 except ImportError:  # pragma: no cover - direct script execution fallback
-    from base import TextSplitter
-
-try:
-    from src.utils.preprocessing import generate_embeddings
-except ImportError:  # pragma: no cover - direct script execution fallback
-    from utils.preprocessing import generate_embeddings
-
+    from fixedTokenChunker import TextSplitter
 
 DEFAULT_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 DEFAULT_EPSILON = 1e-6
@@ -96,6 +91,7 @@ class SemanticChunker(TextSplitter):
         self.device = device
         self.epsilon = epsilon
         self.embedding_batch_size = embedding_batch_size
+        self._embedding_model = SentenceTransformer(self.model_name, device=self.device)
 
         self.splitter = SentenceTransformersTokenTextSplitter(
             chunk_overlap=0,
@@ -130,17 +126,22 @@ class SemanticChunker(TextSplitter):
 
         return sentences
 
+    def _embed_texts(self, texts: List[str]) -> np.ndarray:
+        embeddings = self._embedding_model.encode(
+            texts,
+            batch_size=self.embedding_batch_size,
+            convert_to_numpy=True,
+            normalize_embeddings=False,
+            show_progress_bar=False,
+        )
+        return np.asarray(embeddings)
+
     def calculate_sentence_embeddings(self, sentences: List[Dict[str, object]]) -> List[Dict[str, object]]:
         texts = [str(sentence["combined_sentence"]) for sentence in sentences]
-        embeddings: list[list[float]] = []
-
-        for index in range(0, len(texts), self.embedding_batch_size):
-            batch_texts = texts[index : index + self.embedding_batch_size]
-            batch_embeddings = generate_embeddings(batch_texts, model_name=self.model_name)
-            embeddings.extend(batch_embeddings.tolist())
+        embeddings = self._embed_texts(texts)
 
         for i, sentence in enumerate(sentences):
-            sentence["combined_sentence_embedding"] = embeddings[i]
+            sentence["combined_sentence_embedding"] = embeddings[i].tolist()
 
         return sentences
 
@@ -151,7 +152,7 @@ class SemanticChunker(TextSplitter):
         for index in range(0, len(sentences), self.embedding_batch_size):
             batch_sentences = sentences[index : index + self.embedding_batch_size]
             batch_texts = [str(sentence["combined_sentence"]) for sentence in batch_sentences]
-            batch_embeddings = np.asarray(generate_embeddings(batch_texts, model_name=self.model_name))
+            batch_embeddings = self._embed_texts(batch_texts)
 
             if embedding_matrix is None:
                 embedding_matrix = batch_embeddings

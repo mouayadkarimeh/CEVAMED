@@ -1,4 +1,7 @@
-from base import TextSplitter
+try:
+    from .fixedTokenChunker import TextSplitter
+except ImportError:  # pragma: no cover - direct script execution fallback
+    from fixedTokenChunker import TextSplitter
 from typing import Literal, Any
 import re 
 import sys
