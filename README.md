@@ -2,8 +2,7 @@ Chunking strategies benchmark
 
 ## Evaluation Framework (GraSCCo)
 
-Adaptiert aus [brandonstarxel/chunking_evaluation](https://github.com/brandonstarxel/chunking_evaluation).
-**Kein OpenAI-Modell erforderlich** – Retrieval erfolgt über einen reinen Python-BM25-Scorer.
+
 
 ### Ablauf lokal starten
 
