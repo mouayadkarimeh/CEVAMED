@@ -1,0 +1,66 @@
+[project]
+name = "CEVAMED"
+version = "0.1.0"
+description = "chunking evaluation of medical reports"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+authors = "Mouayad Karimeh"
+
+
+dependencies = [
+    "langchain>=1.2",
+    "langchain-community>=0.4",
+    "langchain-huggingface>=1.2",
+    "pydantic>=2.10.1",
+    "pydantic-settings>=2.10.1",
+    "requests>=2.32.5",
+    "torch>=2.5",
+    "transformers>=5.2",
+    "uvicorn>=0.42.0",
+    "peft>=0.18.0",
+    "datasets>=4.8.0",
+    "langchain-text-splitters>=1.1.1",
+    "sentence-transformers>=5.3.0",
+    "pypdf>=6.9.2",
+    "tiktoken>=0.9.0",
+    "pandas>=2.2.3",
+    "numpy",
+    "tqdm>=4.67.1",
+    "python-dotenv>=1.1.0",
+    "sentence-transformers>=3.1",
+    "spacy>=3.8.4",
+    "scikit-learn",
+    "scipy",
+    "langdetect",
+]
+
+[dependency-groups]
+dev = [
+    "CEVAMED[full]",
+    "mypy>=1.19.0",
+    "pre-commit>=4.5.1",
+    "poethepoet>=0.42.0",
+    "pytest>=9.0.2",
+    "pytest-mock>=3.15.1",
+    "types-pyyaml>=6.0.12.20240917",
+    "types-requests>=2.32.0.20241016",
+    "ipykernel>=6.29.5",
+    "ipywidgets>=8.1.5",
+    "gitpython>=3.1.44",
+    "coverage>=7.6.10",
+]
+
+docs = [
+    "mkdocs-material[imaging]>=9.6.1",
+    "mike>=2.1.3",
+    "mkdocstrings[python]>=0.28.0",
+    "mkdocs-autoapi>=0.3.2",
+    "mkdocs-api-autonav>=0.1.0",
+    "griffe-inherited-docstrings>=1.1.1",
+]
+
+[project.urls]
+Repository = "https://github.com/mouayadkarimeh/CEVAMED"
+
+
+

@@ -37,9 +37,9 @@ def _chunkers() -> Dict[str, object]:
 
 def _profiles() -> list[EvaluationProfile]:
     return [
-        EvaluationProfile(name="basic", retrieve=-1),
-        EvaluationProfile(name="general", retrieve=5),
-        EvaluationProfile(name="synthetic", retrieve=10),
+        EvaluationProfile(name="minimal", retrieve=-1),
+        EvaluationProfile(name="top_3", retrieve=3),
+        EvaluationProfile(name="top_5", retrieve=5),
     ]
 
 
@@ -88,6 +88,7 @@ def run() -> dict:
                 "mrr_mean": float(metrics["mrr_mean"]),
                 "ndcg_at_k_mean": float(metrics["ndcg_at_k_mean"]),
                 "fragmentation_mean": float(metrics["fragmentation_mean"]),
+                "question_metrics": metrics["question_metrics"],
             }
         results["profiles"][profile.name] = profile_results
 

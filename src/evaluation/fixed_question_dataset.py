@@ -125,6 +125,7 @@ def _question_rows_for_annotations(
     for question_key, question in FIXED_QUESTIONS.items():
         if references.get(question_key):
             yield {
+                "question_key": question_key,
                 "question": question,
                 "references": json.dumps(
                     [reference.to_dict() for reference in references[question_key]],
@@ -178,7 +179,7 @@ def _write_rows(rows: Iterable[dict[str, str]], csv_path: Path) -> int:
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     count = 0
     with csv_path.open("w", encoding="utf-8", newline="") as file:
-        writer = csv.DictWriter(file, fieldnames=["question", "references", "corpus_id"])
+        writer = csv.DictWriter(file, fieldnames=["question_key", "question", "references", "corpus_id"])
         writer.writeheader()
         for row in rows:
             writer.writerow(row)

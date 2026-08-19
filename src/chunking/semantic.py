@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 import sys
 from typing import Dict, List
 from pathlib import Path
@@ -103,45 +102,50 @@ class SemanticChunker(TextSplitter):
         self._allowed_special = set()
         self._disallowed_special = "all"
 
-    def _split_into_sentences(self, text: str) -> List[Dict[str, object]]:
-        """Split text into sentences while tracking their exact byte positions.
-        
-        Uses regex to split on sentence boundaries (., !, ?) followed by whitespace.
-        Preserves exact character positions for later substring extraction.
-        """
-        # Regex: split on .!? followed by one or more whitespace
-        sentence_pattern = re.compile(r'(?<=[.!?])\s+')
-        
-        sentences_with_positions = []
-        current_pos = 0
-        
-        # Split while tracking positions
-        parts = sentence_pattern.split(text)
-        
-        for part in parts:
-            if not part.strip():
-                # Skip empty parts but track position
-                current_pos += len(part)
+    def _split_into_token_units(self, text: str) -> List[Dict[str, object]]:
+        """Create position-aware token units like the upstream recursive splitter."""
+        token_ids = self._tokenizer.encode(
+            text,
+            allowed_special=self._allowed_special,
+            disallowed_special=self._disallowed_special,
+        )
+        if not token_ids:
+            return []
+
+        encoded = bytearray()
+        boundaries: List[tuple[int, int]] = []
+        for token_index, token_id in enumerate(token_ids, start=1):
+            encoded.extend(self._tokenizer.decode_single_token_bytes(token_id))
+            try:
+                char_end = len(encoded.decode("utf-8"))
+            except UnicodeDecodeError:
                 continue
-            
-            # Find this part in original text starting from current position
-            start_pos = text.find(part, current_pos)
-            if start_pos == -1:
-                # Fallback: shouldn't happen, but handle gracefully
-                start_pos = current_pos
-            
-            end_pos = start_pos + len(part)
-            
-            sentences_with_positions.append({
-                "sentence": part,
-                "start": start_pos,
-                "end": end_pos,
-                "index": len(sentences_with_positions)
+            boundaries.append((token_index, char_end))
+
+        units: List[Dict[str, object]] = []
+        start_token = 0
+        start_char = 0
+        boundary_index = 0
+        while start_token < len(token_ids):
+            target_token = min(start_token + self.min_chunk_size, len(token_ids))
+            while boundary_index < len(boundaries) and boundaries[boundary_index][0] < target_token:
+                boundary_index += 1
+            if boundary_index >= len(boundaries):
+                end_token, end_char = len(token_ids), len(text)
+            else:
+                end_token, end_char = boundaries[boundary_index]
+
+            units.append({
+                "sentence": text[start_char:end_char],
+                "start": start_char,
+                "end": end_char,
+                "index": len(units),
             })
-            
-            current_pos = end_pos
-        
-        return sentences_with_positions
+            start_token = end_token
+            start_char = end_char
+            boundary_index += 1
+
+        return units
 
     def _count_tokens(self, text: str) -> int:
         """Count tokens with the same tokenizer used for token-based boundaries."""
@@ -328,20 +332,9 @@ class SemanticChunker(TextSplitter):
         return threshold
 
     def split_text(self, text: str) -> List[str]:
-        """Split text using semantic similarity, returning EXACT substrings.
-        
-        Process:
-        1. Split text into sentences using regex (preserving positions)
-        2. Calculate embeddings for sentences with context
-        3. Find distance threshold based on desired chunk size
-        4. Group sentences at breakpoints
-        5. Extract exact substrings from original text
-        
-        Returns:
-            List of chunks that are exact substrings from the original text
-        """
-        # Step 1: Split into sentences while tracking positions
-        sentences = self._split_into_sentences(text)
+        """Split text using the upstream Kamradt semantic-chunking flow."""
+        # The upstream implementation starts with recursive token-sized units.
+        sentences = self._split_into_token_units(text)
 
         if len(sentences) < 2:
             # Too few sentences to chunk semantically
@@ -357,9 +350,9 @@ class SemanticChunker(TextSplitter):
             # No distances calculated
             return [text] if text.strip() else []
 
-        # Step 4: Find optimal threshold from the real token count
-        total_tokens = self._count_tokens(text)
-        number_of_cuts = max(1, total_tokens // self.avg_chunk_size)
+        # Match upstream: number_of_cuts is an approximate target, not a hard limit.
+        total_tokens = sum(self._count_tokens(sentence["sentence"]) for sentence in sentences)
+        number_of_cuts = total_tokens // self.avg_chunk_size
 
         threshold = self._find_breakpoint_threshold(distances, number_of_cuts)
 
@@ -377,7 +370,11 @@ class SemanticChunker(TextSplitter):
             if not group:
                 continue
 
-            self._append_group(text, group, self.avg_chunk_size, chunks)
+            chunk_start = int(group[0]["start"])
+            chunk_end = int(group[-1]["end"])
+            chunk = text[chunk_start:chunk_end]
+            if chunk.strip():
+                chunks.append(chunk)
 
             start_idx = break_idx + 1
 
@@ -385,7 +382,11 @@ class SemanticChunker(TextSplitter):
         if start_idx < len(sentences):
             group = sentences[start_idx:]
             if group:
-                self._append_group(text, group, self.avg_chunk_size, chunks)
+                chunk_start = int(group[0]["start"])
+                chunk_end = int(group[-1]["end"])
+                chunk = text[chunk_start:chunk_end]
+                if chunk.strip():
+                    chunks.append(chunk)
 
         return [c for c in chunks if c and c.strip()]
 

@@ -203,7 +203,7 @@ class BaseEvaluation:
             self.questions_df = pd.read_csv(self.questions_csv_path)
             self.questions_df['references'] = self.questions_df['references'].apply(json.loads)
         else:
-            self.questions_df = pd.DataFrame(columns=['question', 'references', 'corpus_id'])
+            self.questions_df = pd.DataFrame(columns=['question_key', 'question', 'references', 'corpus_id'])
         
         self.corpus_list = self.questions_df['corpus_id'].unique().tolist()
 
@@ -339,7 +339,12 @@ class BaseEvaluation:
 
         return ioc_scores, highlighted_chunks_count
 
-    def _scores_from_dataset_and_retrievals(self, question_metadatas, highlighted_chunks_count):
+    def _scores_from_dataset_and_retrievals(
+        self,
+        question_metadatas,
+        highlighted_chunks_count,
+        question_documents=None,
+    ):
         iou_scores = []
         recall_scores = []
         precision_scores = []
@@ -348,7 +353,9 @@ class BaseEvaluation:
         mrr_scores = []
         ndcg_at_k_scores = []
         fragmentation_scores = []
-        for (index, row), highlighted_chunk_count, metadatas in zip(self.questions_df.iterrows(), highlighted_chunks_count, question_metadatas):
+        question_metrics = []
+        rows = zip(self.questions_df.iterrows(), highlighted_chunks_count, question_metadatas)
+        for question_index, ((index, row), highlighted_chunk_count, metadatas) in enumerate(rows):
             # Unpack question and references
             # question, references = question_references
             question = row['question']
@@ -362,12 +369,14 @@ class BaseEvaluation:
             reference_total = sum_of_ranges(ref_ranges)
             k = max(0, int(highlighted_chunk_count))
             top_k_metadatas = metadatas[:k]
+            documents = question_documents[question_index][:k] if question_documents is not None else [None] * len(top_k_metadatas)
 
             chunk_relevances = []
             hit_indices = []
             relevant_chunk_count = 0
+            retrieved_chunks = []
 
-            for rank_index, metadata in enumerate(top_k_metadatas, start=1):
+            for rank_index, (metadata, document) in enumerate(zip(top_k_metadatas, documents), start=1):
                 # Unpack chunk start and end indices
                 chunk_start, chunk_end, chunk_corpus_id = metadata['start_index'], metadata['end_index'], metadata['corpus_id']
 
@@ -405,6 +414,17 @@ class BaseEvaluation:
                 else:
                     chunk_rel = 0.0
                 chunk_relevances.append(chunk_rel)
+                retrieved_chunks.append({
+                    "rank": rank_index,
+                    "start_index": int(chunk_start),
+                    "end_index": int(chunk_end),
+                    "text": document,
+                    "relevant": bool(chunk_intersections),
+                    "intersections": [
+                        {"start_index": int(start), "end_index": int(end)}
+                        for start, end in chunk_intersections
+                    ],
+                })
             
 
             if numerator_sets:
@@ -443,6 +463,24 @@ class BaseEvaluation:
             ndcg_at_k_scores.append(ndcg_at_k)
 
             fragmentation_scores.append(float(relevant_chunk_count))
+            question_metrics.append({
+                "question_index": int(index),
+                "question_key": row.get("question_key", ""),
+                "question": question,
+                "corpus_id": corpus_id,
+                "groundtruth": references,
+                "retrieved_chunks": retrieved_chunks,
+                "metrics": {
+                    "iou": float(iou_score),
+                    "recall": float(recall_score),
+                    "precision": float(precision_score),
+                    "f1": float(f1_score),
+                    "hit_at_k": float(hit_at_k),
+                    "mrr": float(reciprocal_rank),
+                    "ndcg_at_k": float(ndcg_at_k),
+                    "fragmentation": float(relevant_chunk_count),
+                },
+            })
 
         return {
             "iou_scores": iou_scores,
@@ -453,6 +491,7 @@ class BaseEvaluation:
             "mrr_scores": mrr_scores,
             "ndcg_at_k_scores": ndcg_at_k_scores,
             "fragmentation_scores": fragmentation_scores,
+            "question_metrics": question_metrics,
         }
 
     def _chunker_to_collection(self, chunker, embedding_function, chroma_db_path:str = None, collection_name:str = None):
@@ -592,10 +631,25 @@ class BaseEvaluation:
         # arr_bytes = np.array(list(sorted_embeddings)).tobytes()
         # print("Hash: ", hashlib.md5(arr_bytes).hexdigest())
 
-        # Retrieve the documents based on sorted embeddings
-        retrievals = collection.query(query_embeddings=list(sorted_embeddings), n_results=maximum_n)
+        # Retrieve only within each question's source document. Questions such as
+        # "Wie heißt der Patient?" are intentionally generic, so searching across
+        # every corpus would rank chunks from unrelated documents above the answer.
+        retrieval_metadatas = []
+        retrieval_documents = []
+        for (_, row), query_embedding in zip(self.questions_df.iterrows(), sorted_embeddings):
+            retrieval = collection.query(
+                query_embeddings=[query_embedding],
+                n_results=maximum_n,
+                where={"corpus_id": row["corpus_id"]},
+            )
+            retrieval_metadatas.append(retrieval["metadatas"][0])
+            retrieval_documents.append(retrieval["documents"][0])
 
-        score_dict = self._scores_from_dataset_and_retrievals(retrievals['metadatas'], highlighted_chunks_count)
+        score_dict = self._scores_from_dataset_and_retrievals(
+            retrieval_metadatas,
+            highlighted_chunks_count,
+            question_documents=retrieval_documents,
+        )
         iou_scores = score_dict["iou_scores"]
         recall_scores = score_dict["recall_scores"]
         precision_scores = score_dict["precision_scores"]
@@ -685,5 +739,6 @@ class BaseEvaluation:
             "ndcg_at_k_mean": ndcg_at_k_mean,
             "ndcg_at_k_std": ndcg_at_k_std,
             "fragmentation_mean": fragmentation_mean,
-            "fragmentation_std": fragmentation_std
+            "fragmentation_std": fragmentation_std,
+            "question_metrics": score_dict["question_metrics"],
         }

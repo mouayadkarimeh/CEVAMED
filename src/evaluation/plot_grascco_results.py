@@ -49,19 +49,18 @@ def _plot_grouped_bars_for_profile(profile_name: str, profile_data: dict, output
 
     for axis, metric in zip(axes_flat, metric_keys):
         values = [float(profile_data[chunker][metric]) for chunker in chunkers]
-        axis.bar(x_positions, values)
+        display_values = [value * 100 for value in values]
+        axis.bar(x_positions, display_values)
         axis.set_title(METRIC_LABELS.get(metric, metric))
         axis.set_xticks(x_positions)
         axis.set_xticklabels(chunkers, rotation=20, ha="right")
-        if metric == "fragmentation_mean":
-            y_upper = max(values) * 1.15 if values else 1.0
-            axis.set_ylim(0, max(1.0, y_upper))
-        else:
-            axis.set_ylim(0, max(1.0, max(values) * 1.15 if values else 1.0))
+        y_upper = max(display_values) * 1.2 if display_values else 1.0
+        axis.set_ylim(0, max(1.0, y_upper))
+        axis.set_ylabel("Prozent")
         axis.grid(axis="y", linestyle="--", alpha=0.35)
 
-        for idx, value in enumerate(values):
-            axis.text(idx, value + 0.01, f"{value:.3f}", ha="center", va="bottom", fontsize=8)
+        for idx, value in enumerate(display_values):
+            axis.text(idx, value + max(y_upper * 0.02, 0.02), f"{value:.2f}%", ha="center", va="bottom", fontsize=8)
 
     for axis in axes_flat[len(metric_keys):]:
         axis.axis("off")
@@ -95,7 +94,7 @@ def _plot_metric_heatmaps(results: dict, output_dir: Path, metric_keys: list[str
 
         for y in range(len(profiles)):
             for x in range(len(chunkers)):
-                axis.text(x, y, f"{matrix[y][x]:.3f}", ha="center", va="center", fontsize=8)
+                axis.text(x, y, f"{matrix[y][x] * 100:.2f}%", ha="center", va="center", fontsize=8)
 
         fig.colorbar(image, ax=axis, fraction=0.046, pad=0.04)
 

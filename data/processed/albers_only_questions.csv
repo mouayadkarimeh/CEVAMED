@@ -1,0 +1,5 @@
+question_key,question,references,corpus_id
+patient_name,Wie heißt der Patient?,"[{""content"": ""Beate Albers"", ""start_index"": 89, ""end_index"": 101}]",C:\Users\Mouayad\chunking\data\row\Albers.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""4.4.1997"", ""start_index"": 105, ""end_index"": 113}]",C:\Users\Mouayad\chunking\data\row\Albers.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""19.3."", ""start_index"": 129, ""end_index"": 134}]",C:\Users\Mouayad\chunking\data\row\Albers.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""7.5.2029"", ""start_index"": 143, ""end_index"": 151}]",C:\Users\Mouayad\chunking\data\row\Albers.txt
