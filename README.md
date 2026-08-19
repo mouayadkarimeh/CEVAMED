@@ -1,4 +1,4 @@
-# Chunking evaluating of medical reports
+# Chunking evaluation of medical reports
 CEVAMED is developed as bachelorwork and an  experimental library to investigate different chunking strategies in RAG(retrieval Augumented Generation) Pipeline to generate the relevant chunks from the reports based on questions so that the LLM (large language Modell) extract as possibl the correct Answer improving accuricy in critical medical documents domaäns.
 
 
@@ -26,10 +26,20 @@ testing 4 chunking strategies Fixed-token, recursive, semantic, architecutural
 
 
 ## Quickstart
+If you just want to it try out, you can clone the project and install dependencies with `pip`:
+
+```shell
 git clone https://github.com/mouayadkarimeh/CEVAMED.git
-cd gerd
 pip install -e ".[full]"
 python src.evaluation.report_single_document_question_chunks.py
+```
+
+<details>
+<summary>Source: src.evaluation.report_single_document_question_chunks.py</summary>
+```python
+--8<-- Source: src.evaluation.report_single_document_question_chunks.py ""
+```
+</details>
 
 
 
