@@ -1,18 +1,9 @@
-"""
-1. Minimierung von Abhängigkeiten: Wenn man direkt RecursiveCharacterTextSplitter.from_huggingface_tokenizer() von LangChain aufgerufen hätte, 
-müsste  das gesamte LangChain-Ökosystem als feste Abhängigkeit (install_requires) installieren.
-LangChain ist gigantisch und zieht hunderte andere Pakete nach sich (Pydantic-Versionen, SQL-Treiber, Cloud-SDKs).
-
-2. Seperator list erweitern
-
-3. erhalt der Seperatoren wenn nötig
-"""
-
 
 try:
-    from .langchainSplitter import TextSplitter
+    from chunking.base_chunker import TextSplitter
 except ImportError:  # pragma: no cover - direct script execution fallback
-    from fixedTokenChunker import TextSplitter
+    from chunking.base_chunker import TextSplitter
+    
 from typing import Literal, Any
 import re 
 import sys
@@ -21,15 +12,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 sys.path.append(str(Path(__file__).resolve().parents[2]))
-"""
-1. Minimierung von Abhängigkeiten: Wenn man direkt RecursiveCharacterTextSplitter.from_huggingface_tokenizer() von LangChain aufgerufen hätte, 
-müsste  das gesamte LangChain-Ökosystem als feste Abhängigkeit (install_requires) installieren.
-LangChain ist gigantisch und zieht hunderte andere Pakete nach sich (Pydantic-Versionen, SQL-Treiber, Cloud-SDKs).
 
-2. Seperator list erweitern
-
-3. erhalt der Seperatoren wenn nötig
-"""
 
 
 def _split_text_with_regex(

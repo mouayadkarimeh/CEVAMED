@@ -7,7 +7,6 @@ from __future__ import annotations
 from typing import Any, cast
 from chunking.base_chunker import TextSplitter , Tokenizer, split_text_on_tokens
 
-#from langchain_text_splitters.base import TextSplitter, Tokenizer, split_text_on_tokens
 
 try:
     # Type ignores needed as long as sentence-transformers doesn't support Python 3.14.
