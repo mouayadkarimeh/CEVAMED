@@ -3,34 +3,38 @@
 from __future__ import annotations
 
 import sys
+import re
 from typing import Dict, List
 from pathlib import Path
-
+from sklearn.metrics.pairwise import cosine_similarity
 import matplotlib.pyplot as plt
 import numpy as np
 from sentence_transformers import SentenceTransformer
+from transformers import AutoTokenizer
+from langchain_text_splitters import (
+    TextSplitter,
+)
 
 sys.path.append(str(Path(__file__).resolve().parents[2]))
 
-try:
-    from .fixedTokenChunker import TextSplitter
-except ImportError:  # pragma: no cover - direct script execution fallback
-    from fixedTokenChunker import TextSplitter
+
 
 DEFAULT_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 DEFAULT_EPSILON = 1e-6
+BREAKPOINT_PERCENTILE_THRESHOLD = 90 # Default percentile for determining breakpoints
 
-
-def results_plot(distances: list[float], breakpoint_distance_threshold: float) -> None:
+def results_plot(distances: list[float], BREAKPOINT_PERCENTILE_THRESHOLD ) -> None:
     if not distances:
         print("Keine Distanzen zum Plotten.")
         return
 
-    y_upper_bound = max(0.2, float(max(distances)) * 1.2)
+    
+    y_upper_bound = .6 # Set a fixed upper bound for better visualization  
     plt.plot(distances)
     plt.ylim(0, y_upper_bound)
     plt.xlim(0, len(distances))
-    plt.axhline(y=breakpoint_distance_threshold, color="r", linestyle="-")
+    breakpoint_distance_threshold = np.percentile(distances, BREAKPOINT_PERCENTILE_THRESHOLD)
+    plt.axhline(y = breakpoint_distance_threshold , color="r", linestyle="-")
 
     num_distances_above_threshold = sum(x > breakpoint_distance_threshold for x in distances)
     plt.text(x=(len(distances) * 0.01), y=y_upper_bound / 50, s=f"{num_distances_above_threshold + 1} Chunks")
@@ -71,7 +75,128 @@ def results_plot(distances: list[float], breakpoint_distance_threshold: float) -
     plt.show()
 
 
-class SemanticChunker(TextSplitter):
+
+def plot_embedding_breakpoints(
+    distances: list[float],
+    breakpoint_percentile_threshold: float = 95,
+    y_upper_bound: float = 0.2,
+    colors: list[str] = ['b', 'g', 'r', 'c', 'm', 'y', 'k'],
+) -> None:
+    """
+    Visualisiert Text-Chunks basierend auf Embedding-Abstandswerten (Cosine-Distances).
+
+    Args:
+        distances: Liste der Cosine-Distances zwischen aufeinanderfolgenden Sätzen.
+        breakpoint_percentile_threshold: Percentil für die Bestimmung des Breakpoint-Schwellenwerts (Standard: 95).
+        y_upper_bound: Obere Grenze für die y-Achse (Standard: 0.2).
+        colors: Liste der Farben für die Chunks (Standard: ['b', 'g', 'r', 'c', 'm', 'y', 'k']).
+
+    Returns:
+        None (zeigt den Plot direkt an).
+    """
+    if not distances:
+        print("Fehler: Keine Distanzen zum Plotten.")
+        return
+
+    # Breakpoint-Schwellenwert berechnen
+    breakpoint_distance_threshold = np.percentile(distances, breakpoint_percentile_threshold)
+
+    # Plot erstellen
+    plt.figure(figsize=(12, 6))
+    plt.plot(distances, linewidth=1.5)
+
+    # Achsengrenzen setzen
+    plt.ylim(0, y_upper_bound)
+    plt.xlim(0, len(distances))
+
+    # Breakpoint-Linie hinzufügen
+    plt.axhline(
+        y=breakpoint_distance_threshold,
+        color='r',
+        linestyle='-',
+        linewidth=1.5,
+        label=f'Breakpoint-Schwelle ({breakpoint_percentile_threshold}%)'
+    )
+
+    # Anzahl der Chunks berechnen und anzeigen
+    num_distances_above_threshold = sum(x > breakpoint_distance_threshold for x in distances)
+    plt.text(
+        x=len(distances) * 0.01,
+        y=y_upper_bound / 50,
+        s=f"{num_distances_above_threshold + 1} Chunks",
+        fontsize=12,
+        bbox=dict(facecolor='white', alpha=0.8, edgecolor='none')
+    )
+
+    # Breakpoint-Indizes berechnen
+    indices_above_thresh = [i for i, x in enumerate(distances) if x > breakpoint_distance_threshold]
+
+    # Chunks visualisieren
+    for i, breakpoint_index in enumerate(indices_above_thresh):
+        start_index = 0 if i == 0 else indices_above_thresh[i - 1]
+        end_index = breakpoint_index if i < len(indices_above_thresh) - 1 else len(distances)
+
+        # Farbige Bereiche für die Chunks
+        plt.axvspan(
+            start_index,
+            end_index,
+            facecolor=colors[i % len(colors)],
+            alpha=0.25,
+            label=f'Chunk #{i + 1}' if i == 0 else None  # Nur erstes Label anzeigen
+        )
+
+        # Chunk-Nummerierung (beginnt bei 1)
+        plt.text(
+            x=np.average([start_index, end_index]),
+            y=breakpoint_distance_threshold + (y_upper_bound / 20),
+            s=f"Chunk #{i + 1}",
+            horizontalalignment='center',
+            rotation='vertical',
+            fontsize=10,
+            bbox=dict(facecolor='white', alpha=0.8, edgecolor='none')
+        )
+
+    # Letzten Chunk behandeln
+    if indices_above_thresh:
+        last_breakpoint = indices_above_thresh[-1]
+        if last_breakpoint < len(distances):
+            plt.axvspan(
+                last_breakpoint,
+                len(distances),
+                facecolor=colors[len(indices_above_thresh) % len(colors)],
+                alpha=0.25
+            )
+            plt.text(
+                x=np.average([last_breakpoint, len(distances)]),
+                y=breakpoint_distance_threshold + (y_upper_bound / 20),
+                s=f"Chunk #{len(indices_above_thresh) + 1}",
+                rotation='vertical',
+                fontsize=10,
+                bbox=dict(facecolor='white', alpha=0.8, edgecolor='none')
+            )
+
+    # Plot anpassen
+    plt.title(
+        "Text-Chunks basierend auf Embedding-Breakpoints",
+        fontsize=14,
+        pad=20
+    )
+    plt.xlabel(
+        "Index der Sätze im Essay (Satzposition)",
+        fontsize=12
+    )
+    plt.ylabel(
+        "Cosine-Distance zwischen aufeinanderfolgenden Sätzen",
+        fontsize=12
+    )
+    plt.grid(True, linestyle='--', alpha=0.6)
+    plt.legend(loc='upper right', fontsize=10)
+    plt.tight_layout()
+    plt.show()
+
+
+
+class KamradtSemanticChunker(TextSplitter):
     """Semantic chunker using sentence embeddings and distance breakpoints.
     
     CRITICAL: This implementation extracts EXACT SUBSTRINGS from the original text
@@ -81,27 +206,34 @@ class SemanticChunker(TextSplitter):
 
     def __init__(
         self,
-        avg_chunk_size: int = 400,
-        min_chunk_size: int = 50,
         model_name: str = DEFAULT_MODEL_NAME,
         device: str = "cpu",
         epsilon: float = DEFAULT_EPSILON,
         embedding_batch_size: int = 500,
     ) -> None:
-        super().__init__(chunk_size=min_chunk_size, chunk_overlap=0, length_function=len)
-        self.avg_chunk_size = avg_chunk_size
-        self.min_chunk_size = min_chunk_size
+        super().__init__(chunk_size=256, chunk_overlap=64, length_function=len)
         self.model_name = model_name
         self.device = device
         self.epsilon = epsilon
         self.embedding_batch_size = embedding_batch_size
         self._embedding_model = SentenceTransformer(self.model_name, device=self.device)
-        import tiktoken
+       
 
-        self._tokenizer = tiktoken.get_encoding("cl100k_base")
+        self._tokenizer = AutoTokenizer.from_pretrained(self.model_name)
         self._allowed_special = set()
         self._disallowed_special = "all"
 
+
+
+    def _split_text_regular_expresion(self, text: str) -> List[dict[str,any]]:
+       # Splitting the essay on '.', '?', and '!'
+        single_sentences_list = re.split(r'(?<=[.?!])\s+', text)
+        print (f"{len(single_sentences_list)} senteneces were found")
+        # change list of sentences in dict format to add data easy later 
+        sentences_dict = [{"sentence":x, "index":i} for i , x in enumerate(single_sentences_list)  ]
+        return sentences_dict
+
+    
     def _split_into_token_units(self, text: str) -> List[Dict[str, object]]:
         """Create position-aware token units like the upstream recursive splitter."""
         token_ids = self._tokenizer.encode(
@@ -266,53 +398,44 @@ class SemanticChunker(TextSplitter):
             show_progress_bar=False,
         )
         return np.asarray(embeddings)
-
+    
     def calculate_sentence_embeddings(self, sentences: List[Dict[str, object]]) -> List[Dict[str, object]]:
-        """Calculate embeddings for combined sentences."""
-        texts = [str(sentence["combined_sentence"]) for sentence in sentences]
-        embeddings = self._embed_texts(texts)
+        """Calculate embeddings for combined sentences and store them in the sentence dicts."""
+        if not sentences:
+            return sentences
 
+        embeddings = self._embedding_model.encode([x['combined_sentence'] for x in sentences])
         for i, sentence in enumerate(sentences):
-            sentence["combined_sentence_embedding"] = embeddings[i].tolist()
+            sentence['combined_sentence_embedding'] = embeddings[i]
 
         return sentences
+        
 
-    def calculate_cosine_distances(self, sentences: List[Dict[str, object]]):
-        """Calculate cosine distances between consecutive sentence embeddings."""
-        distances: list[float] = []
-        embedding_matrix = None
-
-        # Process in batches
-        for index in range(0, len(sentences), self.embedding_batch_size):
-            batch_sentences = sentences[index : index + self.embedding_batch_size]
-            batch_texts = [str(sentence["combined_sentence"]) for sentence in batch_sentences]
-            batch_embeddings = self._embed_texts(batch_texts)
-
-            if embedding_matrix is None:
-                embedding_matrix = batch_embeddings
-            else:
-                embedding_matrix = np.concatenate((embedding_matrix, batch_embeddings), axis=0)
-
-        if embedding_matrix is None:
-            return distances, sentences
-
-        # Normalize embeddings
-        norms = np.linalg.norm(embedding_matrix, axis=1, keepdims=True)
-        norms[norms == 0] = 1.0
-        embedding_matrix = embedding_matrix / norms
-
-        # Compute similarity matrix
-        similarity_matrix = np.dot(embedding_matrix, embedding_matrix.T)
-
-        # Calculate distances between consecutive sentences
+    
+    def calculate_cosine_distances(self, sentences):
+        distances = []
         for i in range(len(sentences) - 1):
-            similarity = similarity_matrix[i, i + 1]
-            distance = float(1 - similarity)
+            embedding_current = sentences[i]['combined_sentence_embedding']
+            embedding_next = sentences[i + 1]['combined_sentence_embedding']
+            
+            # Calculate cosine similarity
+            similarity = cosine_similarity([embedding_current], [embedding_next])[0][0]
+            
+            # Convert to cosine distance
+            distance = 1 - similarity
+
+            # Append cosine distance to the list
             distances.append(distance)
-            sentences[i]["distance_to_next"] = distance
+
+            # Store distance in the dictionary
+            sentences[i]['distance_to_next'] = distance
+
+        # Optionally handle the last sentence
+        # sentences[-1]['distance_to_next'] = None  # or a default value
 
         return distances, sentences
 
+    
     def _find_breakpoint_threshold(self, distances: List[float], number_of_cuts: int) -> float:
         """Binary search to find distance threshold that gives desired number of cuts."""
         lower_limit = 0.0
@@ -331,10 +454,10 @@ class SemanticChunker(TextSplitter):
 
         return threshold
 
-    def split_text(self, text: str) -> List[str]:
+    def _split_text(self, text: str) -> List[str]:
         """Split text using the upstream Kamradt semantic-chunking flow."""
         # The upstream implementation starts with recursive token-sized units.
-        sentences = self._split_into_token_units(text)
+        sentences = self._split_text_regular_expresion(text)
 
         if len(sentences) < 2:
             # Too few sentences to chunk semantically
@@ -343,123 +466,71 @@ class SemanticChunker(TextSplitter):
         # Step 2: Add context for embedding calculation
         sentences = self.combine_sentences(sentences, buffer_size=3)
 
+        sentences_embedded = self.calculate_sentence_embeddings(sentences)
+        
         # Step 3: Calculate embeddings and distances
-        distances, sentences = self.calculate_cosine_distances(sentences)
+        distances, sentences = self.calculate_cosine_distances(sentences_embedded)
 
         if not distances:
             # No distances calculated
             return [text] if text.strip() else []
 
-        # Match upstream: number_of_cuts is an approximate target, not a hard limit.
-        total_tokens = sum(self._count_tokens(sentence["sentence"]) for sentence in sentences)
-        number_of_cuts = total_tokens // self.avg_chunk_size
+        # Initialize the start index
+        start_index = 0
 
-        threshold = self._find_breakpoint_threshold(distances, number_of_cuts)
+        # Create a list to hold the grouped sentences
+        chunks = []
+        breakepoint_distance_threshold = np.percentile(distances, BREAKPOINT_PERCENTILE_THRESHOLD)
+        indices_above_thresh = [i for i, x in enumerate(distances) if x > breakepoint_distance_threshold]
+        # Iterate through the breakpoints to slice the sentences
+        for index in indices_above_thresh:
+            # The end index is the current breakpoint
+            end_index = index
 
-        # Step 5: Find breakpoint indices
-        indices_above_thresh = [i for i, distance in enumerate(distances) if distance > threshold]
+            # Slice the sentence_dicts from the current start index to the end index
+            group = sentences[start_index:end_index + 1]
+            combined_text = ' '.join([d['sentence'] for d in group])
+            chunks.append(combined_text)
+            
+            # Update the start index for the next group
+            start_index = index + 1
 
-        # Step 6: Group sentences at breakpoints and extract exact substrings
-        start_idx = 0
-        chunks: List[str] = []
+        # The last group, if any sentences remain
+        if start_index < len(sentences):
+            combined_text = ' '.join([d['sentence'] for d in sentences[start_index:]])
+            chunks.append(combined_text)
 
-        for break_idx in indices_above_thresh:
-            # Group sentences from start_idx to break_idx (inclusive)
-            group = sentences[start_idx : break_idx + 1]
+        return chunks
+                
 
-            if not group:
-                continue
 
-            chunk_start = int(group[0]["start"])
-            chunk_end = int(group[-1]["end"])
-            chunk = text[chunk_start:chunk_end]
-            if chunk.strip():
-                chunks.append(chunk)
-
-            start_idx = break_idx + 1
-
-        # Add remaining sentences as final chunk
-        if start_idx < len(sentences):
-            group = sentences[start_idx:]
-            if group:
-                chunk_start = int(group[0]["start"])
-                chunk_end = int(group[-1]["end"])
-                chunk = text[chunk_start:chunk_end]
-                if chunk.strip():
-                    chunks.append(chunk)
-
-        return [c for c in chunks if c and c.strip()]
-
-    def chunk(self, text: str) -> List[str]:
+    def split_text(self, text: str) -> List[str]:
         """Alias for split_text for compatibility."""
-        return self.split_text(text)
+        return self._split_text(text)
 
 
-KamradtModifiedChunker = SemanticChunker
+#KamradtModifiedChunker = SemanticChunker
 
 
 if __name__ == "__main__":
-    text = (
-        """
-           Klinik für Innere Medizin und Kardiologie
-Universitätsklinikum Graz
-A-8010 Graz, Auenbruggerplatz
-
-PATIENTENBRIEF / ENTLASSUNGSBERICHT
-
-Patient: Max Mustermann, geb. 14.11.1965
-Station: Kardio-02, Bett 14
-Stationärer Aufenthalt: 02.08.2026 bis 10.08.2026
-
-DIAGNOSEN:
-1. Akutes Koronarsyndrom (ACS): Nicht-ST-Hebungs-Myokardinfarkt (NSTEMI) am 02.08.2026.
-2. Koronare Herzkrankheit (KHK): 2-Gefäß-Erkrankung mit hochgradiger Stenose der RIVA (Ramus interventricularis anterior) und moderater Stenose der RCX (Ramus circumflexus).
-3. Arterielle Hypertonie, Grad II (ICD-10: I10.9).
-4. Hypercholesterinämie (ICD-10: E78.0).
-5. Diabetes mellitus Typ 2, diätetisch und medikamentös eingestellt.
-
-ANAMNESE UND VERLAUF:
-Der 60-jährige Patient wurde am 02.08.2026 über die Notaufnahme wegen akut aufgetretener, retrosternaler Thoraxschmerzen mit Ausstrahlung in den linken Arm und begleitender Dyspnoe aufgenommen. Die Symptomatik bestand seit ca. zwei Stunden vor Erstkontakt. Im präklinischen EKG zeigten sich diskrete T-Inversionen in den Ableitungen V3-V6, jedoch keine signifikanten ST-Hebungen. Die laborchemische Untersuchung ergab ein initial erhöhtes hochsensitives Troponin T (hs-TnT) von 145 ng/l (Norm < 14 ng/l), welches im Verlauf auf 890 ng/l anstieg, vereinbar mit einem NSTEMI.
-
-Am Aufnahmetag erfolgte die dringliche Herzkatheteruntersuchung (Koronarangiographie). Hierbei zeigte sich eine 90%ige, exzentrische und thrombusbehaftete Stenose im mittleren Segment der RIVA. Die übrigen Gefäße wiesen lediglich wanderfüllende Unregelmäßigkeiten auf, mit Ausnahme einer 50%igen Stenose der RCX. Es erfolgte die erfolgreiche perkutane transluminale Koronarangioplastie (PTCA) der RIVA-Läsion mit Implantation eines Drug-Eluting-Stents (DES, Xience 3.5 x 18 mm). Das angiographische Endergebnis zeigte einen ungestörten TIMI-III-Fluss ohne Dissektionszeichen.
-
-Der postinterventionielle Verlauf auf der kardiologischen Überwachungsstation (IMC) gestaltete sich komplikationslos. Es traten keine Rhythmusstörungen, Nachblutungen an der Schleusen-Punktionsstelle (A. femoralis rechts) oder ischämische Rezidive auf. Der Patient war frühzeitig mobilisierbar und ab dem zweiten postinterventionellen Tag beschwerdefrei.
-
-LABORBEFUNDE (Auswahl vom 09.08.2026):
-Hb: 13.8 g/dl, Leukozyten: 8.4 G/l, Thrombozyten: 245 G/l. Kreatinin: 0.95 mg/dl, eGFR: 84 ml/min/1.73m². CRP: 4.2 mg/l. hs-Troponin T prä-Entlassung: 34 ng/l (rückläufig). LDL-Cholesterin: 124 mg/dl, HbA1c: 6.8 %. Potasium: 4.1 mmol/l.
-
-APPARATIVE DIAGNOSTIK:
-Transthorakale Echokardiographie (05.08.2026): Linksventrikuläre Ejektionsfraktion (LVEF) visuell auf ca. 50% leicht reduziert. Geringgradige Hypokinesie der anteroseptalen Wandabschnitte, passend zum Infarktareal. Keine höhergradigen Vitien. Sklerose der Aortenklappe ohne Stenose. Rechter Ventrikel normal groß und gut funktionierend (TAPSE 22 mm). Kein Perikarderguss.
-
-MEDIKAMENTÖSE THERAPIE BEI ENTLASSUNG:
-1. Acetylsalicylsäure (ASS) 100 mg 1-0-0 p.o. (lebenslang)
-2. Ticagrelor 90 mg 1-0-1 p.o. (DAPT für 12 Monate, bis August 2027)
-3. Atorvastatin 80 mg 0-0-1 p.o. (strikte LDL-Zielwert-Einstellung < 55 mg/dl)
-4. Ramipril 2.5 mg 1-0-0 p.o. (Prognoseverbesserung bei LVEF 50%)
-5. Metoprololsuccinat 23.75 mg 1-0-0 p.o.
-6. Pantoprazol 40 mg 1-0-0 p.o. (als Magenschutz unter DAPT)
-7. Metformin 1000 mg 1-0-1 p.o.
-
-WEITERES PROZEDERE UND EMPFEHLUNGEN:
-Wir entlassen den Patienten in gebessertem Allgemeinzustand nach Hause. Eine Fortführung der dualen Plättchenhemmung (DAPT) mit ASS und Ticagrelor ist für die Dauer von 12 Monaten zwingend erforderlich, um eine Stentthrombose zu verhindern. Eine kardiologische Kontrolluntersuchung inklusive Belastungs-EKG und echokardiographischer Verlaufskontrolle wird in 6 bis 8 Wochen beim niedergelassenen Facharzt empfohlen. Die Einleitung einer ambulanten oder stationären kardiologischen Rehabilitation (Phase II) wurde bereits in die Wege geleitet; der Patient hat hierzu seine Zustimmung erteilt. Aufgrund des erhöhten LDL-Wertes ist eine konsequente Statinstherapie notwendig. Eine Kontrolle des Lipidprofils sowie der Leber- und Retentionswerte sollte in 4 Wochen über den Hausarzt erfolgen. Bei erneuter Angina pectoris oder Dyspnoe ist eine sofortige Wiedervorstellung über den Notruf zu veranlassen.
-
-Mit freundlichen Grüßen,
-Dr. med. A. Gruber
-Oberarzt der kardiologischen Station
-
-
-        """
-    )
-
-    semantic_chunker = SemanticChunker()
-    chunks = semantic_chunker.split_text(text)
-
-    print(f"Semantic Chunker: {len(chunks)} chunks\n")
     
-    # Verify all chunks are exact substrings
-    for i, chunk in enumerate(chunks, 1):
-        in_text = chunk in text
-        status = "✓" if in_text else "✗"
-        print(f"{status} Chunk {i}: len={len(chunk)}")
+    
 
-    print(f"\nAll chunks exact substrings: {all(chunk in text for chunk in chunks)}")
+    with open("data/row/Albers.txt", "r", encoding="utf-8") as f:
+        text = f.read()
+        semantic_chunker = KamradtSemanticChunker()
+        splitted = semantic_chunker._split_text_regular_expresion(text)
+        combined_sen = semantic_chunker.combine_sentences(splitted, buffer_size=3)
+        embedded_sen = semantic_chunker.calculate_sentence_embeddings(combined_sen)
+        distances, sentences = semantic_chunker.calculate_cosine_distances(embedded_sen)
+        results_plot(distances , BREAKPOINT_PERCENTILE_THRESHOLD)
+
+        chunks = semantic_chunker.split_text(text)
+        for i, chunk in enumerate(chunks, 1):
+            print(f"Chunk {i}: len={len(chunk)}")
+
+
+
+
+   
+   

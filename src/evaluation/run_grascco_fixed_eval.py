@@ -12,10 +12,10 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from src.chunking.fixedTokenChunker import FixedTokenChunker
-from src.chunking.hierarchical import HierarchicalChunker
-from src.chunking.recursive import RecursiveCharacterTextSplitter
-from src.chunking.semantic import SemanticChunker
+from chunking.langchainSplitter import FixedTokenChunker
+from chunking.recusrive_semantic_chunker import HierarchicalChunker
+from chunking.recursive_token_chunker import RecursiveCharacterTextSplitter
+from chunking.kamradt_semantic_chunker import SemanticChunker
 from src.evaluation.basic_evaluation import BaseEvaluation
 from src.evaluation.fixed_question_dataset import build_fixed_grascco_eval_dataset
 

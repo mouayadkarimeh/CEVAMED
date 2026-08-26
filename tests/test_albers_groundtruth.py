@@ -6,7 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.chunking.semantic import SemanticChunker
+from chunking.kamradt_semantic_chunker import SemanticChunker
 from src.evaluation.fixed_question_dataset import build_fixed_grascco_eval_dataset
 
 

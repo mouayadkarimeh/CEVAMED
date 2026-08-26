@@ -1,0 +1,2 @@
+class ClusterSemanticChunker:
+   pass
