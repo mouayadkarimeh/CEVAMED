@@ -9,10 +9,10 @@ GraSCCo  is a collection of artificially generated semi-structured and unstructu
 testing 6 chunking strategies:
 - **Charachter Text Splitter (CTS)**
 - **Transformer Token Chunker (TTC)**
--**Recursive Token Chunker (RTC)**
--**Kamradt Semantic Chunker (KSC)**
--**Recursive Token Chunker (RTC)**
--**Cluster Semantic Chunker (CSC)**
+- **Recursive Token Chunker (RTC)**
+- **Kamradt Semantic Chunker (KSC)**
+- **Recursive Token Chunker (RTC)**
+- **Cluster Semantic Chunker (CSC)**
 
 
 
