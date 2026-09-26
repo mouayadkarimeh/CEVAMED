@@ -1,0 +1,40 @@
+question_key,question,references,corpus_id
+patient_name,Wie heißt der Patient?,"[{""content"": ""FRITZLE, Fridolin"", ""start_index"": 152, ""end_index"": 169}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""6/7/1980"", ""start_index"": 195, ""end_index"": 203}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""1/12/2029"", ""start_index"": 219, ""end_index"": 228}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""16/12/1929"", ""start_index"": 233, ""end_index"": 243}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Jakob Jockel"", ""start_index"": 162, ""end_index"": 174}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""1.1.1992"", ""start_index"": 184, ""end_index"": 192}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""1.11.2064"", ""start_index"": 206, ""end_index"": 215}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""30.11.2064"", ""start_index"": 220, ""end_index"": 230}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Haefner, Heinz"", ""start_index"": 92, ""end_index"": 106}]",C:\Users\Mouayad\chunking\data\row\Haefner.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""21.3.1979"", ""start_index"": 110, ""end_index"": 119}]",C:\Users\Mouayad\chunking\data\row\Haefner.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""18.11.2023"", ""start_index"": 134, ""end_index"": 144}]",C:\Users\Mouayad\chunking\data\row\Haefner.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""03.12.2023"", ""start_index"": 149, ""end_index"": 159}]",C:\Users\Mouayad\chunking\data\row\Haefner.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Fuss, Flora"", ""start_index"": 406, ""end_index"": 417}]",C:\Users\Mouayad\chunking\data\row\Fuss.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""28.05.2028"", ""start_index"": 424, ""end_index"": 434}]",C:\Users\Mouayad\chunking\data\row\Fuss.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""20.05.2034"", ""start_index"": 480, ""end_index"": 490}]",C:\Users\Mouayad\chunking\data\row\Fuss.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""27.05.2034"", ""start_index"": 495, ""end_index"": 505}, {""content"": ""27.04.2034 "", ""start_index"": 9435, ""end_index"": 9446}]",C:\Users\Mouayad\chunking\data\row\Fuss.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Irina Popovic"", ""start_index"": 72, ""end_index"": 85}]",C:\Users\Mouayad\chunking\data\row\Popovic.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""17.08.1958"", ""start_index"": 95, ""end_index"": 105}]",C:\Users\Mouayad\chunking\data\row\Popovic.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""11.01."", ""start_index"": 115, ""end_index"": 121}]",C:\Users\Mouayad\chunking\data\row\Popovic.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""14.01.2026"", ""start_index"": 122, ""end_index"": 132}]",C:\Users\Mouayad\chunking\data\row\Popovic.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Dr. med. Sabine Sudeck"", ""start_index"": 0, ""end_index"": 22}]",C:\Users\Mouayad\chunking\data\row\Sudeck.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""24.12.1999"", ""start_index"": 24, ""end_index"": 34}]",C:\Users\Mouayad\chunking\data\row\Sudeck.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""26.01.2027"", ""start_index"": 294, ""end_index"": 304}]",C:\Users\Mouayad\chunking\data\row\Sudeck.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""26.01.2027"", ""start_index"": 294, ""end_index"": 304}]",C:\Users\Mouayad\chunking\data\row\Sudeck.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""DAMARIS, Dyonisia"", ""start_index"": 137, ""end_index"": 154}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""11.2.1967"", ""start_index"": 218, ""end_index"": 227}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""2.5.2018"", ""start_index"": 160, ""end_index"": 168}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""16.5.2018"", ""start_index"": 173, ""end_index"": 182}, {""content"": ""16.5.18"", ""start_index"": 3319, ""end_index"": 3326}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Luise Utz"", ""start_index"": 0, ""end_index"": 9}]",C:\Users\Mouayad\chunking\data\row\Utz.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""3.4.1959"", ""start_index"": 13, ""end_index"": 21}]",C:\Users\Mouayad\chunking\data\row\Utz.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""2.7.2020"", ""start_index"": 1315, ""end_index"": 1323}]",C:\Users\Mouayad\chunking\data\row\Utz.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Beate Albers"", ""start_index"": 89, ""end_index"": 101}]",C:\Users\Mouayad\chunking\data\row\Albers.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""4.4.1997"", ""start_index"": 105, ""end_index"": 113}]",C:\Users\Mouayad\chunking\data\row\Albers.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""19.3."", ""start_index"": 129, ""end_index"": 134}]",C:\Users\Mouayad\chunking\data\row\Albers.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""7.5.2029"", ""start_index"": 143, ""end_index"": 151}]",C:\Users\Mouayad\chunking\data\row\Albers.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Dr. Katharina Leitner"", ""start_index"": 0, ""end_index"": 21}]",C:\Users\Mouayad\chunking\data\row\Leitner.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""23.11.1992"", ""start_index"": 25, ""end_index"": 35}]",C:\Users\Mouayad\chunking\data\row\Leitner.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""26.05.2019"", ""start_index"": 150, ""end_index"": 160}]",C:\Users\Mouayad\chunking\data\row\Leitner.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""30.05.2019"", ""start_index"": 169, ""end_index"": 179}]",C:\Users\Mouayad\chunking\data\row\Leitner.txt

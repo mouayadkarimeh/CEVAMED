@@ -1,0 +1,18 @@
+question_key,question,references,corpus_id
+patient_name,Wie heißt der Patient?,"[{""content"": ""Mag. Klaus Michael Theodor"", ""start_index"": 2, ""end_index"": 28}]",C:\Users\Mouayad\chunking\data\row\Theodor.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""3.2.1991"", ""start_index"": 32, ""end_index"": 40}]",C:\Users\Mouayad\chunking\data\row\Theodor.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""04.10.2021"", ""start_index"": 1268, ""end_index"": 1278}, {""content"": ""4."", ""start_index"": 217, ""end_index"": 219}]",C:\Users\Mouayad\chunking\data\row\Theodor.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""18.10.21"", ""start_index"": 224, ""end_index"": 232}, {""content"": ""18.10.2021"", ""start_index"": 1514, ""end_index"": 1524}]",C:\Users\Mouayad\chunking\data\row\Theodor.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Willibald Vogler"", ""start_index"": 96, ""end_index"": 112}]",C:\Users\Mouayad\chunking\data\row\Vogler.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""23.2.1941"", ""start_index"": 125, ""end_index"": 134}]",C:\Users\Mouayad\chunking\data\row\Vogler.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""2.10.2021"", ""start_index"": 382, ""end_index"": 391}, {""content"": ""2."", ""start_index"": 149, ""end_index"": 151}]",C:\Users\Mouayad\chunking\data\row\Vogler.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""7.10.2021"", ""start_index"": 160, ""end_index"": 169}]",C:\Users\Mouayad\chunking\data\row\Vogler.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Kawasaki, Mitsou"", ""start_index"": 166, ""end_index"": 182}]",C:\Users\Mouayad\chunking\data\row\Kawasaki.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""03.02.2027"", ""start_index"": 192, ""end_index"": 202}]",C:\Users\Mouayad\chunking\data\row\Kawasaki.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Amanda Alzheimer"", ""start_index"": 123, ""end_index"": 139}]",C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""24.01.2028"", ""start_index"": 154, ""end_index"": 164}]",C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""06.02.2028"", ""start_index"": 173, ""end_index"": 183}]",C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Alissa Rieser"", ""start_index"": 0, ""end_index"": 13}]",C:\Users\Mouayad\chunking\data\row\Rieser.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""01.07.1963"", ""start_index"": 19, ""end_index"": 29}]",C:\Users\Mouayad\chunking\data\row\Rieser.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""22.03.2023"", ""start_index"": 152, ""end_index"": 162}]",C:\Users\Mouayad\chunking\data\row\Rieser.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""22.03.2023"", ""start_index"": 152, ""end_index"": 162}]",C:\Users\Mouayad\chunking\data\row\Rieser.txt

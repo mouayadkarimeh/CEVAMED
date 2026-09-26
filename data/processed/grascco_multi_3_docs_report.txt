@@ -1,0 +1,1678 @@
+Global Multi-Document Report: 3_docs
+Chunking strategies tested: character_text_splitter, transformer_token_chunker, recursive_token_chunker, kamradt_semantic_chunker, recursive_semantic_chunker, cluster_semantic_chunker
+============================================================
+
+######################################################################
+# CHUNKER: character_text_splitter
+######################################################################
+
+### PROFILE: top_3 (chunker: character_text_splitter) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.389
+  recall_at_k_global_mean: 1.000
+  ragas_precision_global_mean: 0.965
+  ragas_recall_global_mean: 0.958
+  block_integrity_global_mean: 1.000
+  reference_completeness_global_mean: 1.000
+  context_fragmentation_global_mean: 0.222
+  intrachunk_cohesion_global_mean: 0.465
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Fuss.txt
+     [Klassisch]   precision@k=0.417 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=0.875
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.250 ICC=0.429
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+     [Klassisch]   precision@k=0.333 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.250 ICC=0.519
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+     [Klassisch]   precision@k=0.417 recall@k=1.000
+     [RAGAS]       Context-Precision=0.896 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.165 ICC=0.445
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'FRITZLE, Fridolin' [152-169]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) KRANKHEITSVERLAUF
+Operation(en) und Histologie(n):
+diagnostische PE 04/2029)
+Histo: Adeno-CA
+Stad.: p N+MX G2
+endständige Sigmoideostomie (23.4.2029)
+...
+  - [Rank 3] (not relevant) ZUSATAND BEI AUFNAHME
+45-j. Patient in gutem AZ, schlankem EZ, kardiopulmonal unauffälliger Auskultations- und 
+Perkussionsbefund
+Abdomen: Bauchdecken...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '6/7/1980' [195-203]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) KRANKHEITSVERLAUF
+Operation(en) und Histologie(n):
+diagnostische PE 04/2029)
+Histo: Adeno-CA
+Stad.: p N+MX G2
+endständige Sigmoideostomie (23.4.2029)
+...
+  - [Rank 3] (not relevant) - CT-Abdomen/Becken  
+Größenabnahme der ausgedehnten Expansion des Rectums von vormals 14 cm auf 7.5 cm. Unverändert die 
+Zeichen der ausgeprägten Org...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1/12/2029' [219-228]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) KRANKHEITSVERLAUF
+Operation(en) und Histologie(n):
+diagnostische PE 04/2029)
+Histo: Adeno-CA
+Stad.: p N+MX G2
+endständige Sigmoideostomie (23.4.2029)
+...
+  - [Rank 3] (not relevant) - CT-Abdomen/Becken  
+Größenabnahme der ausgedehnten Expansion des Rectums von vormals 14 cm auf 7.5 cm. Unverändert die 
+Zeichen der ausgeprägten Org...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16/12/1929' [233-243]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) KRANKHEITSVERLAUF
+Operation(en) und Histologie(n):
+diagnostische PE 04/2029)
+Histo: Adeno-CA
+Stad.: p N+MX G2
+endständige Sigmoideostomie (23.4.2029)
+...
+  - [Rank 3] (not relevant) - CT-Abdomen/Becken  
+Größenabnahme der ausgedehnten Expansion des Rectums von vormals 14 cm auf 7.5 cm. Unverändert die 
+Zeichen der ausgeprägten Org...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Fuss, Flora' [406-417]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+  - [Rank 2] (not relevant) Apparative Diagnostik: 
+Diagnose: Wachstumsstörung nach Emmertplastik....
+  - [Rank 3] (not relevant) Bei Z.n. mehrfacher Emmertplastik im Bereich des linken Großzehs erfolgte eine chriurgische Mitbeurteilung, hierbei wurde eine Nagelplastik empfohlen....
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '28.05.2028' [424-434]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+  - [Rank 2] (not relevant) Apparative Diagnostik: 
+Diagnose: Wachstumsstörung nach Emmertplastik....
+  - [Rank 3] (not relevant) Bei Z.n. mehrfacher Emmertplastik im Bereich des linken Großzehs erfolgte eine chriurgische Mitbeurteilung, hierbei wurde eine Nagelplastik empfohlen....
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '20.05.2034' [480-490]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+  - [Rank 2] (not relevant) Bei Z.n. mehrfacher Emmertplastik im Bereich des linken Großzehs erfolgte eine chriurgische Mitbeurteilung, hierbei wurde eine Nagelplastik empfohlen....
+  - [Rank 3] (not relevant) Apparative Diagnostik: 
+Diagnose: Wachstumsstörung nach Emmertplastik....
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '27.05.2034' [495-505]
+  - '27.04.2034 ' [9435-9446]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Bei Z.n. mehrfacher Emmertplastik im Bereich des linken Großzehs erfolgte eine chriurgische Mitbeurteilung, hierbei wurde eine Nagelplastik empfohlen....
+  - [Rank 2] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+  - [Rank 3] (not relevant) Apparative Diagnostik: 
+Diagnose: Wachstumsstörung nach Emmertplastik....
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.667 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.500
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'DAMARIS, Dyonisia' [137-154]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 2] (not relevant) Medizinische Tumortherapie(n):
+pall. PCT m. Folfox ab (05/18); 1. Zyklus 75%, ab 2. Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damar...
+  - [Rank 3] (not relevant) Empfohlene Therapie
+Furosemid 40mg 1/2-0-0
+Pantoloc 40mg 1-0-0
+Ferretab 1-0-0
+Molaxole 2 x 1 Beutel
+Ciproxin 500mg 1-0-1
+Mexalen 500mg 3 x 1
+Lovenox 4...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '11.2.1967' [218-227]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 2] (not relevant) Medizinische Tumortherapie(n):
+pall. PCT m. Folfox ab (05/18); 1. Zyklus 75%, ab 2. Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damar...
+  - [Rank 3] (not relevant) Status bei Aufnahme:
+Fünfigjährige Patientin in gutem AZ und EZ, kardiorespiratorisch stabil, allseits orientiert.  
+neurologisch unauffällig. 
+Caput/...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '2.5.2018' [160-168]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 2] (not relevant) Medizinische Tumortherapie(n):
+pall. PCT m. Folfox ab (05/18); 1. Zyklus 75%, ab 2. Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damar...
+  - [Rank 3] (not relevant) CT-BECKEN:
+Keine freie intraperitoneale Luft oder Flüssigkeit. Unspezifische bis 8 mm im Querdurchmesser messende Inguinallymphknoten. Insuspekter pel...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16.5.2018' [173-182]
+  - '16.5.18' [3319-3326]
+Retrieved chunks (3):
+  - [Rank 1] (not relevant) Medizinische Tumortherapie(n):
+pall. PCT m. Folfox ab (05/18); 1. Zyklus 75%, ab 2. Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damar...
+  - [Rank 2] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 3] (RELEVANT) CT-BECKEN:
+Keine freie intraperitoneale Luft oder Flüssigkeit. Unspezifische bis 8 mm im Querdurchmesser messende Inguinallymphknoten. Insuspekter pel...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.667 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.583 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+######################################################################
+# CHUNKER: transformer_token_chunker
+######################################################################
+
+### PROFILE: top_3 (chunker: transformer_token_chunker) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.361
+  recall_at_k_global_mean: 1.000
+  ragas_precision_global_mean: 0.917
+  ragas_recall_global_mean: 0.958
+  block_integrity_global_mean: 1.000
+  reference_completeness_global_mean: 1.000
+  context_fragmentation_global_mean: 0.194
+  intrachunk_cohesion_global_mean: 0.468
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Fuss.txt
+     [Klassisch]   precision@k=0.417 recall@k=1.000
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.875
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.000 ICC=0.422
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+     [Klassisch]   precision@k=0.333 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.500 ICC=0.540
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+     [Klassisch]   precision@k=0.333 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.083 ICC=0.442
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'FRITZLE, Fridolin' [152-169]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie Neudorf, am 16. 12. 2029 Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, wir berichten über den Patienten FR...
+  - [Rank 2] (not relevant) ##en re nach Polytrauma 1995 KRANKHEITSVERLAUF Operation ( en ) und Histologie ( n ) : diagnostische PE 04 / 2029 ) Histo : Adeno - CA Stad. : p N + M...
+  - [Rank 3] (not relevant) Druckschmerz, DG normal DURCHGEFÜHRTE UNTERSUCHUNGEN - Labor bei Aufnahme 3. 8. 2033 Leuko 6. 21, Ery 4. 87, Hb 14. 1, Ht 33. 5, MCV 72. 1m MCH 29. 9,...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '6/7/1980' [195-203]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie Neudorf, am 16. 12. 2029 Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, wir berichten über den Patienten FR...
+  - [Rank 2] (not relevant) ##en re nach Polytrauma 1995 KRANKHEITSVERLAUF Operation ( en ) und Histologie ( n ) : diagnostische PE 04 / 2029 ) Histo : Adeno - CA Stad. : p N + M...
+  - [Rank 3] (not relevant) Druckschmerz, DG normal DURCHGEFÜHRTE UNTERSUCHUNGEN - Labor bei Aufnahme 3. 8. 2033 Leuko 6. 21, Ery 4. 87, Hb 14. 1, Ht 33. 5, MCV 72. 1m MCH 29. 9,...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1/12/2029' [219-228]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie Neudorf, am 16. 12. 2029 Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, wir berichten über den Patienten FR...
+  - [Rank 2] (not relevant) ##en re nach Polytrauma 1995 KRANKHEITSVERLAUF Operation ( en ) und Histologie ( n ) : diagnostische PE 04 / 2029 ) Histo : Adeno - CA Stad. : p N + M...
+  - [Rank 3] (not relevant) Druckschmerz, DG normal DURCHGEFÜHRTE UNTERSUCHUNGEN - Labor bei Aufnahme 3. 8. 2033 Leuko 6. 21, Ery 4. 87, Hb 14. 1, Ht 33. 5, MCV 72. 1m MCH 29. 9,...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16/12/1929' [233-243]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie Neudorf, am 16. 12. 2029 Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, wir berichten über den Patienten FR...
+  - [Rank 2] (not relevant) ##en re nach Polytrauma 1995 KRANKHEITSVERLAUF Operation ( en ) und Histologie ( n ) : diagnostische PE 04 / 2029 ) Histo : Adeno - CA Stad. : p N + M...
+  - [Rank 3] (not relevant) Druckschmerz, DG normal DURCHGEFÜHRTE UNTERSUCHUNGEN - Labor bei Aufnahme 3. 8. 2033 Leuko 6. 21, Ery 4. 87, Hb 14. 1, Ht 33. 5, MCV 72. 1m MCH 29. 9,...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Fuss, Flora' [406-417]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg KLINIK UND POLIKLINIK FÜR KINDER - UND JUGENDMEDIZIN Direktor : Prof. Dr. Mike Messer Universitätsklinikum Wilhelmsb...
+  - [Rank 2] (not relevant) ##fällig. Die Vitalparameter waren zu jedem Zeitpunkt stabil. Das Bein wurde hochgelagert und der Druckverband wurde über 24h belassen, es trat keiner...
+  - [Rank 3] (not relevant) ##zehennarbe nach Emmertplastik, reizlos, Zehennagel malformiert mit tastbarer Verhärtung im Bereich der Narbe Apparative Diagnostik : Diagnose : Wach...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '28.05.2028' [424-434]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg KLINIK UND POLIKLINIK FÜR KINDER - UND JUGENDMEDIZIN Direktor : Prof. Dr. Mike Messer Universitätsklinikum Wilhelmsb...
+  - [Rank 2] (not relevant) ##fällig. Die Vitalparameter waren zu jedem Zeitpunkt stabil. Das Bein wurde hochgelagert und der Druckverband wurde über 24h belassen, es trat keiner...
+  - [Rank 3] (not relevant) ##pen 22. 05. 2034 2. Schaumsklerosierung Anamnese : Flora ist eine in unserer Klinik bekannter Pat. mit V. a. CLOVES - Syndrom und bekannten Darmpoly...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '20.05.2034' [480-490]
+Retrieved chunks (3):
+  - [Rank 1] (not relevant) ##fällig. Die Vitalparameter waren zu jedem Zeitpunkt stabil. Das Bein wurde hochgelagert und der Druckverband wurde über 24h belassen, es trat keiner...
+  - [Rank 2] (RELEVANT) Universitätsklinikum Wilhelmsburg KLINIK UND POLIKLINIK FÜR KINDER - UND JUGENDMEDIZIN Direktor : Prof. Dr. Mike Messer Universitätsklinikum Wilhelmsb...
+  - [Rank 3] (not relevant) ##zehennarbe nach Emmertplastik, reizlos, Zehennagel malformiert mit tastbarer Verhärtung im Bereich der Narbe Apparative Diagnostik : Diagnose : Wach...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.500 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '27.05.2034' [495-505]
+  - '27.04.2034 ' [9435-9446]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) ##fällig. Die Vitalparameter waren zu jedem Zeitpunkt stabil. Das Bein wurde hochgelagert und der Druckverband wurde über 24h belassen, es trat keiner...
+  - [Rank 2] (RELEVANT) Universitätsklinikum Wilhelmsburg KLINIK UND POLIKLINIK FÜR KINDER - UND JUGENDMEDIZIN Direktor : Prof. Dr. Mike Messer Universitätsklinikum Wilhelmsb...
+  - [Rank 3] (not relevant) ##zehennarbe nach Emmertplastik, reizlos, Zehennagel malformiert mit tastbarer Verhärtung im Bereich der Narbe Apparative Diagnostik : Diagnose : Wach...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.667 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.500 Context-Recall=0.500
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'DAMARIS, Dyonisia' [137-154]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie Berlin, am 16. 5. 2018 Sehr geehrte KollegInnen, wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyonisia,...
+  - [Rank 2] (not relevant) endständige Sigmoideostomie ( 04 / 2018 ) Medizinische Tumortherapie ( n ) : pall. PCT m. Folfox ab ( 05 / 18 ) ; 1. Zyklus 75 %, ab 2. Zyklus 100 % A...
+  - [Rank 3] (not relevant) Meningismus negativ, HNAP frei, Pupillen rund, mittelweit, isokor, Lichtreaktion bds. direkt und indirekt prompt, Zunge feucht, gerade, Rachen und Mun...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '11.2.1967' [218-227]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie Berlin, am 16. 5. 2018 Sehr geehrte KollegInnen, wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyonisia,...
+  - [Rank 2] (not relevant) endständige Sigmoideostomie ( 04 / 2018 ) Medizinische Tumortherapie ( n ) : pall. PCT m. Folfox ab ( 05 / 18 ) ; 1. Zyklus 75 %, ab 2. Zyklus 100 % A...
+  - [Rank 3] (not relevant) Meningismus negativ, HNAP frei, Pupillen rund, mittelweit, isokor, Lichtreaktion bds. direkt und indirekt prompt, Zunge feucht, gerade, Rachen und Mun...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '2.5.2018' [160-168]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie Berlin, am 16. 5. 2018 Sehr geehrte KollegInnen, wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyonisia,...
+  - [Rank 2] (not relevant) endständige Sigmoideostomie ( 04 / 2018 ) Medizinische Tumortherapie ( n ) : pall. PCT m. Folfox ab ( 05 / 18 ) ; 1. Zyklus 75 %, ab 2. Zyklus 100 % A...
+  - [Rank 3] (not relevant) Meningismus negativ, HNAP frei, Pupillen rund, mittelweit, isokor, Lichtreaktion bds. direkt und indirekt prompt, Zunge feucht, gerade, Rachen und Mun...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16.5.2018' [173-182]
+  - '16.5.18' [3319-3326]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie Berlin, am 16. 5. 2018 Sehr geehrte KollegInnen, wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyonisia,...
+  - [Rank 2] (not relevant) endständige Sigmoideostomie ( 04 / 2018 ) Medizinische Tumortherapie ( n ) : pall. PCT m. Folfox ab ( 05 / 18 ) ; 1. Zyklus 75 %, ab 2. Zyklus 100 % A...
+  - [Rank 3] (not relevant) Meningismus negativ, HNAP frei, Pupillen rund, mittelweit, isokor, Lichtreaktion bds. direkt und indirekt prompt, Zunge feucht, gerade, Rachen und Mun...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+######################################################################
+# CHUNKER: recursive_token_chunker
+######################################################################
+
+### PROFILE: top_3 (chunker: recursive_token_chunker) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.389
+  recall_at_k_global_mean: 1.000
+  ragas_precision_global_mean: 0.951
+  ragas_recall_global_mean: 1.000
+  block_integrity_global_mean: 1.000
+  reference_completeness_global_mean: 1.000
+  context_fragmentation_global_mean: 0.222
+  intrachunk_cohesion_global_mean: 0.471
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Fuss.txt
+     [Klassisch]   precision@k=0.417 recall@k=1.000
+     [RAGAS]       Context-Precision=0.958 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.333 ICC=0.449
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+     [Klassisch]   precision@k=0.333 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.250 ICC=0.519
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+     [Klassisch]   precision@k=0.417 recall@k=1.000
+     [RAGAS]       Context-Precision=0.896 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.083 ICC=0.445
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'FRITZLE, Fridolin' [152-169]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) ZUSATAND BEI AUFNAHME
+45-j. Patient in gutem AZ, schlankem EZ, kardiopulmonal unauffälliger Auskultations- und 
+Perkussionsbefund
+Abdomen: Bauchdecken...
+  - [Rank 3] (not relevant) KRANKHEITSVERLAUF
+Operation(en) und Histologie(n):
+diagnostische PE 04/2029)
+Histo: Adeno-CA
+Stad.: p N+MX G2
+endständige Sigmoideostomie (23.4.2029)
+...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '6/7/1980' [195-203]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) KRANKHEITSVERLAUF
+Operation(en) und Histologie(n):
+diagnostische PE 04/2029)
+Histo: Adeno-CA
+Stad.: p N+MX G2
+endständige Sigmoideostomie (23.4.2029)
+...
+  - [Rank 3] (not relevant) - CT-Abdomen/Becken  
+Größenabnahme der ausgedehnten Expansion des Rectums von vormals 14 cm auf 7.5 cm. Unverändert die 
+Zeichen der ausgeprägten Org...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1/12/2029' [219-228]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) KRANKHEITSVERLAUF
+Operation(en) und Histologie(n):
+diagnostische PE 04/2029)
+Histo: Adeno-CA
+Stad.: p N+MX G2
+endständige Sigmoideostomie (23.4.2029)
+...
+  - [Rank 3] (not relevant) - CT-Abdomen/Becken  
+Größenabnahme der ausgedehnten Expansion des Rectums von vormals 14 cm auf 7.5 cm. Unverändert die 
+Zeichen der ausgeprägten Org...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16/12/1929' [233-243]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) KRANKHEITSVERLAUF
+Operation(en) und Histologie(n):
+diagnostische PE 04/2029)
+Histo: Adeno-CA
+Stad.: p N+MX G2
+endständige Sigmoideostomie (23.4.2029)
+...
+  - [Rank 3] (not relevant) - CT-Abdomen/Becken  
+Größenabnahme der ausgedehnten Expansion des Rectums von vormals 14 cm auf 7.5 cm. Unverändert die 
+Zeichen der ausgeprägten Org...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Fuss, Flora' [406-417]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+  - [Rank 2] (not relevant) Apparative Diagnostik: 
+Diagnose: Wachstumsstörung nach Emmertplastik....
+  - [Rank 3] (not relevant) Anamnese:
+Flora ist eine in unserer Klinik bekannter Pat. mit V. a. CLOVES-Syndrom und bekannten Darmpolypen, welche sich bereits im Juni letzten Jahr...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.833 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '28.05.2028' [424-434]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+  - [Rank 2] (not relevant) Apparative Diagnostik: 
+Diagnose: Wachstumsstörung nach Emmertplastik....
+  - [Rank 3] (not relevant) Bei Z.n. mehrfacher Emmertplastik im Bereich des linken Großzehs erfolgte eine chriurgische Mitbeurteilung, hierbei wurde eine Nagelplastik empfohlen....
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '20.05.2034' [480-490]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+  - [Rank 2] (not relevant) Bei Z.n. mehrfacher Emmertplastik im Bereich des linken Großzehs erfolgte eine chriurgische Mitbeurteilung, hierbei wurde eine Nagelplastik empfohlen....
+  - [Rank 3] (not relevant) Apparative Diagnostik: 
+Diagnose: Wachstumsstörung nach Emmertplastik....
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '27.05.2034' [495-505]
+  - '27.04.2034 ' [9435-9446]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Bei Z.n. mehrfacher Emmertplastik im Bereich des linken Großzehs erfolgte eine chriurgische Mitbeurteilung, hierbei wurde eine Nagelplastik empfohlen....
+  - [Rank 2] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+  - [Rank 3] (not relevant) Apparative Diagnostik: 
+Diagnose: Wachstumsstörung nach Emmertplastik....
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.667 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'DAMARIS, Dyonisia' [137-154]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 2] (not relevant) Medizinische Tumortherapie(n):
+pall. PCT m. Folfox ab (05/18); 1. Zyklus 75%, ab 2. Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damar...
+  - [Rank 3] (not relevant) Empfohlene Therapie
+Furosemid 40mg 1/2-0-0
+Pantoloc 40mg 1-0-0
+Ferretab 1-0-0
+Molaxole 2 x 1 Beutel
+Ciproxin 500mg 1-0-1
+Mexalen 500mg 3 x 1
+Lovenox 4...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '11.2.1967' [218-227]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 2] (not relevant) Medizinische Tumortherapie(n):
+pall. PCT m. Folfox ab (05/18); 1. Zyklus 75%, ab 2. Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damar...
+  - [Rank 3] (not relevant) Status bei Aufnahme:
+Fünfigjährige Patientin in gutem AZ und EZ, kardiorespiratorisch stabil, allseits orientiert.  
+neurologisch unauffällig. 
+Caput/...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '2.5.2018' [160-168]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 2] (not relevant) Medizinische Tumortherapie(n):
+pall. PCT m. Folfox ab (05/18); 1. Zyklus 75%, ab 2. Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damar...
+  - [Rank 3] (not relevant) CT-BECKEN:
+Keine freie intraperitoneale Luft oder Flüssigkeit. Unspezifische bis 8 mm im Querdurchmesser messende Inguinallymphknoten. Insuspekter pel...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16.5.2018' [173-182]
+  - '16.5.18' [3319-3326]
+Retrieved chunks (3):
+  - [Rank 1] (not relevant) Medizinische Tumortherapie(n):
+pall. PCT m. Folfox ab (05/18); 1. Zyklus 75%, ab 2. Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damar...
+  - [Rank 2] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 3] (RELEVANT) CT-BECKEN:
+Keine freie intraperitoneale Luft oder Flüssigkeit. Unspezifische bis 8 mm im Querdurchmesser messende Inguinallymphknoten. Insuspekter pel...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.667 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.583 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+######################################################################
+# CHUNKER: kamradt_semantic_chunker
+######################################################################
+
+### PROFILE: top_3 (chunker: kamradt_semantic_chunker) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.389
+  recall_at_k_global_mean: 1.000
+  ragas_precision_global_mean: 0.972
+  ragas_recall_global_mean: 0.958
+  block_integrity_global_mean: 1.000
+  reference_completeness_global_mean: 1.000
+  context_fragmentation_global_mean: 0.083
+  intrachunk_cohesion_global_mean: 0.449
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Fuss.txt
+     [Klassisch]   precision@k=0.417 recall@k=1.000
+     [RAGAS]       Context-Precision=0.958 Context-Recall=0.875
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.000 ICC=0.474
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+     [Klassisch]   precision@k=0.333 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.000 ICC=0.453
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+     [Klassisch]   precision@k=0.417 recall@k=1.000
+     [RAGAS]       Context-Precision=0.958 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.250 ICC=0.421
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'FRITZLE, Fridolin' [152-169]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) NINS 1°
+Schwerwiegende Sprachstörung und chron. organ. Psychosyndrom bei St.p. SHT 1995
+Unterschenkelamputation li und ausgedehnte Verbrennungsnarben ...
+  - [Rank 3] (not relevant) Katharina Fabricius-Schätzle  ...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '6/7/1980' [195-203]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) NINS 1°
+Schwerwiegende Sprachstörung und chron. organ. Psychosyndrom bei St.p. SHT 1995
+Unterschenkelamputation li und ausgedehnte Verbrennungsnarben ...
+  - [Rank 3] (not relevant) Katharina Fabricius-Schätzle  ...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1/12/2029' [219-228]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) NINS 1°
+Schwerwiegende Sprachstörung und chron. organ. Psychosyndrom bei St.p. SHT 1995
+Unterschenkelamputation li und ausgedehnte Verbrennungsnarben ...
+  - [Rank 3] (not relevant) Katharina Fabricius-Schätzle  ...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16/12/1929' [233-243]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) NINS 1°
+Schwerwiegende Sprachstörung und chron. organ. Psychosyndrom bei St.p. SHT 1995
+Unterschenkelamputation li und ausgedehnte Verbrennungsnarben ...
+  - [Rank 3] (not relevant) Katharina Fabricius-Schätzle  ...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Fuss, Flora' [406-417]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Mike Messer
+Universitätsklinikum 
+Wilhelmsburg, 91022 Wilhelmsburg 
+Kinder- und Jugendmedizin 
+
+Nachrichtlich: Prof. Dr. Dr. Waldemar Waldenström, Ins...
+  - [Rank 2] (not relevant) Dr. med....
+  - [Rank 3] (not relevant) Messer
+Direktor der Klinik
+
+Dr. med. V. Konoka, 
+Oberärztin der Klinik
+Alma Hecht
+FÄ für Kinder- und Jugendmedizin
+
+
+
+
+...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '28.05.2028' [424-434]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Mike Messer
+Universitätsklinikum 
+Wilhelmsburg, 91022 Wilhelmsburg 
+Kinder- und Jugendmedizin 
+
+Nachrichtlich: Prof. Dr. Dr. Waldemar Waldenström, Ins...
+  - [Rank 2] (not relevant) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr....
+  - [Rank 3] (not relevant) Messer
+Direktor der Klinik
+
+Dr. med. V. Konoka, 
+Oberärztin der Klinik
+Alma Hecht
+FÄ für Kinder- und Jugendmedizin
+
+
+
+
+...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '20.05.2034' [480-490]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Mike Messer
+Universitätsklinikum 
+Wilhelmsburg, 91022 Wilhelmsburg 
+Kinder- und Jugendmedizin 
+
+Nachrichtlich: Prof. Dr. Dr. Waldemar Waldenström, Ins...
+  - [Rank 2] (not relevant) Erhöhter Fluss im tiefen Venensystem. Weiterhin Weichteilschwellung am Vorfuß. Unfallchirurgisches Konsil vom 26.05.2034: 
+Anamnese: Z.n. mehrfacher E...
+  - [Rank 3] (not relevant) Messer
+Direktor der Klinik
+
+Dr. med. V. Konoka, 
+Oberärztin der Klinik
+Alma Hecht
+FÄ für Kinder- und Jugendmedizin
+
+
+
+
+...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '27.05.2034' [495-505]
+  - '27.04.2034 ' [9435-9446]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Mike Messer
+Universitätsklinikum 
+Wilhelmsburg, 91022 Wilhelmsburg 
+Kinder- und Jugendmedizin 
+
+Nachrichtlich: Prof. Dr. Dr. Waldemar Waldenström, Ins...
+  - [Rank 2] (not relevant) Dr. med....
+  - [Rank 3] (RELEVANT) Erhöhter Fluss im tiefen Venensystem. Weiterhin Weichteilschwellung am Vorfuß. Unfallchirurgisches Konsil vom 26.05.2034: 
+Anamnese: Z.n. mehrfacher E...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.667 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.833 Context-Recall=0.500
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'DAMARIS, Dyonisia' [137-154]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 2] (not relevant) Hanns Wurst OA Dr....
+  - [Rank 3] (not relevant) Matthias Metzger
+ ...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '11.2.1967' [218-227]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 2] (not relevant) Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damaris erfolgte zur Fortführung der pall. Chemotherapie nach dem Folfox-Schema, 3. Zyklu...
+  - [Rank 3] (not relevant) Normale Weite der intra- und extrahepatischen Gallenwege. Zustand nach CHE. Mäßige Splenomegalie (12 x 8,6 cm). Regelrechte Darstellung des Pankreas. ...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '2.5.2018' [160-168]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 2] (not relevant) Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damaris erfolgte zur Fortführung der pall. Chemotherapie nach dem Folfox-Schema, 3. Zyklu...
+  - [Rank 3] (not relevant) Normale Weite der intra- und extrahepatischen Gallenwege. Zustand nach CHE. Mäßige Splenomegalie (12 x 8,6 cm). Regelrechte Darstellung des Pankreas. ...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16.5.2018' [173-182]
+  - '16.5.18' [3319-3326]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 2] (not relevant) Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damaris erfolgte zur Fortführung der pall. Chemotherapie nach dem Folfox-Schema, 3. Zyklu...
+  - [Rank 3] (RELEVANT) Normale Weite der intra- und extrahepatischen Gallenwege. Zustand nach CHE. Mäßige Splenomegalie (12 x 8,6 cm). Regelrechte Darstellung des Pankreas. ...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.667 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.833 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+######################################################################
+# CHUNKER: recursive_semantic_chunker
+######################################################################
+
+### PROFILE: top_3 (chunker: recursive_semantic_chunker) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.333
+  recall_at_k_global_mean: 0.875
+  ragas_precision_global_mean: 0.847
+  ragas_recall_global_mean: 0.875
+  block_integrity_global_mean: 1.000
+  reference_completeness_global_mean: 0.917
+  context_fragmentation_global_mean: 0.055
+  intrachunk_cohesion_global_mean: 0.459
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Fuss.txt
+     [Klassisch]   precision@k=0.250 recall@k=0.625
+     [RAGAS]       Context-Precision=0.583 Context-Recall=0.625
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=0.750 Context-Fragmentation=0.000 ICC=0.426
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+     [Klassisch]   precision@k=0.333 recall@k=1.000
+     [RAGAS]       Context-Precision=0.958 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.083 ICC=0.528
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+     [Klassisch]   precision@k=0.417 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.083 ICC=0.422
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'FRITZLE, Fridolin' [152-169]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, wir berichten über den Patienten ...
+  - [Rank 2] (not relevant) ZUSAMMENFASSUNG VON THERAPIE UND VERLAUF...
+  - [Rank 3] (not relevant) Tumoranämie, (05/29), D63.0
+St.p. Port-a-cath Implantation  
+Bek. NINS 1° Schwerwiegende Sprachstörung und chron. organ. Psychosyndrom bei St.p. SHT 1...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.833 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '6/7/1980' [195-203]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, wir berichten über den Patienten ...
+  - [Rank 2] (not relevant) Tumoranämie, (05/29), D63.0
+St.p. Port-a-cath Implantation  
+Bek. NINS 1° Schwerwiegende Sprachstörung und chron. organ. Psychosyndrom bei St.p. SHT 1...
+  - [Rank 3] (not relevant) ZUSAMMENFASSUNG VON THERAPIE UND VERLAUF...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1/12/2029' [219-228]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, wir berichten über den Patienten ...
+  - [Rank 2] (not relevant) Tumoranämie, (05/29), D63.0
+St.p. Port-a-cath Implantation  
+Bek. NINS 1° Schwerwiegende Sprachstörung und chron. organ. Psychosyndrom bei St.p. SHT 1...
+  - [Rank 3] (not relevant) ZUSAMMENFASSUNG VON THERAPIE UND VERLAUF...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16/12/1929' [233-243]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, wir berichten über den Patienten ...
+  - [Rank 2] (not relevant) Tumoranämie, (05/29), D63.0
+St.p. Port-a-cath Implantation  
+Bek. NINS 1° Schwerwiegende Sprachstörung und chron. organ. Psychosyndrom bei St.p. SHT 1...
+  - [Rank 3] (not relevant) ZUSAMMENFASSUNG VON THERAPIE UND VERLAUF...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Fuss, Flora' [406-417]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelmsb...
+  - [Rank 2] (not relevant) . Diese konnte wegen zeitlicher Engpässe seitens der Kollegen der Chirurgie und Anästhesie leider nicht mehr während des stationären Aufenthaltes durc...
+  - [Rank 3] (not relevant) Diagnosen:
+1. V. a. CLOVES-Syndrom 
+2. Wachstumsstörung Zehennagel D l links nach Emmertplastik Therapie und Verlauf:...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '28.05.2028' [424-434]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelmsb...
+  - [Rank 2] (not relevant) Diagnosen:
+1. V. a. CLOVES-Syndrom 
+2. Wachstumsstörung Zehennagel D l links nach Emmertplastik Therapie und Verlauf:...
+  - [Rank 3] (not relevant) Bezüglich der Vorgeschichte verweisen wir auf unseren vorausgegangenen Arztbrief. Die Mutter berichtete, dass seit der letzten Sklerosierung keine sch...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '20.05.2034' [480-490]
+Retrieved chunks (3):
+  - [Rank 1] (not relevant) . Diese konnte wegen zeitlicher Engpässe seitens der Kollegen der Chirurgie und Anästhesie leider nicht mehr während des stationären Aufenthaltes durc...
+  - [Rank 2] (not relevant) Bezüglich der Vorgeschichte verweisen wir auf unseren vorausgegangenen Arztbrief. Die Mutter berichtete, dass seit der letzten Sklerosierung keine sch...
+  - [Rank 3] (not relevant) Anamnese: Flora ist eine in unserer Klinik bekannter Pat. mit V. a. CLOVES-Syndrom und bekannten Darmpolypen, welche sich bereits im Juni letzten Jahr...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '27.05.2034' [495-505]
+  - '27.04.2034 ' [9435-9446]
+Retrieved chunks (3):
+  - [Rank 1] (not relevant) . Diese konnte wegen zeitlicher Engpässe seitens der Kollegen der Chirurgie und Anästhesie leider nicht mehr während des stationären Aufenthaltes durc...
+  - [Rank 2] (not relevant) Bezüglich der Vorgeschichte verweisen wir auf unseren vorausgegangenen Arztbrief. Die Mutter berichtete, dass seit der letzten Sklerosierung keine sch...
+  - [Rank 3] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelmsb...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=0.500
+  -> RAGAS:      Context-Precision=0.333 Context-Recall=0.500
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'DAMARIS, Dyonisia' [137-154]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyonis...
+  - [Rank 2] (not relevant) Empfohlene Therapie
+Furosemid 40mg 1/2-0-0
+Pantoloc 40mg 1-0-0
+Ferretab 1-0-0
+Molaxole 2 x 1 Beutel Ciproxin 500mg 1-0-1
+Mexalen 500mg 3 x 1
+Lovenox 4...
+  - [Rank 3] (not relevant) Die stationäre Aufnahme von Frau Damaris erfolgte zur Fortführung der pall. Polychemotherapie nach dem Folfox-Schema, 3. Zyklus . Die Patientin berich...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '11.2.1967' [218-227]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyonis...
+  - [Rank 2] (not relevant) . Status bei Aufnahme:
+Fünfigjährige Patientin in gutem AZ und EZ, kardiorespiratorisch stabil, allseits orientiert.  
+neurologisch unauffällig. Caput...
+  - [Rank 3] (not relevant) Anamnese: Die Patientin berichtet über leichte MMA-Symptomatik, sowie Mukositis Grad I nach der letzten Therapie; ansonsten beschwerdefrei, keine Infe...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '2.5.2018' [160-168]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyonis...
+  - [Rank 2] (not relevant) Die stationäre Aufnahme von Frau Damaris erfolgte zur Fortführung der pall. Polychemotherapie nach dem Folfox-Schema, 3. Zyklus . Die Patientin berich...
+  - [Rank 3] (not relevant) Anamnese: Die Patientin berichtet über leichte MMA-Symptomatik, sowie Mukositis Grad I nach der letzten Therapie; ansonsten beschwerdefrei, keine Infe...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16.5.2018' [173-182]
+  - '16.5.18' [3319-3326]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyonis...
+  - [Rank 2] (RELEVANT) Die stationäre Aufnahme von Frau Damaris erfolgte zur Fortführung der pall. Polychemotherapie nach dem Folfox-Schema, 3. Zyklus . Die Patientin berich...
+  - [Rank 3] (not relevant) Anamnese: Die Patientin berichtet über leichte MMA-Symptomatik, sowie Mukositis Grad I nach der letzten Therapie; ansonsten beschwerdefrei, keine Infe...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.667 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+######################################################################
+# CHUNKER: cluster_semantic_chunker
+######################################################################
+
+### PROFILE: top_3 (chunker: cluster_semantic_chunker) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.333
+  recall_at_k_global_mean: 0.917
+  ragas_precision_global_mean: 0.757
+  ragas_recall_global_mean: 0.875
+  block_integrity_global_mean: 1.000
+  reference_completeness_global_mean: 1.000
+  context_fragmentation_global_mean: 0.194
+  intrachunk_cohesion_global_mean: 0.511
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Fuss.txt
+     [Klassisch]   precision@k=0.333 recall@k=0.875
+     [RAGAS]       Context-Precision=0.625 Context-Recall=0.875
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.000 ICC=0.475
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+     [Klassisch]   precision@k=0.333 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.333 ICC=0.560
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+     [Klassisch]   precision@k=0.333 recall@k=0.875
+     [RAGAS]       Context-Precision=0.646 Context-Recall=0.750
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.250 ICC=0.496
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'FRITZLE, Fridolin' [152-169]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) ZUSATAND BEI AUFNAHME
+45-j. Patient in gutem AZ, schlankem EZ, kardiopulmonal unauffälliger Auskultations- und 
+Perkussionsbefund
+Abdomen: Bauchdecken...
+  - [Rank 3] (not relevant) HAUPT-UND NEBENDIAGNOSEN
+Hauptdiagnose(n), ICD-10
+Rektumkarzinom, (04/29), lokal weit fortgeschritten, C20
+Tumoranämie, (05/29), D63.0
+St.p. Port-a-ca...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '6/7/1980' [195-203]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) ZUSATAND BEI AUFNAHME
+45-j. Patient in gutem AZ, schlankem EZ, kardiopulmonal unauffälliger Auskultations- und 
+Perkussionsbefund
+Abdomen: Bauchdecken...
+  - [Rank 3] (not relevant) Procedere
+13.1.2030, 08.15 Uhr Stationäre Wiederaufnahme zur Fortsetzung der Polychemotherapie mit FOLFOX, 6. Zyklus. 
+ 
+
+Mit freundlichen kollegialen...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1/12/2029' [219-228]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) ZUSATAND BEI AUFNAHME
+45-j. Patient in gutem AZ, schlankem EZ, kardiopulmonal unauffälliger Auskultations- und 
+Perkussionsbefund
+Abdomen: Bauchdecken...
+  - [Rank 3] (not relevant) KRANKHEITSVERLAUF
+Operation(en) und Histologie(n):
+diagnostische PE 04/2029)
+Histo: Adeno-CA
+Stad.: p N+MX G2
+endständige Sigmoideostomie (23.4.2029)
+...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16/12/1929' [233-243]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+  - [Rank 2] (not relevant) Procedere
+13.1.2030, 08.15 Uhr Stationäre Wiederaufnahme zur Fortsetzung der Polychemotherapie mit FOLFOX, 6. Zyklus. 
+ 
+
+Mit freundlichen kollegialen...
+  - [Rank 3] (not relevant) KRANKHEITSVERLAUF
+Operation(en) und Histologie(n):
+diagnostische PE 04/2029)
+Histo: Adeno-CA
+Stad.: p N+MX G2
+endständige Sigmoideostomie (23.4.2029)
+...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Fuss, Flora' [406-417]
+Retrieved chunks (3):
+  - [Rank 1] (not relevant) Therapie und Verlauf:...
+  - [Rank 2] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+  - [Rank 3] (not relevant) Anamnese: Z.n. mehrfacher Emmmertplastik an der linken Großzehe 
+Klinischer Untersuchungsbefund: Fuß links: deutlich geschwollen, Großzehennarbe nach ...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.500 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '28.05.2028' [424-434]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+  - [Rank 2] (not relevant) Therapie und Verlauf:...
+  - [Rank 3] (not relevant) Anamnese: Z.n. mehrfacher Emmmertplastik an der linken Großzehe 
+Klinischer Untersuchungsbefund: Fuß links: deutlich geschwollen, Großzehennarbe nach ...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '20.05.2034' [480-490]
+Retrieved chunks (3):
+  - [Rank 1] (not relevant) Therapie und Verlauf:...
+  - [Rank 2] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+  - [Rank 3] (not relevant) Bei Z.n. mehrfacher Emmertplastik im Bereich des linken Großzehs erfolgte eine chriurgische Mitbeurteilung, hierbei wurde eine Nagelplastik empfohlen....
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.500 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '27.05.2034' [495-505]
+  - '27.04.2034 ' [9435-9446]
+Retrieved chunks (3):
+  - [Rank 1] (not relevant) Therapie und Verlauf:...
+  - [Rank 2] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+  - [Rank 3] (not relevant) Bei Z.n. mehrfacher Emmertplastik im Bereich des linken Großzehs erfolgte eine chriurgische Mitbeurteilung, hierbei wurde eine Nagelplastik empfohlen....
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=0.500
+  -> RAGAS:      Context-Precision=0.500 Context-Recall=0.500
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'DAMARIS, Dyonisia' [137-154]
+Retrieved chunks (3):
+  - [Rank 1] (not relevant) Zusammenfassung von Therapie und Verlauf...
+  - [Rank 2] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 3] (not relevant) Medizinische Tumortherapie(n):
+pall. PCT m. Folfox ab (05/18); 1. Zyklus 75%, ab 2. Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damar...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.583 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '11.2.1967' [218-227]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 2] (not relevant) Zusammenfassung von Therapie und Verlauf...
+  - [Rank 3] (not relevant) HAUPT-UND NEBENDIAGNOSEN
+Hauptdiagnose(n), ICD-10
+Rektumkarzinom, (2/18), lokal weit fortgeschritten, C20
+Tumoranämie, (2/18), D63.0
+St.p. Port-a-cath...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '2.5.2018' [160-168]
+Retrieved chunks (3):
+  - [Rank 1] (not relevant) Zusammenfassung von Therapie und Verlauf...
+  - [Rank 2] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 3] (not relevant) Medizinische Tumortherapie(n):
+pall. PCT m. Folfox ab (05/18); 1. Zyklus 75%, ab 2. Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damar...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.500 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16.5.2018' [173-182]
+  - '16.5.18' [3319-3326]
+Retrieved chunks (3):
+  - [Rank 1] (not relevant) Zusammenfassung von Therapie und Verlauf...
+  - [Rank 2] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+  - [Rank 3] (not relevant) Perianal: geringgr. Rückgang der tumorösen Masse, 4 Fistelgänge, klinisch deutlich gebessert, anamn. kaum noch Sekretion...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.333 recall@k=0.500
+  -> RAGAS:      Context-Precision=0.500 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000

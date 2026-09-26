@@ -1,0 +1,129 @@
+@startuml
+top to bottom direction
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam linetype ortho
+skinparam nodesep 18
+skinparam ranksep 42
+skinparam dpi 180
+skinparam class {
+    BackgroundColor #F7F8FC
+    BorderColor #374151
+    ArrowColor #374151
+    FontColor #111827
+    FontSize 12
+    AttributeFontSize 11
+}
+
+package "CEVAMED Chunking" {
+    abstract class BaseChunker {
+        {abstract} +split_text(text: str): List<str>
+    }
+
+    abstract class TextSplitter {
+        #_chunk_size: int
+        #_chunk_overlap: int
+        #_length_function: Callable
+        #_keep_separator: bool
+        #_strip_whitespace: bool
+        --
+        {abstract} +split_text(text: str): List<str>
+        {static} +from_huggingface_tokenizer(...): TextSplitter
+        #_join_docs(docs, separator): str
+        #_merge_splits(splits, separator): List<str>
+    }
+
+    class RecursiveTokenChunker {
+        #_separators: List<str>
+        #_is_separator_regex: bool
+        --
+        +split_text(text: str): List<str>
+        #_split_text(text, separators): List<str>
+    }
+
+    class TransformerTokenChunker {
+        +model_name: str
+        #_model: SentenceTransformer
+        +tokenizer
+        +tokens_per_chunk: int
+        --
+        +split_text(text: str): List<str>
+        +count_tokens(text: str): int
+    }
+
+    class KamradtSemanticChunker {
+        +model_name: str
+        +device: str
+        +epsilon: float
+        #_embedding_model: SentenceTransformer
+        #_tokenizer: PreTrainedTokenizer
+        --
+        +split_text(text: str): List<str>
+        +combine_sentences(...): List
+        +calculate_sentence_embeddings(...): List
+        +calculate_cosine_distances(...): tuple
+    }
+
+    class ClusterSemanticChunker {
+        +length_function: Callable
+        +splitter: RecursiveTokenChunker
+        +embedding_function
+        +max_cluster: int
+        --
+        +split_text(text: str): List<str>
+        #_get_similarity_matrix(...): ndarray
+        #_optimal_segmentation(...): List
+    }
+
+    class RecursiveSemanticChunker {
+        +length_function: Callable
+        +splitter: RecursiveTokenChunker
+        +embedding_function
+        +avg_chunk_size: int
+        --
+        +split_text(text: str): List<str>
+        +combine_sentences(...): List
+        +calculate_cosine_distances(...): tuple
+        #_find_optimal_threshold(...): float
+    }
+
+    class Tokenizer <<dataclass>> {
+        +chunk_overlap: int
+        +tokens_per_chunk: int
+        +decode: Callable
+        +encode: Callable
+    }
+}
+
+BaseChunker <|-- TextSplitter
+TextSplitter <|-- RecursiveTokenChunker
+TextSplitter <|-- TransformerTokenChunker
+TextSplitter <|-- KamradtSemanticChunker
+TextSplitter <|-- ClusterSemanticChunker
+TextSplitter <|-- RecursiveSemanticChunker
+
+RecursiveTokenChunker -[hidden]right-> TransformerTokenChunker
+RecursiveTokenChunker -[hidden]down-> KamradtSemanticChunker
+TransformerTokenChunker -[hidden]down-> ClusterSemanticChunker
+KamradtSemanticChunker -[hidden]down-> RecursiveSemanticChunker
+ClusterSemanticChunker -[hidden]down-> Tokenizer
+
+ClusterSemanticChunker *-- RecursiveTokenChunker
+RecursiveSemanticChunker *-- RecursiveTokenChunker
+TransformerTokenChunker ..> Tokenizer
+
+legend bottom
+    |= Symbol |= Bedeutung |
+    | <color:#038048><size:18>○</size></color> | <b>public (+) Attribut</b>: von außen zugreifbar |
+    | <color:#038048><size:18>●</size></color> | <b>public (+) Methode</b>: von außen aufrufbar |
+    | <color:#E5B700><size:18>◇</size></color> | <b>protected/intern (#) Attribut</b>: in Python mit einem Unterstrich (_name) |
+    | <color:#E5B700><size:18>◆</size></color> | <b>protected/intern (#) Methode</b>: in Python mit einem Unterstrich (_name) |
+    | <size:17>Ⓐ / Ⓒ</size> | Abstrakte / konkrete Klasse |
+    | <size:18>△───</size> | <b>Vererbung</b>: Dreieck zeigt auf die Oberklasse |
+    | <size:18>◆───</size> | <b>Komposition</b>: Klasse besitzt das verbundene Objekt |
+    | <size:18>╌╌▷</size> | <b>Abhängigkeit</b>: Klasse verwendet das verbundene Objekt |
+    | <u>method()</u> | <b>statisch</b>: Aufruf über die Klasse statt über eine Instanz |
+endlegend
+
+@enduml

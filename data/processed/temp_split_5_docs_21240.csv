@@ -1,0 +1,15 @@
+question_key,question,references,corpus_id
+patient_name,Wie heißt der Patient?,"[{""content"": ""Konstantin Tupolev"", ""start_index"": 139, ""end_index"": 157}]",C:\Users\Mouayad\chunking\data\row\Tupolev_3.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""21.06.67"", ""start_index"": 161, ""end_index"": 169}]",C:\Users\Mouayad\chunking\data\row\Tupolev_3.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Franz-Josef Meyr"", ""start_index"": 1, ""end_index"": 17}]",C:\Users\Mouayad\chunking\data\row\Meyr.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""12.9.1940"", ""start_index"": 23, ""end_index"": 32}]",C:\Users\Mouayad\chunking\data\row\Meyr.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""21.01.2023"", ""start_index"": 157, ""end_index"": 167}]",C:\Users\Mouayad\chunking\data\row\Meyr.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""21.01.2023"", ""start_index"": 157, ""end_index"": 167}]",C:\Users\Mouayad\chunking\data\row\Meyr.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Katharina Korsakoff"", ""start_index"": 317, ""end_index"": 336}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_K.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""13.5.1981"", ""start_index"": 340, ""end_index"": 349}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_K.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""2.3."", ""start_index"": 364, ""end_index"": 368}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_K.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""15.3.2043"", ""start_index"": 377, ""end_index"": 386}]",C:\Users\Mouayad\chunking\data\row\Colon_Fake_K.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Evelyn Dewald"", ""start_index"": 24, ""end_index"": 37}]",C:\Users\Mouayad\chunking\data\row\Dewald.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""13.08.1948"", ""start_index"": 40, ""end_index"": 50}]",C:\Users\Mouayad\chunking\data\row\Dewald.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Gerhard Ypsilanti"", ""start_index"": 23, ""end_index"": 40}]",C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""3.2.1961"", ""start_index"": 44, ""end_index"": 52}]",C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt

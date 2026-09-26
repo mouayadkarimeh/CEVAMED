@@ -1,0 +1,7 @@
+chunker,profile,Precision@K_global,Recall@K_global,RAGAS_Context_Precision_global,RAGAS_Context_Recall_global,Block_Integrity_global,Reference_Completeness_global,Context_Compactness_global,Intrachunk_Cohesion_global
+character_text_splitter,top_3,0.375,1.0,0.99999999990625,1.0,1.0,0.4,0.875,0.47436280484732407
+transformer_token_chunker,top_3,0.375,1.0,0.8749999999125,0.9375,0.9666666666666667,0.0,1.0,0.4806783825825578
+recursive_token_chunker,top_3,0.375,1.0,0.9791666665802083,0.9375,0.9444444444444444,0.2,0.875,0.4844140117797111
+kamradt_semantic_chunker,top_3,0.375,1.0,0.9791666665739583,0.9375,0.9583333333333333,0.0,0.75,0.4637894950008743
+recursive_semantic_chunker,top_3,0.29166666666666663,0.8125,0.7916666665875001,0.8125,1.0,0.0,0.75,0.4770155659145042
+cluster_semantic_chunker,top_3,0.3333333333333333,0.9375,0.81249999991875,0.9375,0.8947368421052632,0.0,1.0,0.5176718797638895

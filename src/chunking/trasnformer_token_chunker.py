@@ -5,8 +5,9 @@ this script is adapted from langchain_text_splitters.transformer_token_splitter.
 from __future__ import annotations
 
 from typing import Any, cast
-from chunking.base_chunker import TextSplitter , Tokenizer, split_text_on_tokens
-
+from chunking.base_chunker import TextSplitter
+from matplotlib import pyplot as plt
+from matplotlib.ticker import MaxNLocator
 
 try:
     # Type ignores needed as long as sentence-transformers doesn't support Python 3.14.
@@ -18,6 +19,64 @@ try:
 except ImportError:
     _HAS_SENTENCE_TRANSFORMERS = False
 
+#MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+#MODEL_NAME = "deutsche-telekom/gbert-large-paraphrase-cosine"
+MODEL_NAME = "codefuse-ai/F2LLM-v2-0.6B"
+
+def results_plot(chunks: list[str], chunk_size: int, length_fn: Any) -> None:
+    """Plottet die exakte Länge der Chunks. 
+
+    Der Chunk-Index auf der X-Achse startet bei 1.
+    """
+    if not chunks:
+        print("Keine Chunks zum Plotten.")
+        return
+
+    chunk_lengths = [length_fn(text =chunk) for chunk in chunks]
+    
+    # --- ÄNDERUNG 1: INDEX STARTET NUN BEI 1 STATT 0 ---
+    x_positions = list(range(1, len(chunk_lengths) + 1))
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(x_positions, chunk_lengths, marker="o", linestyle="-", label="Tatsächliche Chunk-Größe (tokens)")
+    plt.axhline(y=chunk_size, color="r", linestyle="--", label=f"Ziel-Chunk-Größe ({chunk_size} tokens)")
+    
+    # --- ÄNDERUNG 2: AXIS-LIMITS & URSPRUNG ERZWINGEN ---
+    ax = plt.gca()
+    
+    # Die X-Achse beginnt beim ersten Chunk statt bei 0.
+    ax.set_xlim(left=1, right=max(len(chunk_lengths), 2))
+    
+    # Setzt die Y-Achse exakt bei 0 an und gibt nach oben 10% Puffer über dem Ziel-Limit
+    ax.set_ylim(bottom=0, top=max(max(chunk_lengths), chunk_size) * 1.1)
+    
+    # Deaktiviert das automatische Matplotlib-Padding für den Ursprung
+    ax.use_sticky_edges = True
+
+    # Erzwingt ganze Zahlen auf der X-Achse
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    
+    plt.title("sentence transformers token text splitter" , fontsize=22 , pad=22)
+    plt.suptitle("Analysierte Datei: Albers.txt", fontsize=13, x=0.5, y=0.92, color="green")
+    plt.xlabel("Chunk-Index")
+    plt.ylabel("Chunk-Größe (token)")
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class TransformerTokenChunker(TextSplitter):
     """Splitting text to tokens using sentence model tokenizer."""
@@ -25,7 +84,7 @@ class TransformerTokenChunker(TextSplitter):
     def __init__(
         self,
         chunk_overlap: int = 50,
-        model_name: str = "sentence-transformers/all-mpnet-base-v2",
+        model_name: str = MODEL_NAME,
         tokens_per_chunk: int | None = None,
         model_kwargs: dict[str, Any] | None = None,
         **kwargs: Any,
@@ -91,31 +150,46 @@ class TransformerTokenChunker(TextSplitter):
                 processing.
         """
 
-        def encode_strip_start_and_stop_token_ids(text: str) -> list[int]:
-            return self._encode(text)[1:-1]
+        if self.tokens_per_chunk <= self._chunk_overlap:
+            msg = "tokens_per_chunk must be greater than chunk_overlap"
+            raise ValueError(msg)
 
-        tokenizer = Tokenizer(
-            chunk_overlap=self._chunk_overlap,
-            tokens_per_chunk=self.tokens_per_chunk,
-            decode=self.tokenizer.decode,
-            encode=encode_strip_start_and_stop_token_ids,
-        )
+        input_ids = self._encode(text)[1:-1]
+        chunks: list[str] = []
+        start_idx = 0
 
-        return split_text_on_tokens(text=text, tokenizer=tokenizer)
+        while start_idx < len(input_ids):
+            end_idx = min(start_idx + self.tokens_per_chunk, len(input_ids))
+            chunk = self.tokenizer.decode(input_ids[start_idx:end_idx])
+
+            while self.count_tokens(text=chunk) > self.tokens_per_chunk:
+                end_idx -= 1
+                if end_idx <= start_idx:
+                    msg = "Tokenizer could not produce a chunk within the token limit"
+                    raise ValueError(msg)
+                chunk = self.tokenizer.decode(input_ids[start_idx:end_idx])
+
+            chunks.append(chunk)
+            if end_idx == len(input_ids):
+                break
+
+            start_idx = end_idx - self._chunk_overlap
+
+        return chunks
 
     def count_tokens(self, *, text: str) -> int:
-        """Counts the number of tokens in the given text.
+        """Count content tokens without the tokenizer's boundary tokens.
 
-        This method encodes the input text using a private `_encode` method and
-        calculates the total number of tokens in the encoded result.
+        This uses the same token definition as :meth:`split_text`, so complete
+        chunks do not exceed ``tokens_per_chunk`` when measured with this method.
 
         Args:
             text: The input text for which the token count is calculated.
 
         Returns:
-            The number of tokens in the encoded text.
+            The number of content tokens in the encoded text.
         """
-        return len(self._encode(text))
+        return len(self._encode(text)[1:-1])
 
     _max_length_equal_32_bit_integer: int = 2**32
 
@@ -135,10 +209,15 @@ if __name__  == "__main__":
     
         splitter = TransformerTokenChunker(
             chunk_overlap=64,
-            model_name= "sentence-transformers/all-MiniLM-L6-v2",
+            model_name= MODEL_NAME,
             tokens_per_chunk=256,
         )
-        
+        print(f" the model name: {splitter.model_name}")
         chunks = splitter.split_text(text)
         print("Chunks:", chunks)
         print("Token count:", splitter.count_tokens(text=text))
+        results_plot(
+            chunks=chunks,
+            chunk_size=splitter.tokens_per_chunk,
+            length_fn=splitter.count_tokens,
+        )

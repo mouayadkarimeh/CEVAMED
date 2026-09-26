@@ -48,13 +48,7 @@ testing 4 chunking strategies Fixed-token, recursive, semantic, architecutural
 
 - **Recall**: Measures the proportion of ground-truth chunks correctly identified, evaluating how many relevant chunks the system finds.
 
-- **F1-Score**: The harmonic mean of precision and recall, balancing both metrics into a single value to compare strategies.
-
-- **nDCG (Normalized Discounted Cumulative Gain)**: Evaluates the ranking quality of chunks based on graded relevance, ensuring the most relevant chunks appear first.
-
 - **hit@k**: Checks if at least one relevant chunk appears in the top-*k* results, measuring early retrieval success.
-
-- **MRR (Mean Reciprocal Rank)**: Measures how early the first relevant chunk appears in the results, indicating retrieval speed.
 
 
 

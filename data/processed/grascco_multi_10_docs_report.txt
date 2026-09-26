@@ -1,0 +1,3749 @@
+Global Multi-Document Report: 10_docs
+Chunking strategies tested: character_text_splitter, transformer_token_chunker, recursive_token_chunker, kamradt_semantic_chunker, recursive_semantic_chunker, cluster_semantic_chunker
+============================================================
+
+######################################################################
+# CHUNKER: character_text_splitter
+######################################################################
+
+### PROFILE: top_1 (chunker: character_text_splitter) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.758
+  recall_at_k_global_mean: 0.679
+  ragas_precision_global_mean: 0.758
+  ragas_recall_global_mean: 0.746
+  block_integrity_global_mean: 0.994
+  reference_completeness_global_mean: 0.444
+  intrachunk_cohesion_global_mean: 0.381
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Fuss.txt
+     [Klassisch]   precision@k=0.750 recall@k=0.625
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.625
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.400 ICC=0.309
+                    Blöcke=13, getrennt=0; Referenzpaare=5, getrennt=3
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=n/a ICC=0.470
+                    Blöcke=5, getrennt=0; Referenzpaare=0, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+     [Klassisch]   precision@k=0.000 recall@k=0.000
+     [RAGAS]       Context-Precision=0.000 Context-Recall=0.000
+     [Dokument]     Block-Integrity=0.938 Reference-Completeness=0.500 ICC=0.408
+                    Blöcke=16, getrennt=1; Referenzpaare=2, getrennt=1
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt
+     [Klassisch]   precision@k=1.000 recall@k=0.500
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.250 ICC=0.383
+                    Blöcke=18, getrennt=0; Referenzpaare=4, getrennt=3
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Utz.txt
+     [Klassisch]   precision@k=0.333 recall@k=0.167
+     [RAGAS]       Context-Precision=0.333 Context-Recall=0.333
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=1.000 ICC=0.432
+                    Blöcke=13, getrennt=0; Referenzpaare=2, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 3)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Sudeck.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=0.750 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=n/a ICC=0.238
+                    Blöcke=7, getrennt=0; Referenzpaare=0, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Albers.txt
+     [Klassisch]   precision@k=0.750 recall@k=0.750
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.750
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.400 ICC=0.366
+                    Blöcke=12, getrennt=0; Referenzpaare=5, getrennt=3
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Leitner.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=0.750
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=1.000 ICC=0.446
+                    Blöcke=5, getrennt=0; Referenzpaare=3, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Popovic.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.000 ICC=0.324
+                    Blöcke=11, getrennt=0; Referenzpaare=2, getrennt=2
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Haefner.txt
+     [Klassisch]   precision@k=0.750 recall@k=0.750
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.000 ICC=0.435
+                    Blöcke=11, getrennt=0; Referenzpaare=3, getrennt=3
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'FRITZLE, Fridolin' [152-169]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '6/7/1980' [195-203]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1/12/2029' [219-228]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16/12/1929' [233-243]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Jakob Jockel' [162-174]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '1.1.1992' [184-192]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1.11.2064' [206-215]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '30.11.2064' [220-230]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Haefner, Heinz' [92-106]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 0...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21.3.1979' [110-119]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 0...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '18.11.2023' [134-144]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 0...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '03.12.2023' [149-159]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Im weiteren Verlauf gestaltete sich die Mobilisation sehr zögerlich.
+Nebenbefundlich zeigte sich in den Laborkontrollen eine zunehmende Thrombozytose,...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Fuss, Flora' [406-417]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '28.05.2028' [424-434]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '20.05.2034' [480-490]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Anamnese:
+Flora ist eine in unserer Klinik bekannter Pat. mit V. a. CLOVES-Syndrom und bekannten Darmpolypen, welche sich bereits im Juni letzten Jahr...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '27.05.2034' [495-505]
+  - '27.04.2034 ' [9435-9446]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.500
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Irina Popovic' [72-85]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfal...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '17.08.1958' [95-105]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfal...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '11.01.' [115-121]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfal...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '14.01.2026' [122-132]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfal...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Dr. med. Sabine Sudeck' [0-22]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund.
+
+Unte...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '24.12.1999' [24-34]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund.
+
+Unte...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '26.01.2027' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund.
+
+Unte...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '26.01.2027' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund.
+
+Unte...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'DAMARIS, Dyonisia' [137-154]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Status bei Aufnahme:
+Fünfigjährige Patientin in gutem AZ und EZ, kardiorespiratorisch stabil, allseits orientiert.  
+neurologisch unauffällig. 
+Caput/...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '11.2.1967' [218-227]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Medizinische Tumortherapie(n):
+pall. PCT m. Folfox ab (05/18); 1. Zyklus 75%, ab 2. Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damar...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '2.5.2018' [160-168]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Status bei Aufnahme:
+Fünfigjährige Patientin in gutem AZ und EZ, kardiorespiratorisch stabil, allseits orientiert.  
+neurologisch unauffällig. 
+Caput/...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16.5.2018' [173-182]
+  - '16.5.18' [3319-3326]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Status bei Aufnahme:
+Fünfigjährige Patientin in gutem AZ und EZ, kardiorespiratorisch stabil, allseits orientiert.  
+neurologisch unauffällig. 
+Caput/...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Luise Utz' [0-9]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Therapieempfehlung
+
+Magnosolv 1x1
+Pantoloc 40mg 1-0-1
+Abilify 10 mg 1-0-0
+Tramadol bis zu 3x20 Tropfen bei Schmerzen
+Metoklopramid 15 Tropfen zusammen...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '3.4.1959' [13-21]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Wir konnten die Pat. am 2.7.2020 in gutem AZ  nach Hause entlassen.
+
+Relevante Befunde
+
+Dermatologischer Aufnahmestatus: : Hautoberfläche normal, Haut...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '2.7.2020' [1315-1323]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Wir konnten die Pat. am 2.7.2020 in gutem AZ  nach Hause entlassen.
+
+Relevante Befunde
+
+Dermatologischer Aufnahmestatus: : Hautoberfläche normal, Haut...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Beate Albers' [89-101]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Werte Frau Kollegin, werter geehrter Herr Kollege!
+Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.2029 in...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '4.4.1997' [105-113]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Werte Frau Kollegin, werter geehrter Herr Kollege!
+Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.2029 in...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '19.3.' [129-134]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Werte Frau Kollegin, werter geehrter Herr Kollege!
+Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.2029 in...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '7.5.2029' [143-151]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Am 23.04.2029 erfolgte ebenfalls die Defektdeckung des mittlerweile sauber granulierenden Defektes am II. Handrücken mittels Spalthautsheet
+Die tempor...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Dr. Katharina Leitner' [0-21]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin,
+
+wir behandelten die o.g. Patientin vom ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '23.11.1992' [25-35]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin,
+
+wir behandelten die o.g. Patientin vom ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '26.05.2019' [150-160]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin,
+
+wir behandelten die o.g. Patientin vom ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '30.05.2019' [169-179]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin,
+
+wir behandelten die o.g. Patientin vom ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+######################################################################
+# CHUNKER: transformer_token_chunker
+######################################################################
+
+### PROFILE: top_1 (chunker: transformer_token_chunker) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.675
+  recall_at_k_global_mean: 0.656
+  ragas_precision_global_mean: 0.700
+  ragas_recall_global_mean: 0.604
+  block_integrity_global_mean: 0.924
+  reference_completeness_global_mean: 0.312
+  intrachunk_cohesion_global_mean: 0.388
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Fuss.txt
+     [Klassisch]   precision@k=1.000 recall@k=0.812
+     [RAGAS]       Context-Precision=1.000 Context-Recall=0.875
+     [Dokument]     Block-Integrity=0.543 Reference-Completeness=0.667 ICC=0.334
+                    Blöcke=35, getrennt=16; Referenzpaare=6, getrennt=2
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+     [Klassisch]   precision@k=0.250 recall@k=0.250
+     [RAGAS]       Context-Precision=0.250 Context-Recall=0.250
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=n/a ICC=0.449
+                    Blöcke=10, getrennt=0; Referenzpaare=0, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+     [Klassisch]   precision@k=0.000 recall@k=0.000
+     [RAGAS]       Context-Precision=0.250 Context-Recall=0.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.333 ICC=0.420
+                    Blöcke=15, getrennt=0; Referenzpaare=3, getrennt=2
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt
+     [Klassisch]   precision@k=0.000 recall@k=0.000
+     [RAGAS]       Context-Precision=0.000 Context-Recall=0.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.250 ICC=0.367
+                    Blöcke=29, getrennt=0; Referenzpaare=4, getrennt=3
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Utz.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=0.667
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.000 ICC=0.348
+                    Blöcke=12, getrennt=0; Referenzpaare=2, getrennt=2
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 3)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Sudeck.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=0.750 Context-Recall=1.000
+     [Dokument]     Block-Integrity=0.900 Reference-Completeness=n/a ICC=0.363
+                    Blöcke=10, getrennt=1; Referenzpaare=0, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Albers.txt
+     [Klassisch]   precision@k=0.500 recall@k=0.500
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.500
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.000 ICC=0.424
+                    Blöcke=21, getrennt=0; Referenzpaare=4, getrennt=4
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Leitner.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=0.750
+     [Dokument]     Block-Integrity=0.875 Reference-Completeness=0.667 ICC=0.383
+                    Blöcke=8, getrennt=1; Referenzpaare=3, getrennt=1
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Popovic.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.333 ICC=0.372
+                    Blöcke=14, getrennt=0; Referenzpaare=3, getrennt=2
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Haefner.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=0.923 Reference-Completeness=0.250 ICC=0.424
+                    Blöcke=13, getrennt=1; Referenzpaare=4, getrennt=3
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'FRITZLE, Fridolin' [152-169]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) UND
+Fortsetzung der palliativen Polychemotherapie mit FOLFOX, 5. Zyklus, bei minimalem Ansprechen nach 
+vier Zyklen.
+
+ZUSATAND BEI AUFNAHME
+45-j. Pati...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '6/7/1980' [195-203]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) linische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patienten...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1/12/2029' [219-228]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) UND
+Fortsetzung der palliativen Polychemotherapie mit FOLFOX, 5. Zyklus, bei minimalem Ansprechen nach 
+vier Zyklen.
+
+ZUSATAND BEI AUFNAHME
+45-j. Pati...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16/12/1929' [233-243]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) UND
+Fortsetzung der palliativen Polychemotherapie mit FOLFOX, 5. Zyklus, bei minimalem Ansprechen nach 
+vier Zyklen.
+
+ZUSATAND BEI AUFNAHME
+45-j. Pati...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Jakob Jockel' [162-174]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) klappenvitium
+- 2 mm Pleuraschwarte rechts,
+- Z.n. Colitis 7/2063; 
+- Z.n. Crossektomie links Leiste/linker Oberschenkel; 
+- höhergradige degenerative...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '1.1.1992' [184-192]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) klappenvitium
+- 2 mm Pleuraschwarte rechts,
+- Z.n. Colitis 7/2063; 
+- Z.n. Crossektomie links Leiste/linker Oberschenkel; 
+- höhergradige degenerative...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1.11.2064' [206-215]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Entfernung der Sekundärnähte in unserer Ambulanz in zwei Wochen vorgesehen.
+
+Geplanter Kontrolltermin am 20.12.64 um 10.00 Uhr an der klinischen Abtei...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '30.11.2064' [220-230]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Entfernung der Sekundärnähte in unserer Ambulanz in zwei Wochen vorgesehen.
+
+Geplanter Kontrolltermin am 20.12.64 um 10.00 Uhr an der klinischen Abtei...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Haefner, Heinz' [92-106]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) hr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 03....
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21.3.1979' [110-119]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) hr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 03....
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '18.11.2023' [134-144]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) hr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 03....
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '03.12.2023' [149-159]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) hr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 03....
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Fuss, Flora' [406-417]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) itätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelmsburg, 9...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '28.05.2028' [424-434]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) itätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelmsburg, 9...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '20.05.2034' [480-490]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) itätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelmsburg, 9...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '27.05.2034' [495-505]
+  - '27.04.2034 ' [9435-9446]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) gt eine entsprechender Nachbericht. 
+
+Wir konnten Flora am 27.04.2034 im guten Allgemeinzustand nach Hause entlassen. Für Rücksprache stehen wir gerne...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.250
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.500
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Irina Popovic' [72-85]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) hr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfallc...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '17.08.1958' [95-105]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) hr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfallc...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '11.01.' [115-121]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) hr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfallc...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '14.01.2026' [122-132]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) hr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfallc...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Dr. med. Sabine Sudeck' [0-22]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) . med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund.
+
+Unters...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '24.12.1999' [24-34]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) . med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund.
+
+Unters...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '26.01.2027' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) . med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund.
+
+Unters...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '26.01.2027' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) . med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund.
+
+Unters...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'DAMARIS, Dyonisia' [137-154]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) VERLAUF DER TUMORERKRANKUNG
+Operation(en) und Histologie(n):
+diagnostische PE (Jan 2018)
+Histo: Adeno-CA
+Stad.: p N+MX G2
+endständige Sigmoideostomie ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '11.2.1967' [218-227]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) VERLAUF DER TUMORERKRANKUNG
+Operation(en) und Histologie(n):
+diagnostische PE (Jan 2018)
+Histo: Adeno-CA
+Stad.: p N+MX G2
+endständige Sigmoideostomie ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '2.5.2018' [160-168]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant)  ansonsten beschwerdefrei, keine Infektzeichen, Haut intakt, bland, Schleimhäute bland, intakt, Stuhl- und Harnanamnese unauffällig.
+
+Status bei Aufna...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16.5.2018' [173-182]
+  - '16.5.18' [3319-3326]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) VERLAUF DER TUMORERKRANKUNG
+Operation(en) und Histologie(n):
+diagnostische PE (Jan 2018)
+Histo: Adeno-CA
+Stad.: p N+MX G2
+endständige Sigmoideostomie ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Luise Utz' [0-9]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) ise Utz, * 3.4.1959, wohnhaft in 34443 Bad Arolsen
+
+Arztbrief
+ 
+
+2020-08-03
+Diagnosen
+
+Melanom Stadium IV
+2/2018 Primärtumor: Skapulär links (TD 3,65 ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '3.4.1959' [13-21]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) ise Utz, * 3.4.1959, wohnhaft in 34443 Bad Arolsen
+
+Arztbrief
+ 
+
+2020-08-03
+Diagnosen
+
+Melanom Stadium IV
+2/2018 Primärtumor: Skapulär links (TD 3,65 ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '2.7.2020' [1315-1323]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) krankung.
+Beim Aufnahmestatus zeigte sich klinisch kein Hinweis auf einen Fortschritt der Erkrankung.
+Die Pat.  erhielt am 1.7.2020 Paclitaxel 200 mg/...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Beate Albers' [89-101]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Werte Frau Kollegin, werter geehrter Herr Kollege!
+Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.2029 in...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '4.4.1997' [105-113]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Werte Frau Kollegin, werter geehrter Herr Kollege!
+Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.2029 in...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '19.3.' [129-134]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) iefe.
+
+Am 23.04.2029 erfolgte ebenfalls die Defektdeckung des mittlerweile sauber granulierenden Defektes am II. Handrücken mittels Spalthautsheet
+Die...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '7.5.2029' [143-151]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) iefe.
+
+Am 23.04.2029 erfolgte ebenfalls die Defektdeckung des mittlerweile sauber granulierenden Defektes am II. Handrücken mittels Spalthautsheet
+Die...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Dr. Katharina Leitner' [0-21]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) . Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin,
+
+wir behandelten die o.g. Patientin vom 26...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '23.11.1992' [25-35]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) . Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin,
+
+wir behandelten die o.g. Patientin vom 26...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '26.05.2019' [150-160]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) . Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin,
+
+wir behandelten die o.g. Patientin vom 26...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '30.05.2019' [169-179]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) . Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin,
+
+wir behandelten die o.g. Patientin vom 26...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+######################################################################
+# CHUNKER: recursive_token_chunker
+######################################################################
+
+### PROFILE: top_1 (chunker: recursive_token_chunker) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.683
+  recall_at_k_global_mean: 0.617
+  ragas_precision_global_mean: 0.708
+  ragas_recall_global_mean: 0.658
+  block_integrity_global_mean: 0.955
+  reference_completeness_global_mean: 0.421
+  intrachunk_cohesion_global_mean: 0.394
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Fuss.txt
+     [Klassisch]   precision@k=0.000 recall@k=0.000
+     [RAGAS]       Context-Precision=0.250 Context-Recall=0.000
+     [Dokument]     Block-Integrity=0.958 Reference-Completeness=0.500 ICC=0.350
+                    Blöcke=24, getrennt=1; Referenzpaare=4, getrennt=2
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=0.857 Reference-Completeness=n/a ICC=0.476
+                    Blöcke=7, getrennt=1; Referenzpaare=0, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+     [Klassisch]   precision@k=0.000 recall@k=0.000
+     [RAGAS]       Context-Precision=0.000 Context-Recall=0.000
+     [Dokument]     Block-Integrity=0.938 Reference-Completeness=0.500 ICC=0.408
+                    Blöcke=16, getrennt=1; Referenzpaare=2, getrennt=1
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt
+     [Klassisch]   precision@k=1.000 recall@k=0.500
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.333 ICC=0.412
+                    Blöcke=21, getrennt=0; Referenzpaare=3, getrennt=2
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Utz.txt
+     [Klassisch]   precision@k=0.333 recall@k=0.167
+     [RAGAS]       Context-Precision=0.333 Context-Recall=0.333
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.667 ICC=0.432
+                    Blöcke=12, getrennt=0; Referenzpaare=3, getrennt=1
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 3)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Sudeck.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=0.750 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=n/a ICC=0.238
+                    Blöcke=7, getrennt=0; Referenzpaare=0, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Albers.txt
+     [Klassisch]   precision@k=0.750 recall@k=0.750
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.750
+     [Dokument]     Block-Integrity=0.800 Reference-Completeness=0.200 ICC=0.423
+                    Blöcke=15, getrennt=3; Referenzpaare=5, getrennt=4
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Leitner.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=0.750
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.667 ICC=0.446
+                    Blöcke=7, getrennt=0; Referenzpaare=3, getrennt=1
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Popovic.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.500 ICC=0.324
+                    Blöcke=12, getrennt=0; Referenzpaare=2, getrennt=1
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Haefner.txt
+     [Klassisch]   precision@k=0.750 recall@k=0.750
+     [RAGAS]       Context-Precision=1.000 Context-Recall=0.750
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.000 ICC=0.435
+                    Blöcke=12, getrennt=0; Referenzpaare=3, getrennt=3
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'FRITZLE, Fridolin' [152-169]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '6/7/1980' [195-203]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1/12/2029' [219-228]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16/12/1929' [233-243]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Jakob Jockel' [162-174]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '1.1.1992' [184-192]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1.11.2064' [206-215]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '30.11.2064' [220-230]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Haefner, Heinz' [92-106]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 0...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21.3.1979' [110-119]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 0...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '18.11.2023' [134-144]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 0...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '03.12.2023' [149-159]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Im weiteren Verlauf gestaltete sich die Mobilisation sehr zögerlich.
+Nebenbefundlich zeigte sich in den Laborkontrollen eine zunehmende Thrombozytose,...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Fuss, Flora' [406-417]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Anamnese:
+Flora ist eine in unserer Klinik bekannter Pat. mit V. a. CLOVES-Syndrom und bekannten Darmpolypen, welche sich bereits im Juni letzten Jahr...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '28.05.2028' [424-434]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Anamnese:
+Flora ist eine in unserer Klinik bekannter Pat. mit V. a. CLOVES-Syndrom und bekannten Darmpolypen, welche sich bereits im Juni letzten Jahr...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '20.05.2034' [480-490]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Anamnese:
+Flora ist eine in unserer Klinik bekannter Pat. mit V. a. CLOVES-Syndrom und bekannten Darmpolypen, welche sich bereits im Juni letzten Jahr...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '27.05.2034' [495-505]
+  - '27.04.2034 ' [9435-9446]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Anamnese:
+Flora ist eine in unserer Klinik bekannter Pat. mit V. a. CLOVES-Syndrom und bekannten Darmpolypen, welche sich bereits im Juni letzten Jahr...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Irina Popovic' [72-85]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfal...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '17.08.1958' [95-105]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfal...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '11.01.' [115-121]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfal...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '14.01.2026' [122-132]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfal...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Dr. med. Sabine Sudeck' [0-22]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund.
+
+Unte...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '24.12.1999' [24-34]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund.
+
+Unte...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '26.01.2027' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund.
+
+Unte...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '26.01.2027' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund.
+
+Unte...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'DAMARIS, Dyonisia' [137-154]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Status bei Aufnahme:
+Fünfigjährige Patientin in gutem AZ und EZ, kardiorespiratorisch stabil, allseits orientiert.  
+neurologisch unauffällig. 
+Caput/...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '11.2.1967' [218-227]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Medizinische Tumortherapie(n):
+pall. PCT m. Folfox ab (05/18); 1. Zyklus 75%, ab 2. Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damar...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '2.5.2018' [160-168]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Status bei Aufnahme:
+Fünfigjährige Patientin in gutem AZ und EZ, kardiorespiratorisch stabil, allseits orientiert.  
+neurologisch unauffällig. 
+Caput/...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16.5.2018' [173-182]
+  - '16.5.18' [3319-3326]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Status bei Aufnahme:
+Fünfigjährige Patientin in gutem AZ und EZ, kardiorespiratorisch stabil, allseits orientiert.  
+neurologisch unauffällig. 
+Caput/...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Luise Utz' [0-9]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Therapieempfehlung
+
+Magnosolv 1x1
+Pantoloc 40mg 1-0-1
+Abilify 10 mg 1-0-0
+Tramadol bis zu 3x20 Tropfen bei Schmerzen
+Metoklopramid 15 Tropfen zusammen...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '3.4.1959' [13-21]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Wir konnten die Pat. am 2.7.2020 in gutem AZ  nach Hause entlassen.
+
+Relevante Befunde
+
+Dermatologischer Aufnahmestatus: : Hautoberfläche normal, Haut...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '2.7.2020' [1315-1323]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Wir konnten die Pat. am 2.7.2020 in gutem AZ  nach Hause entlassen.
+
+Relevante Befunde
+
+Dermatologischer Aufnahmestatus: : Hautoberfläche normal, Haut...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Beate Albers' [89-101]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Werte Frau Kollegin, werter geehrter Herr Kollege!
+Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.2029 in...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '4.4.1997' [105-113]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Werte Frau Kollegin, werter geehrter Herr Kollege!
+Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.2029 in...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '19.3.' [129-134]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Werte Frau Kollegin, werter geehrter Herr Kollege!
+Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.2029 in...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '7.5.2029' [143-151]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Am 23.04.2029 erfolgte ebenfalls die Defektdeckung des mittlerweile sauber granulierenden Defektes am II. Handrücken mittels Spalthautsheet
+Die tempor...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Dr. Katharina Leitner' [0-21]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin,
+
+wir behandelten die o.g. Patientin vom ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '23.11.1992' [25-35]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin,
+
+wir behandelten die o.g. Patientin vom ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '26.05.2019' [150-160]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin,
+
+wir behandelten die o.g. Patientin vom ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '30.05.2019' [169-179]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin,
+
+wir behandelten die o.g. Patientin vom ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+######################################################################
+# CHUNKER: kamradt_semantic_chunker
+######################################################################
+
+### PROFILE: top_1 (chunker: kamradt_semantic_chunker) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.642
+  recall_at_k_global_mean: 0.629
+  ragas_precision_global_mean: 0.667
+  ragas_recall_global_mean: 0.654
+  block_integrity_global_mean: 0.996
+  reference_completeness_global_mean: 0.483
+  intrachunk_cohesion_global_mean: 0.439
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Fuss.txt
+     [Klassisch]   precision@k=1.000 recall@k=0.875
+     [RAGAS]       Context-Precision=1.000 Context-Recall=0.875
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.000 ICC=0.440
+                    Blöcke=13, getrennt=0; Referenzpaare=5, getrennt=5
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+     [Klassisch]   precision@k=0.750 recall@k=0.750
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.750
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=n/a ICC=0.450
+                    Blöcke=14, getrennt=0; Referenzpaare=0, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+     [Klassisch]   precision@k=0.000 recall@k=0.000
+     [RAGAS]       Context-Precision=0.250 Context-Recall=0.250
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.333 ICC=0.359
+                    Blöcke=15, getrennt=0; Referenzpaare=3, getrennt=2
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=0.958 Reference-Completeness=0.944 ICC=0.444
+                    Blöcke=24, getrennt=1; Referenzpaare=18, getrennt=1
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Utz.txt
+     [Klassisch]   precision@k=0.667 recall@k=0.667
+     [RAGAS]       Context-Precision=0.667 Context-Recall=0.667
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=1.000 ICC=0.590
+                    Blöcke=10, getrennt=0; Referenzpaare=4, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 3)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Sudeck.txt
+     [Klassisch]   precision@k=0.000 recall@k=0.000
+     [RAGAS]       Context-Precision=0.000 Context-Recall=0.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=n/a ICC=0.408
+                    Blöcke=10, getrennt=0; Referenzpaare=0, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Albers.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.250 ICC=0.413
+                    Blöcke=10, getrennt=0; Referenzpaare=4, getrennt=3
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Leitner.txt
+     [Klassisch]   precision@k=0.500 recall@k=0.500
+     [RAGAS]       Context-Precision=0.500 Context-Recall=0.500
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.000 ICC=0.449
+                    Blöcke=3, getrennt=0; Referenzpaare=1, getrennt=1
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Popovic.txt
+     [Klassisch]   precision@k=0.500 recall@k=0.500
+     [RAGAS]       Context-Precision=0.500 Context-Recall=0.500
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.333 ICC=0.414
+                    Blöcke=11, getrennt=0; Referenzpaare=3, getrennt=2
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Haefner.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=1.000 ICC=0.426
+                    Blöcke=12, getrennt=0; Referenzpaare=7, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'FRITZLE, Fridolin' [152-169]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) NINS 1°
+Schwerwiegende Sprachstörung und chron. organ. Psychosyndrom bei St.p. SHT 1995
+Unterschenkelamputation li und ausgedehnte Verbrennungsnarben ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '6/7/1980' [195-203]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1/12/2029' [219-228]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16/12/1929' [233-243]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Jakob Jockel' [162-174]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '1.1.1992' [184-192]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1.11.2064' [206-215]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '30.11.2064' [220-230]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Haefner, Heinz' [92-106]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 0...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21.3.1979' [110-119]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 0...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '18.11.2023' [134-144]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 0...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '03.12.2023' [149-159]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 0...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Fuss, Flora' [406-417]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Mike Messer
+Universitätsklinikum 
+Wilhelmsburg, 91022 Wilhelmsburg 
+Kinder- und Jugendmedizin 
+
+Nachrichtlich: Prof. Dr. Dr. Waldemar Waldenström, Ins...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '28.05.2028' [424-434]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Mike Messer
+Universitätsklinikum 
+Wilhelmsburg, 91022 Wilhelmsburg 
+Kinder- und Jugendmedizin 
+
+Nachrichtlich: Prof. Dr. Dr. Waldemar Waldenström, Ins...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '20.05.2034' [480-490]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Mike Messer
+Universitätsklinikum 
+Wilhelmsburg, 91022 Wilhelmsburg 
+Kinder- und Jugendmedizin 
+
+Nachrichtlich: Prof. Dr. Dr. Waldemar Waldenström, Ins...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '27.05.2034' [495-505]
+  - '27.04.2034 ' [9435-9446]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Mike Messer
+Universitätsklinikum 
+Wilhelmsburg, 91022 Wilhelmsburg 
+Kinder- und Jugendmedizin 
+
+Nachrichtlich: Prof. Dr. Dr. Waldemar Waldenström, Ins...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.500
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Irina Popovic' [72-85]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Renate Stutz
+Assistenzärztin
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '17.08.1958' [95-105]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Renate Stutz
+Assistenzärztin
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '11.01.' [115-121]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfal...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '14.01.2026' [122-132]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfal...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Dr. med. Sabine Sudeck' [0-22]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Dr....
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '24.12.1999' [24-34]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) K. Stargardt 	L. Kemmerling 	Dr. C. Finger
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '26.01.2027' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Dr....
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '26.01.2027' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Dr....
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'DAMARIS, Dyonisia' [137-154]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Hanns Wurst OA Dr....
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '11.2.1967' [218-227]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Hanns Wurst OA Dr....
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '2.5.2018' [160-168]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damaris erfolgte zur Fortführung der pall. Chemotherapie nach dem Folfox-Schema, 3. Zyklu...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16.5.2018' [173-182]
+  - '16.5.18' [3319-3326]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damaris erfolgte zur Fortführung der pall. Chemotherapie nach dem Folfox-Schema, 3. Zyklu...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Luise Utz' [0-9]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Dr. med....
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '3.4.1959' [13-21]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Luise Utz, * 3.4.1959, wohnhaft in 34443 Bad Arolsen
+
+Arztbrief
+ 
+
+2020-08-03
+Diagnosen
+
+Melanom Stadium IV
+2/2018 Primärtumor: Skapulär links (TD 3,6...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '2.7.2020' [1315-1323]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Luise Utz, * 3.4.1959, wohnhaft in 34443 Bad Arolsen
+
+Arztbrief
+ 
+
+2020-08-03
+Diagnosen
+
+Melanom Stadium IV
+2/2018 Primärtumor: Skapulär links (TD 3,6...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Beate Albers' [89-101]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT)   
+
+Werte Frau Kollegin, werter geehrter Herr Kollege! Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.202...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '4.4.1997' [105-113]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT)   
+
+Werte Frau Kollegin, werter geehrter Herr Kollege! Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.202...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '19.3.' [129-134]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT)   
+
+Werte Frau Kollegin, werter geehrter Herr Kollege! Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.202...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '7.5.2029' [143-151]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT)   
+
+Werte Frau Kollegin, werter geehrter Herr Kollege! Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.202...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Dr. Katharina Leitner' [0-21]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Mit freundlichen Grüßen
+
+Dr.a med. univ. Kristina Zipperling
+Stationsärztin
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '23.11.1992' [25-35]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Mit freundlichen Grüßen
+
+Dr.a med. univ. Kristina Zipperling
+Stationsärztin
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '26.05.2019' [150-160]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin,
+
+wir behandelten die o.g. Patientin vom ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '30.05.2019' [169-179]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin,
+
+wir behandelten die o.g. Patientin vom ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+######################################################################
+# CHUNKER: recursive_semantic_chunker
+######################################################################
+
+### PROFILE: top_1 (chunker: recursive_semantic_chunker) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.742
+  recall_at_k_global_mean: 0.729
+  ragas_precision_global_mean: 0.742
+  ragas_recall_global_mean: 0.754
+  block_integrity_global_mean: 0.998
+  reference_completeness_global_mean: 0.496
+  intrachunk_cohesion_global_mean: 0.382
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Fuss.txt
+     [Klassisch]   precision@k=1.000 recall@k=0.875
+     [RAGAS]       Context-Precision=1.000 Context-Recall=0.875
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.000 ICC=0.390
+                    Blöcke=12, getrennt=0; Referenzpaare=4, getrennt=4
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=n/a ICC=0.428
+                    Blöcke=10, getrennt=0; Referenzpaare=0, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+     [Klassisch]   precision@k=0.250 recall@k=0.250
+     [RAGAS]       Context-Precision=0.250 Context-Recall=0.250
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.000 ICC=0.365
+                    Blöcke=11, getrennt=0; Referenzpaare=2, getrennt=2
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt
+     [Klassisch]   precision@k=0.250 recall@k=0.250
+     [RAGAS]       Context-Precision=0.250 Context-Recall=0.250
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.400 ICC=0.375
+                    Blöcke=12, getrennt=0; Referenzpaare=5, getrennt=3
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Utz.txt
+     [Klassisch]   precision@k=0.667 recall@k=0.667
+     [RAGAS]       Context-Precision=0.667 Context-Recall=0.667
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=1.000 ICC=0.452
+                    Blöcke=8, getrennt=0; Referenzpaare=3, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 3)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Sudeck.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=0.750 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=n/a ICC=0.235
+                    Blöcke=7, getrennt=0; Referenzpaare=0, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Albers.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=0.978 Reference-Completeness=0.571 ICC=0.416
+                    Blöcke=46, getrennt=1; Referenzpaare=7, getrennt=3
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Leitner.txt
+     [Klassisch]   precision@k=0.500 recall@k=0.500
+     [RAGAS]       Context-Precision=0.500 Context-Recall=0.500
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=1.000 ICC=0.416
+                    Blöcke=2, getrennt=0; Referenzpaare=2, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Popovic.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=1.000 ICC=0.330
+                    Blöcke=15, getrennt=0; Referenzpaare=2, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Haefner.txt
+     [Klassisch]   precision@k=0.750 recall@k=0.750
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.000 ICC=0.416
+                    Blöcke=5, getrennt=0; Referenzpaare=3, getrennt=3
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'FRITZLE, Fridolin' [152-169]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, wir berichten über den Patienten ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '6/7/1980' [195-203]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, wir berichten über den Patienten ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1/12/2029' [219-228]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, wir berichten über den Patienten ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16/12/1929' [233-243]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, wir berichten über den Patienten ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Jakob Jockel' [162-174]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, wir berichten über den ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '1.1.1992' [184-192]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Geplanter Kontrolltermin am 20.12.64 um 10 .00 Uhr an der klinischen Abteilung für Onkologie, davon abhängig Besprechung der Option einer pseudoadjuva...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1.11.2064' [206-215]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Geplanter Kontrolltermin am 20.12.64 um 10 .00 Uhr an der klinischen Abteilung für Onkologie, davon abhängig Besprechung der Option einer pseudoadjuva...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '30.11.2064' [220-230]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Geplanter Kontrolltermin am 20.12.64 um 10 .00 Uhr an der klinischen Abteilung für Onkologie, davon abhängig Besprechung der Option einer pseudoadjuva...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Haefner, Heinz' [92-106]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin, wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 03...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21.3.1979' [110-119]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin, wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 03...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '18.11.2023' [134-144]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin, wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 03...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '03.12.2023' [149-159]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Im weiteren Verlauf gestaltete sich die Mobilisation sehr zögerlich.
+Nebenbefundlich zeigte sich in den Laborkontrollen eine zunehmende Thrombozytose,...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Fuss, Flora' [406-417]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelmsb...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '28.05.2028' [424-434]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelmsb...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '20.05.2034' [480-490]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelmsb...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '27.05.2034' [495-505]
+  - '27.04.2034 ' [9435-9446]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelmsb...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.500
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Irina Popovic' [72-85]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfallc...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '17.08.1958' [95-105]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfallc...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '11.01.' [115-121]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfallc...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '14.01.2026' [122-132]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfallc...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Dr. med. Sabine Sudeck' [0-22]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund. Unter...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '24.12.1999' [24-34]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund. Unter...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '26.01.2027' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund. Unter...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '26.01.2027' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. med. Sabine Sudeck *24.12.1999
+PIZ: 12235904 	Vorgangs-Nr. 01776324221
+
+
+Sehr geehrte Frau Kollegin Sudeck, anbei erhalten Sie Ihren Befund. Unter...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'DAMARIS, Dyonisia' [137-154]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) . Status bei Aufnahme:
+Fünfigjährige Patientin in gutem AZ und EZ, kardiorespiratorisch stabil, allseits orientiert.  
+neurologisch unauffällig. Caput...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '11.2.1967' [218-227]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyonis...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '2.5.2018' [160-168]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) . Status bei Aufnahme:
+Fünfigjährige Patientin in gutem AZ und EZ, kardiorespiratorisch stabil, allseits orientiert.  
+neurologisch unauffällig. Caput...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16.5.2018' [173-182]
+  - '16.5.18' [3319-3326]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) . Status bei Aufnahme:
+Fünfigjährige Patientin in gutem AZ und EZ, kardiorespiratorisch stabil, allseits orientiert.  
+neurologisch unauffällig. Caput...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Luise Utz' [0-9]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Zusammenfassung Die stationäre Aufnahme Ihrer Patientin erfolgte zur Fortführung der Chemotherapie mit Taxol und Carboplatin (4.Zyklus) bei bekannter ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '3.4.1959' [13-21]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Luise Utz, * 3.4.1959, wohnhaft in 34443 Bad Arolsen
+
+Arztbrief
+ 
+
+2020-08-03
+Diagnosen Melanom Stadium IV
+2/2018 Primärtumor: Skapulär links (TD 3,65...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '2.7.2020' [1315-1323]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Zusammenfassung Die stationäre Aufnahme Ihrer Patientin erfolgte zur Fortführung der Chemotherapie mit Taxol und Carboplatin (4.Zyklus) bei bekannter ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Beate Albers' [89-101]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Werte Frau Kollegin, werter geehrter Herr Kollege! Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.2029 in...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '4.4.1997' [105-113]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Werte Frau Kollegin, werter geehrter Herr Kollege! Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.2029 in...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '19.3.' [129-134]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Werte Frau Kollegin, werter geehrter Herr Kollege! Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.2029 in...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '7.5.2029' [143-151]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Werte Frau Kollegin, werter geehrter Herr Kollege! Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.2029 in...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Dr. Katharina Leitner' [0-21]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Mit freundlichen Grüßen
+
+Dr.a med. univ. Kristina Zipperling
+Stationsärztin...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '23.11.1992' [25-35]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Mit freundlichen Grüßen
+
+Dr.a med. univ. Kristina Zipperling
+Stationsärztin...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '26.05.2019' [150-160]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin, wir behandelten die o.g. Patientin vom 2...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '30.05.2019' [169-179]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin, wir behandelten die o.g. Patientin vom 2...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+######################################################################
+# CHUNKER: cluster_semantic_chunker
+######################################################################
+
+### PROFILE: top_1 (chunker: cluster_semantic_chunker) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.692
+  recall_at_k_global_mean: 0.667
+  ragas_precision_global_mean: 0.717
+  ragas_recall_global_mean: 0.679
+  block_integrity_global_mean: 0.956
+  reference_completeness_global_mean: 0.583
+  intrachunk_cohesion_global_mean: 0.447
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Fuss.txt
+     [Klassisch]   precision@k=0.750 recall@k=0.625
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.625
+     [Dokument]     Block-Integrity=0.850 Reference-Completeness=0.333 ICC=0.407
+                    Blöcke=20, getrennt=3; Referenzpaare=9, getrennt=6
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=n/a ICC=0.445
+                    Blöcke=11, getrennt=0; Referenzpaare=0, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt
+     [Klassisch]   precision@k=0.500 recall@k=0.375
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.500
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.333 ICC=0.464
+                    Blöcke=12, getrennt=0; Referenzpaare=3, getrennt=2
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Dokument]     Block-Integrity=0.714 Reference-Completeness=n/a ICC=0.463
+                    Blöcke=21, getrennt=6; Referenzpaare=0, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Utz.txt
+     [Klassisch]   precision@k=0.667 recall@k=0.667
+     [RAGAS]       Context-Precision=0.667 Context-Recall=0.667
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=1.000 ICC=0.458
+                    Blöcke=6, getrennt=0; Referenzpaare=2, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 3)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Sudeck.txt
+     [Klassisch]   precision@k=0.000 recall@k=0.000
+     [RAGAS]       Context-Precision=0.000 Context-Recall=0.000
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=n/a ICC=0.278
+                    Blöcke=6, getrennt=0; Referenzpaare=0, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Albers.txt
+     [Klassisch]   precision@k=0.750 recall@k=0.750
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.750
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=1.000 ICC=0.451
+                    Blöcke=23, getrennt=0; Referenzpaare=5, getrennt=0
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Leitner.txt
+     [Klassisch]   precision@k=0.750 recall@k=0.750
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.750
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.667 ICC=0.557
+                    Blöcke=5, getrennt=0; Referenzpaare=3, getrennt=1
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Popovic.txt
+     [Klassisch]   precision@k=0.750 recall@k=0.750
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.750
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.000 ICC=0.485
+                    Blöcke=8, getrennt=0; Referenzpaare=2, getrennt=2
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Haefner.txt
+     [Klassisch]   precision@k=0.750 recall@k=0.750
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.750
+     [Dokument]     Block-Integrity=1.000 Reference-Completeness=0.750 ICC=0.463
+                    Blöcke=14, getrennt=0; Referenzpaare=4, getrennt=1
+     [Retrieval]   Context-Compactness=n/a
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'FRITZLE, Fridolin' [152-169]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '6/7/1980' [195-203]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1/12/2029' [219-228]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_F.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16/12/1929' [233-243]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+
+Neudorf, am 16.12.2029  
+
+Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege, 
+
+wir berichten über den Patiente...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Jakob Jockel' [162-174]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '1.1.1992' [184-192]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '1.11.2064' [206-215]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_J.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '30.11.2064' [220-230]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinik für Allgemeinchirurgie des Diakonissenkrankenhauses Bärental
+
+Arztbrief vom 20.11.2064 
+
+Sehr geehrte Damen und Herren, 
+
+wir berichten über de...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Haefner, Heinz' [92-106]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 0...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21.3.1979' [110-119]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 0...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '18.11.2023' [134-144]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten über Ihren Patienten Haefner, Heinz, * 21.3.1979, der sich vom 18.11.2023 bis 0...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Haefner.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '03.12.2023' [149-159]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Histologie
+Bei Entlassung noch ausstehend....
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Fuss, Flora' [406-417]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '28.05.2028' [424-434]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '20.05.2034' [480-490]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Vor 3 Jahren sei bei Flora eine Adeno- und Tonsillotomie erfolgt. Im Hinblick auf die in der Vorgeschichte stattgehabte Hämatochezie bei bekannten Dar...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Fuss.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '27.05.2034' [495-505]
+  - '27.04.2034 ' [9435-9446]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Universitätsklinikum Wilhelmsburg
+KLINIK UND POLIKLINIK FÜR KINDER- UND JUGENDMEDIZIN
+
+Direktor: 
+Prof. Dr. Mike Messer
+Universitätsklinikum 
+Wilhelms...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.500
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Irina Popovic' [72-85]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Dr. med. Renate Stutz
+Assistenzärztin...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '17.08.1958' [95-105]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfal...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '11.01.' [115-121]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfal...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Popovic.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '14.01.2026' [122-132]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, 
+
+wir berichten über unsere gemeinsame Pat. Irina Popovic, geb. am 17.08.1958, die vom 11.01.-14.01.2026 auf unserer unfal...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Dr. med. Sabine Sudeck' [0-22]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Bildverbleib: Digitales Archiv
+ 
+Qualitätssicherungskonzept:
+Im Rahmen der Qualitätssicherung wurde diese Untersuchung von zwei FachärztInnen für Radi...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '24.12.1999' [24-34]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Bildverbleib: Digitales Archiv
+ 
+Qualitätssicherungskonzept:
+Im Rahmen der Qualitätssicherung wurde diese Untersuchung von zwei FachärztInnen für Radi...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '26.01.2027' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Bildverbleib: Digitales Archiv
+ 
+Qualitätssicherungskonzept:
+Im Rahmen der Qualitätssicherung wurde diese Untersuchung von zwei FachärztInnen für Radi...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Sudeck.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '26.01.2027' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Bildverbleib: Digitales Archiv
+ 
+Qualitätssicherungskonzept:
+Im Rahmen der Qualitätssicherung wurde diese Untersuchung von zwei FachärztInnen für Radi...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'DAMARIS, Dyonisia' [137-154]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Medizinische Tumortherapie(n):
+pall. PCT m. Folfox ab (05/18); 1. Zyklus 75%, ab 2. Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damar...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '11.2.1967' [218-227]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '2.5.2018' [160-168]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Medizinische Tumortherapie(n):
+pall. PCT m. Folfox ab (05/18); 1. Zyklus 75%, ab 2. Zyklus 100%
+
+Aufnahmegrund:
+Die stationäre Aufnahme von Frau Damar...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Colon_Fake_D.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '16.5.2018' [173-182]
+  - '16.5.18' [3319-3326]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Klinische Abteilung für Onkologie
+ 
+Berlin, am 16.5.2018  
+
+Sehr geehrte KollegInnen, 
+
+wir berichten über den stat. Aufenthalt von Frau DAMARIS, Dyon...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Luise Utz' [0-9]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Aktuell: 4. Zyklus Paclitaxel und Carboplatin
+
+Bisherige Therapie:
+05/2019- 05/2020 adjuvante Therapie mit Roferon (9 Mio IE./Woche; ) (C78.8)
+
+Therap...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '3.4.1959' [13-21]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Luise Utz, * 3.4.1959, wohnhaft in 34443 Bad Arolsen
+
+Arztbrief
+ 
+
+2020-08-03
+Diagnosen...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Utz.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '2.7.2020' [1315-1323]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Wir konnten die Pat. am 2.7.2020 in gutem AZ  nach Hause entlassen.
+
+Relevante Befunde
+
+Dermatologischer Aufnahmestatus: : Hautoberfläche normal, Haut...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Beate Albers' [89-101]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Werte Frau Kollegin, werter geehrter Herr Kollege!
+Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.2029 in...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '4.4.1997' [105-113]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Werte Frau Kollegin, werter geehrter Herr Kollege!
+Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.2029 in...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '19.3.' [129-134]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Werte Frau Kollegin, werter geehrter Herr Kollege!
+Wir berichten über lhre Patientin Beate Albers (* 4.4.1997), die sich vom 19.3. bis zum 7.5.2029 in...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Albers.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '7.5.2029' [143-151]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Fremdanamnestisch war von der Freundin und der ambulant behandelnden Ärztin für Psychiatrie und Psychotherapie zu erfahren, dass die Patientin bereits...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Dr. Katharina Leitner' [0-21]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Mit freundlichen Grüßen
+
+Dr.a med. univ. Kristina Zipperling
+Stationsärztin...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '23.11.1992' [25-35]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Dr. Katharina Leitner, * 23.11.1992, wohnhaft Afritschgasse 22, 9010 Klagenfurt
+
+
+Sehr geehrte Frau Kollegin,...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '26.05.2019' [150-160]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) wir behandelten die o.g. Patientin vom 26.05.2019 bis zum 30.05.2019 in unserer Klinik.
+Diagnose: Innen- und Außenmeniskuskorbhenkelriß mit Ruptur des...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Leitner.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '30.05.2019' [169-179]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) wir behandelten die o.g. Patientin vom 26.05.2019 bis zum 30.05.2019 in unserer Klinik.
+Diagnose: Innen- und Außenmeniskuskorbhenkelriß mit Ruptur des...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+

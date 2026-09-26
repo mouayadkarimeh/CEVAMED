@@ -1,0 +1,19 @@
+question_key,question,references,corpus_id
+patient_name,Wie heißt der Patient?,"[{""content"": "" M. Boec"", ""start_index"": 89, ""end_index"": 97}]",C:\Users\Mouayad\chunking\data\row\Boeck.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": "" 1.2.200"", ""start_index"": 110, ""end_index"": 118}]",C:\Users\Mouayad\chunking\data\row\Boeck.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": "" 3.5"", ""start_index"": 133, ""end_index"": 137}]",C:\Users\Mouayad\chunking\data\row\Boeck.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": "" 8.5.202"", ""start_index"": 142, ""end_index"": 150}, {""content"": "" 8.5.202"", ""start_index"": 2746, ""end_index"": 2754}]",C:\Users\Mouayad\chunking\data\row\Boeck.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Kai Fleischmann"", ""start_index"": 0, ""end_index"": 15}]",C:\Users\Mouayad\chunking\data\row\Fleischmann.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""21.2.2008"", ""start_index"": 19, ""end_index"": 28}]",C:\Users\Mouayad\chunking\data\row\Fleischmann.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""01.03.28"", ""start_index"": 121, ""end_index"": 129}]",C:\Users\Mouayad\chunking\data\row\Fleischmann.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""15.05.28"", ""start_index"": 138, ""end_index"": 146}, {""content"": ""15.05.28"", ""start_index"": 5728, ""end_index"": 5736}]",C:\Users\Mouayad\chunking\data\row\Fleischmann.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Kawasaki, Mitsou"", ""start_index"": 166, ""end_index"": 182}]",C:\Users\Mouayad\chunking\data\row\Kawasaki.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""03.02.2027"", ""start_index"": 192, ""end_index"": 202}]",C:\Users\Mouayad\chunking\data\row\Kawasaki.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Léonard Xavier"", ""start_index"": 0, ""end_index"": 14}]",C:\Users\Mouayad\chunking\data\row\Xavier.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""15.01.1940"", ""start_index"": 20, ""end_index"": 30}]",C:\Users\Mouayad\chunking\data\row\Xavier.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""1."", ""start_index"": 156, ""end_index"": 158}]",C:\Users\Mouayad\chunking\data\row\Xavier.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""21. Juli 2022"", ""start_index"": 162, ""end_index"": 175}]",C:\Users\Mouayad\chunking\data\row\Xavier.txt
+patient_name,Wie heißt der Patient?,"[{""content"": ""Žeželj, Marija"", ""start_index"": 76, ""end_index"": 90}]",C:\Users\Mouayad\chunking\data\row\Zezelj.txt
+birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""21.09.2007"", ""start_index"": 99, ""end_index"": 109}]",C:\Users\Mouayad\chunking\data\row\Zezelj.txt
+admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""03.07.2023"", ""start_index"": 259, ""end_index"": 269}]",C:\Users\Mouayad\chunking\data\row\Zezelj.txt
+discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""05.07.2023"", ""start_index"": 272, ""end_index"": 282}]",C:\Users\Mouayad\chunking\data\row\Zezelj.txt

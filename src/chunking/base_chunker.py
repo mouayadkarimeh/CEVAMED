@@ -79,6 +79,7 @@ class TextSplitter(BaseChunker, ABC):
         self._keep_separator = keep_separator
         self._add_start_index = add_start_index
         self._strip_whitespace = strip_whitespace
+        
 
     @abstractmethod
     def split_text(self, text: str) -> list[str]:

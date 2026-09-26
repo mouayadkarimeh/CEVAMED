@@ -1,193 +1,198 @@
-"""
-1. anstatt statische Breakpoint Thresholds zu verwenden, 
-wird jetzt eine dynamische Berechnung basierend auf den Distanzen zwischen den Sätzen durchgeführt.
+from __future__ import annotations
 
-2. intern wird jetzt ein Binary Search Algorithmus verwendet, 
-um den optimalen Breakpoint Threshold zu finden, der die gewünschte durchschnittliche Chunk-Größe erreicht.
-
-3. Einführung von avarge_chunk_size und total token length, um möglichst chunks mit festen Größen zu erzeugen
-
-
-
-
-"""
-from typing import Optional
-
-from .recursive_token_chunker import RecursiveTokenChunker
-from chunking_evaluation.utils import openai_token_count, get_openai_embedding_function
-from chromadb.api.types import (
-    Embeddable,
-    EmbeddingFunction,
-)
-from langchain.text_splitter import TextSplitter 
-
-
+import re
+import sys
 import numpy as np
+from pathlib import Path
+from typing import Any, List, Optional
+from matplotlib import pyplot as plt
+from transformers import AutoTokenizer
+from chunking.base_chunker import TextSplitter
+from chunking.recursive_token_chunker import RecursiveTokenChunker
+
+#MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+MODEL_NAME = "deutsche-telekom/gbert-large-paraphrase-cosine"
+#MODEL_NAME = "codefuse-ai/F2LLM-v2-0.6B"
+
+
+# Interface aus der Vaterklasse laden
+'''
+try:
+    from langchain_text_splitters import TextSplitter
+except ImportError:
+    from langchain_text_splitters import TextSplitter
+'''
+
+
+
+def results_plot(distances: list[float], breakpoint_distance_threshold: float) -> None:
+    """
+    Plottet die semantischen Distanzen und markiert die Chunks basierend auf dem optimalen Threshold.
+    """
+    if not distances:
+        print("Keine Distanzen zum Plotten.")
+        return
+
+    y_upper_bound = .6 
+    plt.plot(distances, marker="o", linestyle="-", color="b", label="Kosinus-Distanz")
+    plt.ylim(0, y_upper_bound)
+    plt.xlim(0, len(distances))
+    
+    plt.axhline(y=breakpoint_distance_threshold, color="r", linestyle="--", label="Dynamischer Threshold")
+
+    num_distances_above_threshold = sum(x > breakpoint_distance_threshold for x in distances)
+    plt.text(x=(len(distances) * 0.01), y=y_upper_bound / 50, s=f"{num_distances_above_threshold + 1} Chunks", fontsize=11, fontweight='bold')
+
+    indices_above_thresh = [i for i, x in enumerate(distances) if x > breakpoint_distance_threshold]
+    colors = ["b", "g", "r", "c", "m", "y", "k"]
+    
+    for i, breakpoint_index in enumerate(indices_above_thresh):
+        start_index = 0 if i == 0 else indices_above_thresh[i - 1] + 1
+        end_index = breakpoint_index + 1
+        plt.axvspan(start_index, end_index, facecolor=colors[i % len(colors)], alpha=0.15)
+        plt.text(
+            x=np.average([start_index, end_index]),
+            y=breakpoint_distance_threshold + (y_upper_bound / 20),
+            s=f"Chunk #{i}",
+            horizontalalignment="center",
+            rotation="vertical",
+        )
+
+    if indices_above_thresh:
+        last_breakpoint = indices_above_thresh[-1] + 1
+        if last_breakpoint < len(distances):
+            plt.axvspan(
+                last_breakpoint,
+                len(distances),
+                facecolor=colors[len(indices_above_thresh) % len(colors)],
+                alpha=0.15,
+            )
+            plt.text(
+                x=np.average([last_breakpoint, len(distances)]),
+                y=breakpoint_distance_threshold + (y_upper_bound / 20),
+                s=f"Chunk #{len(indices_above_thresh)}",
+                horizontalalignment="center",
+                rotation="vertical",
+            )
+    else:
+        plt.axvspan(0, len(distances), facecolor="b", alpha=0.15)
+
+    plt.title("Rekursiv semantisches Chunking" , fontsize=15, pad=22)
+    plt.suptitle("Analysierte Datei: Albers.txt", fontsize=12, x=0.5, y=0.92, color="green")
+    plt.xlabel("Satz-Index")
+    plt.ylabel("Kosinus-Distanze zwichen aufeinanderfolgenden Sätzen")
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.show()
+
 
 class RecursiveSemanticChunker(TextSplitter):
-    """
-    A chunker that splits text into chunks of approximately a specified average size based on semantic similarity.
-
-    This was adapted from Greg Kamradt's notebook on chunking but with the modification of including an average chunk size parameter. The original code can be found at: https://github.com/FullStackRetrieval-com/RetrievalTutorials/blob/main/tutorials/LevelsOfTextSplitting/5_Levels_Of_Text_Splitting.ipynb
-
-    This class extends the functionality of the `BaseChunker` by incorporating a method to combine sentences based on a buffer size, calculate cosine distances between combined sentences, and perform a binary search on similarity thresholds to achieve chunks of desired average size.
-
-    Attributes:
-        avg_chunk_size (int): The desired average chunk size in terms of token count. Default is 400.
-        min_chunk_size (int): The minimum chunk size in terms of token count. Default is 50.
-        embedding_function (EmbeddingFunction[Embeddable], optional): A function that converts text to embeddings. Default is the OpenAI embedding function.
-        length_function (function): A function that calculates the number of tokens in a text. Default is `openai_token_count`.
-
-    Methods:
-        combine_sentences(sentences, buffer_size=1):
-            Combines sentences with a specified buffer size to create context-rich sentence groups.
-
-        calculate_cosine_distances(sentences):
-            Calculates cosine distances between combined sentences using their embeddings.
-
-        split_text(text):
-            Splits the input text into chunks based on the calculated cosine distances and the specified average chunk size.
-
-    Example:
-        chunker = KamradtModifiedChunker(avg_chunk_size=300)
-        text = "Your text to be chunked."
-        chunks = chunker.split_text(text)
-    """
+    
     def __init__(
         self, 
-        avg_chunk_size:int=400, 
-        min_chunk_size:int=50, 
-        embedding_function: Optional[EmbeddingFunction[Embeddable]] = None, 
-        length_function=openai_token_count
-        ):
+        avg_chunk_size: int = 128, 
+        min_chunk_size: int = 50, 
+        embedding_function: Optional[Any] = None, 
+        length_function: Optional[Any] = None,
+        **kwargs: Any
+    ):
         """
-        Initializes the KamradtModifiedChunker with the specified parameters.
+        Initialisiert den Chunker. Unterstützt direkte Übergabe oder 
+        die Factory-Methode 'from_huggingface_tokenizer' der Vaterklasse.
+        """
+        # Falls von der Vaterklasse via from_huggingface_tokenizer aufgerufen,
+        # ist die length_function bereits in kwargs definiert.
+        self.length_function = length_function or kwargs.get("length_function")
+        
+        # Fallback falls der Chunker direkt ohne length_function instanziiert wurde
+        if self.length_function is None:
+            tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+           
 
-        Args:
-            avg_chunk_size (int, optional): The desired average chunk size in tokens. Defaults to 400.
-            min_chunk_size (int, optional): The minimum chunk size in tokens. Defaults to 50.
-            embedding_function (EmbeddingFunction[Embeddable], optional): A function to obtain embeddings for text. Defaults to OpenAI's embedding function if not provided.
-            length_function (function, optional): A function to calculate token length of a text. Defaults to `openai_token_count`.
-        """
-        
-        
+            self.length_function = lambda text: len(tokenizer.tokenize(text))
+
+        # Interner Token-Splitter für feine Vorspaltung
         self.splitter = RecursiveTokenChunker(
             chunk_size=min_chunk_size,
             chunk_overlap=0,
-            length_function=length_function
-            )
+            length_function=self.length_function
+        )
         
         self.avg_chunk_size = avg_chunk_size
+
         if embedding_function is None:
-            embedding_function = get_openai_embedding_function()
-        self.embedding_function = embedding_function
-        self.length_function = length_function
+            from sentence_transformers import SentenceTransformer
+            self.embedding_function = SentenceTransformer(MODEL_NAME)
+            
+        else:
+            self.embedding_function = embedding_function
 
-    def combine_sentences(self, sentences, buffer_size=1):
-        # Go through each sentence dict
+        # Reiche verbleibende Argumente und die length_function an die Basisklasse we iter
+        kwargs["length_function"] = self.length_function
+        super().__init__(**kwargs)
+
+    def combine_sentences(self, sentences: List[dict], buffer_size: int = 1) -> List[dict]:
         for i in range(len(sentences)):
-
-            # Create a string that will hold the sentences which are joined
             combined_sentence = ''
-
-            # Add sentences before the current one, based on the buffer size.
             for j in range(i - buffer_size, i):
-                # Check if the index j is not negative (to avoid index out of range like on the first one)
                 if j >= 0:
-                    # Add the sentence at index j to the combined_sentence string
                     combined_sentence += sentences[j]['sentence'] + ' '
 
-            # Add the current sentence
             combined_sentence += sentences[i]['sentence']
 
-            # Add sentences after the current one, based on the buffer size
             for j in range(i + 1, i + 1 + buffer_size):
-                # Check if the index j is within the range of the sentences list
                 if j < len(sentences):
-                    # Add the sentence at index j to the combined_sentence string
                     combined_sentence += ' ' + sentences[j]['sentence']
 
-            # Then add the whole thing to your dict
-            # Store the combined sentence in the current sentence dict
             sentences[i]['combined_sentence'] = combined_sentence
-
         return sentences
 
-    def calculate_cosine_distances(self, sentences):
+    def calculate_cosine_distances(self, sentences: List[dict]) -> tuple[List[float], List[dict]]:
+        if len(sentences) <= 1:
+            return [], sentences
+
         BATCH_SIZE = 500
-        distances = []
         embedding_matrix = None
+        
         for i in range(0, len(sentences), BATCH_SIZE):
             batch_sentences = sentences[i:i+BATCH_SIZE]
-            batch_sentences = [sentence['combined_sentence'] for sentence in batch_sentences]
-            embeddings = self.embedding_function(batch_sentences)
-
-            # Convert embeddings list of lists to numpy array
+            batch_texts = [sentence['combined_sentence'] for sentence in batch_sentences]
+            
+            if hasattr(self.embedding_function, "encode"):
+                embeddings = self.embedding_function.encode(batch_texts, show_progress_bar=False)
+            else:
+                embeddings = self.embedding_function(batch_texts)
+                
             batch_embedding_matrix = np.array(embeddings)
 
-            # Append the batch embedding matrix to the main embedding matrix
             if embedding_matrix is None:
                 embedding_matrix = batch_embedding_matrix
             else:
                 embedding_matrix = np.concatenate((embedding_matrix, batch_embedding_matrix), axis=0)
 
-        # Normalize each vector to be a unit vector
         norms = np.linalg.norm(embedding_matrix, axis=1, keepdims=True)
+        norms = np.where(norms == 0, 1e-9, norms)
         embedding_matrix = embedding_matrix / norms
 
         similarity_matrix = np.dot(embedding_matrix, embedding_matrix.T)
         
+        distances = []
         for i in range(len(sentences) - 1):
-            # Calculate cosine similarity
             similarity = similarity_matrix[i, i + 1]
-            
-            # Convert to cosine distance
-            distance = 1 - similarity
-
-            # Append cosine distance to the list
-            distances.append(distance)
-
-            # Store distance in the dictionary
+            distance = 1.0 - similarity
+            distances.append(float(distance))
             sentences[i]['distance_to_next'] = distance
 
-        # Optionally handle the last sentence
-        # sentences[-1]['distance_to_next'] = None  # or a default value
-
+        sentences[-1]['distance_to_next'] = None
         return distances, sentences
 
-    def split_text(self, text):
-        """
-        Splits the input text into chunks of approximately the specified average size based on semantic similarity.
-
-        Args:
-            text (str): The input text to be split into chunks.
-
-        Returns:
-            list of str: The list of text chunks.
-        """
-                
-        sentences_strips = self.splitter.split_text(text)
-
-        sentences = [{'sentence': x, 'index' : i} for i, x in enumerate(sentences_strips)]
-
-        sentences = self.combine_sentences(sentences, 3)
-
-        combined_sentences = [x['combined_sentence'] for x in sentences]
-
-        distances, sentences = self.calculate_cosine_distances(sentences)
-
-        total_tokens = sum(self.length_function(sentence['sentence']) for sentence in sentences)
-        avg_chunk_size = self.avg_chunk_size
-        number_of_cuts = total_tokens // avg_chunk_size
-
-        # Define threshold limits
+    def _find_optimal_threshold(self, distances: List[float], total_tokens: int) -> float:
+        number_of_cuts = total_tokens // self.avg_chunk_size
         lower_limit = 0.0
         upper_limit = 1.0
-
-        # Convert distances to numpy array
+        #threshold = 0.5
         distances_np = np.array(distances)
 
-        # Binary search for threshold
         while upper_limit - lower_limit > 1e-6:
             threshold = (upper_limit + lower_limit) / 2.0
             num_points_above_threshold = np.sum(distances_np > threshold)
@@ -196,31 +201,77 @@ class RecursiveSemanticChunker(TextSplitter):
                 lower_limit = threshold
             else:
                 upper_limit = threshold
+        return threshold
+
+    def split_text(self, text: str) -> List[str]:
+        sentences_strips = self.splitter.split_text(text)
+        if not sentences_strips:
+            return []
+
+        sentences = [{'sentence': x, 'index': i} for i, x in enumerate(sentences_strips)]
+        sentences = self.combine_sentences(sentences, buffer_size=1)
+        distances, sentences = self.calculate_cosine_distances(sentences)
+        if not distances:
+            return [text]
+
+        total_tokens = sum(self.length_function(s['sentence']) for s in sentences)
+        threshold = self._find_optimal_threshold(distances, total_tokens)
 
         indices_above_thresh = [i for i, x in enumerate(distances) if x > threshold] 
         
-        # Initialize the start index
         start_index = 0
-
-        # Create a list to hold the grouped sentences
         chunks = []
 
-        # Iterate through the breakpoints to slice the sentences
         for index in indices_above_thresh:
-            # The end index is the current breakpoint
             end_index = index
-
-            # Slice the sentence_dicts from the current start index to the end index
             group = sentences[start_index:end_index + 1]
             combined_text = ' '.join([d['sentence'] for d in group])
             chunks.append(combined_text)
-            
-            # Update the start index for the next group
             start_index = index + 1
 
-        # The last group, if any sentences remain
         if start_index < len(sentences):
             combined_text = ' '.join([d['sentence'] for d in sentences[start_index:]])
             chunks.append(combined_text)
 
         return chunks
+
+
+if __name__ == "__main__":
+    from transformers import AutoTokenizer
+
+    
+    hf_tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+    
+
+
+    with open("data/row/Albers.txt", "r", encoding="utf-8") as f:
+        text = f.read()
+        
+        # 2. NUTZUNG DER VATERKLASSEN-METHODE:
+        # Erstellt das Objekt dynamisch mit der Längenfunktion des Tokenizers
+        semantic_chunker = RecursiveSemanticChunker.from_huggingface_tokenizer(
+            hf_tokenizer,
+            avg_chunk_size=200,
+            min_chunk_size=50
+        )
+        
+        # 3. Teilschritte für den Plot ausführen
+        sentences_strips = semantic_chunker.splitter.split_text(text)
+        splitted = [{'sentence': x, 'index': i} for i, x in enumerate(sentences_strips)]
+        combined_sen = semantic_chunker.combine_sentences(splitted, buffer_size=1)
+        distances, sentences = semantic_chunker.calculate_cosine_distances(combined_sen)
+        
+        total_tokens = sum(semantic_chunker.length_function(s['sentence']) for s in sentences)
+        print(f"Total tokens: {total_tokens}")
+        dynamic_threshold = semantic_chunker._find_optimal_threshold(distances, total_tokens)
+        results_plot(distances, dynamic_threshold)
+
+         # 4. Splitten & echten Token-Count im Terminal ausgeben
+        chunks = semantic_chunker.split_text(text)
+        print(f"\n--- Auswertung mit hf_tokenizer ---")
+        for i, chunk in enumerate(chunks, 1):
+            # Hier greift nun die saubere Methode aus der Vaterklasse zum Zählen der Tokens!
+            token_count = semantic_chunker.length_function(chunk)
+            print(f"Chunk {i}: len_tokens={token_count} | (len_zeichen={len(chunk)})")
+        
+        

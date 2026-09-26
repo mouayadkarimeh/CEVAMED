@@ -1,5 +1,0 @@
-question_key,question,references,corpus_id
-patient_name,Wie heißt der Patient?,"[{""content"": ""Klaus Neubauer"", ""start_index"": 88, ""end_index"": 102}]",C:\Users\Mouayad\chunking\data\row\Neubauer.txt
-birth_date,Wann hat der Patient Geburtsdatum?,"[{""content"": ""23.11.1999"", ""start_index"": 106, ""end_index"": 116}]",C:\Users\Mouayad\chunking\data\row\Neubauer.txt
-admission_date,Wann wurde der Patient aufgenommen?,"[{""content"": ""21.02.2024"", ""start_index"": 166, ""end_index"": 176}]",C:\Users\Mouayad\chunking\data\row\Neubauer.txt
-discharge_date,Wann wurde der Patient entlassen?,"[{""content"": ""25.02.2024"", ""start_index"": 181, ""end_index"": 191}, {""content"": ""25.02.2014"", ""start_index"": 5357, ""end_index"": 5367}]",C:\Users\Mouayad\chunking\data\row\Neubauer.txt

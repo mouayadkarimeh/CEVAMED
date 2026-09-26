@@ -1,0 +1,1658 @@
+Global Multi-Document Report: 5_docs
+Chunking strategies tested: character_text_splitter, transformer_token_chunker, recursive_token_chunker, kamradt_semantic_chunker, recursive_semantic_chunker, cluster_semantic_chunker
+============================================================
+
+######################################################################
+# CHUNKER: character_text_splitter
+######################################################################
+
+### PROFILE: adaptive_k (chunker: character_text_splitter) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.875
+  recall_at_k_global_mean: 0.875
+  f1_at_k_global_mean: 0.875
+  mrr_global_mean: 0.875
+  ragas_precision_global_mean: 0.825
+  ragas_recall_global_mean: 0.750
+  block_integrity_global_mean: 1.000
+  reference_completeness_global_mean: 0.950
+  context_fragmentation_global_mean: 0.550
+  intrachunk_cohesion_global_mean: 0.509
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Boeck.txt
+     [Klassisch]   precision@k=0.375 recall@k=0.375 f1@k=0.375 mrr=0.375
+     [RAGAS]       Context-Precision=0.375 Context-Recall=0.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=0.750 Context-Fragmentation=0.250 ICC=0.465
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.500 ICC=0.520
+                   (Fragen in diesem Dok: 2)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=1.000 ICC=0.504
+                   (Fragen in diesem Dok: 3)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Quervain.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=0.750 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.000 ICC=0.577
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=0.750
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=1.000 ICC=0.481
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wie heißt der Patient?
+Groundtruth:
+  - ' M. Boec' [89-97]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) ﻿Sehr geehrte Frau Kollegin, 
+
+wir berichten nachfolgend über unsere gemeinsame Patientin M. Boeck, geboren am 1.2.2000, die sich vom 3.5. bis 8.5.202...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - ' 1.2.200' [110-118]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Vegetative Anamnese: bis o.g. Beschwerden unauffällig. B-Symptome wurden verneint.
+
+Vorerkrankungen, Voroperationen: TVT vor 3 Monaten (stat. konserva...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - ' 3.5' [133-137]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Vegetative Anamnese: bis o.g. Beschwerden unauffällig. B-Symptome wurden verneint.
+
+Vorerkrankungen, Voroperationen: TVT vor 3 Monaten (stat. konserva...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - ' 8.5.202' [142-150]
+  - ' 8.5.202' [2746-2754]
+Retrieved chunks (2):
+  - [Rank 1] (not relevant) Vegetative Anamnese: bis o.g. Beschwerden unauffällig. B-Symptome wurden verneint.
+
+Vorerkrankungen, Voroperationen: TVT vor 3 Monaten (stat. konserva...
+  - [Rank 2] (RELEVANT) Körperliche Inspektion:
+Patientin in reduziertem AZ und normalem EZ, zu Zeit, Ort sowie Person orientiert. Kreislauf stabil, Vitalparameter im Normber...
+Metriken (K=2):
+  -> Klassisch:  precision@k=0.500 recall@k=0.500 f1@k=0.500
+  -> RAGAS:      Context-Precision=0.500 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Gerhard Ypsilanti' [23-40]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Definitiver Arztbrief
+
+Gerhard Ypsilanti, * 3.2.1961, wohnhaft in 09221 Neukirchen
+
+
+2027-08-02
+Diagnosen...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '3.2.1961' [44-52]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Definitiver Arztbrief
+
+Gerhard Ypsilanti, * 3.2.1961, wohnhaft in 09221 Neukirchen
+
+
+2027-08-02
+Diagnosen...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Konstantin Tupolev' [122-140]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim. Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21/06/1967' [150-160]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim. Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '08/06/2012' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim. Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '08/06/2012' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim. Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Etienne de Quervain' [228-247]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation
+ 
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21.07.1983' [250-260]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation
+ 
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '14.01.2025' [288-298]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation
+ 
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '14.01.2025' [288-298]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation
+ 
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Amanda Alzheimer' [123-139]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten Ihnen abschließend über unsere gemeinsame Patientin Amanda Alzheimer, die sich ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '24.01.2028' [154-164]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten Ihnen abschließend über unsere gemeinsame Patientin Amanda Alzheimer, die sich ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '06.02.2028' [173-183]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten Ihnen abschließend über unsere gemeinsame Patientin Amanda Alzheimer, die sich ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+######################################################################
+# CHUNKER: transformer_token_chunker
+######################################################################
+
+### PROFILE: adaptive_k (chunker: transformer_token_chunker) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.950
+  recall_at_k_global_mean: 0.950
+  f1_at_k_global_mean: 0.950
+  mrr_global_mean: 0.950
+  ragas_precision_global_mean: 0.900
+  ragas_recall_global_mean: 0.800
+  block_integrity_global_mean: 0.900
+  reference_completeness_global_mean: 0.750
+  context_fragmentation_global_mean: 0.217
+  intrachunk_cohesion_global_mean: 0.509
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Boeck.txt
+     [Klassisch]   precision@k=0.750 recall@k=0.750 f1@k=0.750 mrr=0.750
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=0.750 Context-Fragmentation=0.250 ICC=0.436
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=0.500 Reference-Completeness=1.000 Context-Fragmentation=0.500 ICC=0.551
+                   (Fragen in diesem Dok: 2)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.333 ICC=0.492
+                   (Fragen in diesem Dok: 3)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Quervain.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=0.750 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=0.000 Context-Fragmentation=0.000 ICC=0.591
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.000 ICC=0.474
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wie heißt der Patient?
+Groundtruth:
+  - ' M. Boec' [89-97]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrte Frau Kollegin, wir berichten nachfolgend über unsere gemeinsame Patientin M. Boeck, geboren am 1. 2. 2000, die sich vom 3. 5. bis 8. 5. 2...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - ' 1.2.200' [110-118]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) verneint, ebenso Fragen nach Hautverletzungen, Blutungen, und andere Beschwerden wegen eines potentiellen thorakalen oder abdominalen Traumas. Es wurd...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - ' 3.5' [133-137]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrte Frau Kollegin, wir berichten nachfolgend über unsere gemeinsame Patientin M. Boeck, geboren am 1. 2. 2000, die sich vom 3. 5. bis 8. 5. 2...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - ' 8.5.202' [142-150]
+  - ' 8.5.202' [2746-2754]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrte Frau Kollegin, wir berichten nachfolgend über unsere gemeinsame Patientin M. Boeck, geboren am 1. 2. 2000, die sich vom 3. 5. bis 8. 5. 2...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Gerhard Ypsilanti' [23-40]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Definitiver Arztbrief Gerhard Ypsilanti, * 3. 2. 1961, wohnhaft in 09221 Neukirchen 2027 - 08 - 02 Diagnosen Maligner Pleuraerguß links mit Mediastina...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=0.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '3.2.1961' [44-52]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Definitiver Arztbrief Gerhard Ypsilanti, * 3. 2. 1961, wohnhaft in 09221 Neukirchen 2027 - 08 - 02 Diagnosen Maligner Pleuraerguß links mit Mediastina...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Konstantin Tupolev' [122-140]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen Abteilungfür Innere Medizin, Vorstand : Prim. Univ. Prof. Dr. Bruno Bierbichler Name : Konstantin Tupolev geb. am...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21/06/1967' [150-160]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen Abteilungfür Innere Medizin, Vorstand : Prim. Univ. Prof. Dr. Bruno Bierbichler Name : Konstantin Tupolev geb. am...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '08/06/2012' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen Abteilungfür Innere Medizin, Vorstand : Prim. Univ. Prof. Dr. Bruno Bierbichler Name : Konstantin Tupolev geb. am...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '08/06/2012' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen Abteilungfür Innere Medizin, Vorstand : Prim. Univ. Prof. Dr. Bruno Bierbichler Name : Konstantin Tupolev geb. am...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Etienne de Quervain' [228-247]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler Ärztin für Orthopädie, Chirotherapie Chiropraktikerin Ärztliche Leiterin Guttmann Reha Zentrum für ambulante Rehabilitation Herrn D...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21.07.1983' [250-260]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler Ärztin für Orthopädie, Chirotherapie Chiropraktikerin Ärztliche Leiterin Guttmann Reha Zentrum für ambulante Rehabilitation Herrn D...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '14.01.2025' [288-298]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler Ärztin für Orthopädie, Chirotherapie Chiropraktikerin Ärztliche Leiterin Guttmann Reha Zentrum für ambulante Rehabilitation Herrn D...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '14.01.2025' [288-298]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler Ärztin für Orthopädie, Chirotherapie Chiropraktikerin Ärztliche Leiterin Guttmann Reha Zentrum für ambulante Rehabilitation Herrn D...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Amanda Alzheimer' [123-139]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin, wir berichten Ihnen abschließend über unsere gemeinsame Patientin Amanda Alzheimer, die sich v...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '24.01.2028' [154-164]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin, wir berichten Ihnen abschließend über unsere gemeinsame Patientin Amanda Alzheimer, die sich v...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '06.02.2028' [173-183]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin, wir berichten Ihnen abschließend über unsere gemeinsame Patientin Amanda Alzheimer, die sich v...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+######################################################################
+# CHUNKER: recursive_token_chunker
+######################################################################
+
+### PROFILE: adaptive_k (chunker: recursive_token_chunker) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.875
+  recall_at_k_global_mean: 0.875
+  f1_at_k_global_mean: 0.875
+  mrr_global_mean: 0.875
+  ragas_precision_global_mean: 0.775
+  ragas_recall_global_mean: 0.700
+  block_integrity_global_mean: 1.000
+  reference_completeness_global_mean: 0.900
+  context_fragmentation_global_mean: 0.583
+  intrachunk_cohesion_global_mean: 0.509
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Boeck.txt
+     [Klassisch]   precision@k=0.375 recall@k=0.375 f1@k=0.375 mrr=0.375
+     [RAGAS]       Context-Precision=0.375 Context-Recall=0.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=0.750 Context-Fragmentation=0.250 ICC=0.465
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=1.000 ICC=0.507
+                   (Fragen in diesem Dok: 2)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.667 ICC=0.516
+                   (Fragen in diesem Dok: 3)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Quervain.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.750
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=0.750 Context-Fragmentation=0.000 ICC=0.577
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.750
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=1.000 ICC=0.481
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wie heißt der Patient?
+Groundtruth:
+  - ' M. Boec' [89-97]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) ﻿Sehr geehrte Frau Kollegin, 
+
+wir berichten nachfolgend über unsere gemeinsame Patientin M. Boeck, geboren am 1.2.2000, die sich vom 3.5. bis 8.5.202...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - ' 1.2.200' [110-118]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Vegetative Anamnese: bis o.g. Beschwerden unauffällig. B-Symptome wurden verneint.
+
+Vorerkrankungen, Voroperationen: TVT vor 3 Monaten (stat. konserva...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - ' 3.5' [133-137]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Vegetative Anamnese: bis o.g. Beschwerden unauffällig. B-Symptome wurden verneint.
+
+Vorerkrankungen, Voroperationen: TVT vor 3 Monaten (stat. konserva...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - ' 8.5.202' [142-150]
+  - ' 8.5.202' [2746-2754]
+Retrieved chunks (2):
+  - [Rank 1] (not relevant) Vegetative Anamnese: bis o.g. Beschwerden unauffällig. B-Symptome wurden verneint.
+
+Vorerkrankungen, Voroperationen: TVT vor 3 Monaten (stat. konserva...
+  - [Rank 2] (RELEVANT) Körperliche Inspektion:
+Patientin in reduziertem AZ und normalem EZ, zu Zeit, Ort sowie Person orientiert. Kreislauf stabil, Vitalparameter im Normber...
+Metriken (K=2):
+  -> Klassisch:  precision@k=0.500 recall@k=0.500 f1@k=0.500
+  -> RAGAS:      Context-Precision=0.500 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Gerhard Ypsilanti' [23-40]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Definitiver Arztbrief
+
+Gerhard Ypsilanti, * 3.2.1961, wohnhaft in 09221 Neukirchen
+
+
+2027-08-02
+Diagnosen...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '3.2.1961' [44-52]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Definitiver Arztbrief
+
+Gerhard Ypsilanti, * 3.2.1961, wohnhaft in 09221 Neukirchen
+
+
+2027-08-02
+Diagnosen...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Konstantin Tupolev' [122-140]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim. Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21/06/1967' [150-160]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim. Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '08/06/2012' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim. Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '08/06/2012' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim. Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Etienne de Quervain' [228-247]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation
+ 
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21.07.1983' [250-260]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation
+ 
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '14.01.2025' [288-298]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation
+ 
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '14.01.2025' [288-298]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation
+ 
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Amanda Alzheimer' [123-139]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten Ihnen abschließend über unsere gemeinsame Patientin Amanda Alzheimer, die sich ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '24.01.2028' [154-164]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten Ihnen abschließend über unsere gemeinsame Patientin Amanda Alzheimer, die sich ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '06.02.2028' [173-183]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten Ihnen abschließend über unsere gemeinsame Patientin Amanda Alzheimer, die sich ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+######################################################################
+# CHUNKER: kamradt_semantic_chunker
+######################################################################
+
+### PROFILE: adaptive_k (chunker: kamradt_semantic_chunker) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.850
+  recall_at_k_global_mean: 0.850
+  f1_at_k_global_mean: 0.850
+  mrr_global_mean: 0.850
+  ragas_precision_global_mean: 0.800
+  ragas_recall_global_mean: 0.700
+  block_integrity_global_mean: 1.000
+  reference_completeness_global_mean: 1.000
+  context_fragmentation_global_mean: 0.275
+  intrachunk_cohesion_global_mean: 0.506
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Boeck.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=0.500
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.375 ICC=0.430
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.000 ICC=0.578
+                   (Fragen in diesem Dok: 2)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=1.000 ICC=0.470
+                   (Fragen in diesem Dok: 3)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Quervain.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.750
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.000 ICC=0.501
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt
+     [Klassisch]   precision@k=0.250 recall@k=0.250 f1@k=0.250 mrr=0.250
+     [RAGAS]       Context-Precision=0.250 Context-Recall=0.250
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.000 ICC=0.554
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wie heißt der Patient?
+Groundtruth:
+  - ' M. Boec' [89-97]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) ﻿Sehr geehrte Frau Kollegin, 
+
+wir berichten nachfolgend über unsere gemeinsame Patientin M. Boeck, geboren am 1.2.2000, die sich vom 3.5. bis 8.5.202...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - ' 1.2.200' [110-118]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) ﻿Sehr geehrte Frau Kollegin, 
+
+wir berichten nachfolgend über unsere gemeinsame Patientin M. Boeck, geboren am 1.2.2000, die sich vom 3.5. bis 8.5.202...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - ' 3.5' [133-137]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) ﻿Sehr geehrte Frau Kollegin, 
+
+wir berichten nachfolgend über unsere gemeinsame Patientin M. Boeck, geboren am 1.2.2000, die sich vom 3.5. bis 8.5.202...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - ' 8.5.202' [142-150]
+  - ' 8.5.202' [2746-2754]
+Retrieved chunks (2):
+  - [Rank 1] (RELEVANT) ﻿Sehr geehrte Frau Kollegin, 
+
+wir berichten nachfolgend über unsere gemeinsame Patientin M. Boeck, geboren am 1.2.2000, die sich vom 3.5. bis 8.5.202...
+  - [Rank 2] (RELEVANT) Laut der Patientin sei sie zur Arbeit gefahren und wegen einer Straßenbahn gestürzt. Vermutlich sei sie auf den Kopf (Helm) und die li. Hand gestürzt....
+Metriken (K=2):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Gerhard Ypsilanti' [23-40]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Definitiver Arztbrief
+
+Gerhard Ypsilanti, * 3.2.1961, wohnhaft in 09221 Neukirchen
+
+
+2027-08-02
+Diagnosen
+
+Maligner Pleuraerguß links mit Mediastinals...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '3.2.1961' [44-52]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Definitiver Arztbrief
+
+Gerhard Ypsilanti, * 3.2.1961, wohnhaft in 09221 Neukirchen
+
+
+2027-08-02
+Diagnosen
+
+Maligner Pleuraerguß links mit Mediastinals...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Konstantin Tupolev' [122-140]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim....
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21/06/1967' [150-160]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: 21/06/1967
+PIZ: 1933309807
+
+Endosonographie mit Feinnadelpunktion
+Abteilung: Chiru...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '08/06/2012' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim....
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '08/06/2012' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim....
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Etienne de Quervain' [228-247]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation
+ 
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21.07.1983' [250-260]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation
+ 
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '14.01.2025' [288-298]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation
+ 
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '14.01.2025' [288-298]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation
+ 
+
+...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Amanda Alzheimer' [123-139]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten Ihnen abschließend über unsere gemeinsame Patientin Amanda Alzheimer, die sich ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '24.01.2028' [154-164]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten Ihnen abschließend über unsere gemeinsame Patientin Amanda Alzheimer, die sich ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '06.02.2028' [173-183]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin,
+
+wir berichten Ihnen abschließend über unsere gemeinsame Patientin Amanda Alzheimer, die sich ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+######################################################################
+# CHUNKER: recursive_semantic_chunker
+######################################################################
+
+### PROFILE: adaptive_k (chunker: recursive_semantic_chunker) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.742
+  recall_at_k_global_mean: 0.742
+  f1_at_k_global_mean: 0.742
+  mrr_global_mean: 0.767
+  ragas_precision_global_mean: 0.667
+  ragas_recall_global_mean: 0.667
+  block_integrity_global_mean: 0.950
+  reference_completeness_global_mean: 0.667
+  context_fragmentation_global_mean: 0.517
+  intrachunk_cohesion_global_mean: 0.580
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Boeck.txt
+     [Klassisch]   precision@k=0.375 recall@k=0.375 f1@k=0.375 mrr=0.500
+     [RAGAS]       Context-Precision=0.250 Context-Recall=0.000
+     [Strukturell] Block-Integrity=0.750 Reference-Completeness=0.500 Context-Fragmentation=0.250 ICC=0.450
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=1.000 ICC=0.563
+                   (Fragen in diesem Dok: 2)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt
+     [Klassisch]   precision@k=0.333 recall@k=0.333 f1@k=0.333 mrr=0.333
+     [RAGAS]       Context-Precision=0.333 Context-Recall=0.333
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=0.333 Context-Fragmentation=0.333 ICC=0.519
+                   (Fragen in diesem Dok: 3)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Quervain.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=0.750 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=0.500 Context-Fragmentation=0.000 ICC=0.590
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=1.000 ICC=0.775
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wie heißt der Patient?
+Groundtruth:
+  - ' M. Boec' [89-97]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) ﻿Sehr geehrte Frau Kollegin, 
+
+wir berichten nachfolgend über unsere gemeinsame Patientin M. Boeck, geboren am 1.2.2000, die sich vom 3.5. bis 8.5.202...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - ' 1.2.200' [110-118]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) . Es wurde keine Medikamente beim Notarzt verabreicht. Letzte Auffrischung der Tetanus-Impfung sei unbekannt. Vegetative Anamnese: bis o.g. Beschwerde...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - ' 3.5' [133-137]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Im stationären Verlauf mit Monitoring der Vitalparameter unter Therapie mit Konakion, Antiemetika (Metoclopramid) und Analgetika (Diclofenac) kam es z...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - ' 8.5.202' [142-150]
+  - ' 8.5.202' [2746-2754]
+Retrieved chunks (2):
+  - [Rank 1] (RELEVANT) Im stationären Verlauf mit Monitoring der Vitalparameter unter Therapie mit Konakion, Antiemetika (Metoclopramid) und Analgetika (Diclofenac) kam es z...
+  - [Rank 2] (not relevant) . Es wurde keine Medikamente beim Notarzt verabreicht. Letzte Auffrischung der Tetanus-Impfung sei unbekannt. Vegetative Anamnese: bis o.g. Beschwerde...
+Metriken (K=2):
+  -> Klassisch:  precision@k=0.500 recall@k=0.500 f1@k=0.500
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=0.000 Reference-Completeness=0.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Gerhard Ypsilanti' [23-40]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Definitiver Arztbrief
+
+Gerhard Ypsilanti, * 3.2.1961, wohnhaft in 09221 Neukirchen
+
+
+2027-08-02
+Diagnosen Maligner Pleuraerguß links mit Mediastinalsh...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '3.2.1961' [44-52]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Definitiver Arztbrief
+
+Gerhard Ypsilanti, * 3.2.1961, wohnhaft in 09221 Neukirchen
+
+
+2027-08-02
+Diagnosen Maligner Pleuraerguß links mit Mediastinalsh...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Konstantin Tupolev' [122-140]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim. Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21/06/1967' [150-160]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim. Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '08/06/2012' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim. Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '08/06/2012' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim. Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Etienne de Quervain' [228-247]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation Her...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21.07.1983' [250-260]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation Her...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '14.01.2025' [288-298]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation Her...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '14.01.2025' [288-298]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation Her...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Amanda Alzheimer' [123-139]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Therapie:...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '24.01.2028' [154-164]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Therapie:...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '06.02.2028' [173-183]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Sehr geehrter Herr Kollege, sehr geehrte Frau Kollegin, wir berichten Ihnen abschließend über unsere gemeinsame Patientin Amanda Alzheimer, die sich v...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+######################################################################
+# CHUNKER: cluster_semantic_chunker
+######################################################################
+
+### PROFILE: adaptive_k (chunker: cluster_semantic_chunker) ###
+
+=== GLOBALE MAKRO-METRIKEN (Schnitt über ausgewählte Dokumente) ===
+  precision_at_k_global_mean: 0.750
+  recall_at_k_global_mean: 0.750
+  f1_at_k_global_mean: 0.750
+  mrr_global_mean: 0.767
+  ragas_precision_global_mean: 0.717
+  ragas_recall_global_mean: 0.617
+  block_integrity_global_mean: 0.975
+  reference_completeness_global_mean: 0.792
+  context_fragmentation_global_mean: 0.617
+  intrachunk_cohesion_global_mean: 0.568
+
+=== METRIKEN PRO DOKUMENT ===
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Boeck.txt
+     [Klassisch]   precision@k=0.917 recall@k=0.917 f1@k=0.917 mrr=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=0.250
+     [Strukturell] Block-Integrity=0.875 Reference-Completeness=0.875 Context-Fragmentation=0.750 ICC=0.545
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt
+     [Klassisch]   precision@k=1.000 recall@k=1.000 f1@k=1.000 mrr=1.000
+     [RAGAS]       Context-Precision=1.000 Context-Recall=1.000
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=1.000 ICC=0.550
+                   (Fragen in diesem Dok: 2)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt
+     [Klassisch]   precision@k=0.333 recall@k=0.333 f1@k=0.333 mrr=0.333
+     [RAGAS]       Context-Precision=0.333 Context-Recall=0.333
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=0.333 Context-Fragmentation=0.333 ICC=0.526
+                   (Fragen in diesem Dok: 3)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Quervain.txt
+     [Klassisch]   precision@k=0.750 recall@k=0.750 f1@k=0.750 mrr=0.750
+     [RAGAS]       Context-Precision=0.500 Context-Recall=0.750
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=0.750 Context-Fragmentation=0.250 ICC=0.632
+                   (Fragen in diesem Dok: 4)
+
+  -> Dokument: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt
+     [Klassisch]   precision@k=0.750 recall@k=0.750 f1@k=0.750 mrr=0.750
+     [RAGAS]       Context-Precision=0.750 Context-Recall=0.750
+     [Strukturell] Block-Integrity=1.000 Reference-Completeness=1.000 Context-Fragmentation=0.750 ICC=0.586
+                   (Fragen in diesem Dok: 4)
+
+=== DETAIL-FRAGEN-LOG ===
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wie heißt der Patient?
+Groundtruth:
+  - ' M. Boec' [89-97]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) ﻿Sehr geehrte Frau Kollegin, 
+
+wir berichten nachfolgend über unsere gemeinsame Patientin M. Boeck, geboren am 1.2.2000, die sich vom 3.5. bis 8.5.202...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - ' 1.2.200' [110-118]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) ﻿Sehr geehrte Frau Kollegin, 
+
+wir berichten nachfolgend über unsere gemeinsame Patientin M. Boeck, geboren am 1.2.2000, die sich vom 3.5. bis 8.5.202...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - ' 3.5' [133-137]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) ﻿Sehr geehrte Frau Kollegin, 
+
+wir berichten nachfolgend über unsere gemeinsame Patientin M. Boeck, geboren am 1.2.2000, die sich vom 3.5. bis 8.5.202...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Boeck.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - ' 8.5.202' [142-150]
+  - ' 8.5.202' [2746-2754]
+Retrieved chunks (3):
+  - [Rank 1] (RELEVANT) ﻿Sehr geehrte Frau Kollegin, 
+
+wir berichten nachfolgend über unsere gemeinsame Patientin M. Boeck, geboren am 1.2.2000, die sich vom 3.5. bis 8.5.202...
+  - [Rank 2] (RELEVANT) Im stationären Verlauf mit Monitoring der Vitalparameter unter Therapie mit Konakion, Antiemetika (Metoclopramid) und Analgetika (Diclofenac) kam es z...
+  - [Rank 3] (not relevant) Es wurde keine Medikamente beim Notarzt verabreicht. Letzte Auffrischung der Tetanus-Impfung sei unbekannt. Vegetative Anamnese: bis o.g. Beschwerden ...
+Metriken (K=3):
+  -> Klassisch:  precision@k=0.667 recall@k=0.667 f1@k=0.667
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=0.500 Reference-Completeness=0.500
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Gerhard Ypsilanti' [23-40]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Definitiver Arztbrief
+
+Gerhard Ypsilanti, * 3.2.1961, wohnhaft in 09221 Neukirchen
+
+
+2027-08-02
+Diagnosen...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Ypsilanti.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '3.2.1961' [44-52]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Definitiver Arztbrief
+
+Gerhard Ypsilanti, * 3.2.1961, wohnhaft in 09221 Neukirchen
+
+
+2027-08-02
+Diagnosen...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Konstantin Tupolev' [122-140]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim. Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21/06/1967' [150-160]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim. Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '08/06/2012' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Indikation: Histolog. Sicherung bei großem Pankreasprozess in palliativer Situation
+Prämedikation: 400 mg Propofol frakt. Pulsoxymetrie, Monitoring na...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Tupolev_2.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '08/06/2012' [294-304]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Krankenhaus der Samariter Holzhausen
+Abteilungfür Innere Medizin, Vorstand: Prim. Univ. Prof. Dr. Bruno Bierbichler
+Name: Konstantin Tupolev 
+geb.am: ...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Etienne de Quervain' [228-247]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Therapie:...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (birth_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann hat der Patient Geburtsdatum?
+Groundtruth:
+  - '21.07.1983' [250-260]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation Her...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '14.01.2025' [288-298]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation Her...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Quervain.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '14.01.2025' [288-298]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) Notburga von Osler
+
+Ärztin für Orthopädie, Chirotherapie 
+Chiropraktikerin
+
+Ärztliche Leiterin 
+Guttmann Reha Zentrum für ambulante Rehabilitation Her...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
+
+Question (patient_name) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wie heißt der Patient?
+Groundtruth:
+  - 'Amanda Alzheimer' [123-139]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Therapie:...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (admission_date) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wann wurde der Patient aufgenommen?
+Groundtruth:
+  - '24.01.2028' [154-164]
+Retrieved chunks (1):
+  - [Rank 1] (not relevant) Therapie:...
+Metriken (K=1):
+  -> Klassisch:  precision@k=0.000 recall@k=0.000 f1@k=0.000
+  -> RAGAS:      Context-Precision=0.000 Context-Recall=0.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=0.000
+
+Question (discharge_date) [Doc: C:\Users\Mouayad\chunking\data\row\Amanda_Alzheimer.txt]: Wann wurde der Patient entlassen?
+Groundtruth:
+  - '06.02.2028' [173-183]
+Retrieved chunks (1):
+  - [Rank 1] (RELEVANT) wir berichten Ihnen abschließend über unsere gemeinsame Patientin Amanda Alzheimer, die sich vom 24.01.2028 bis zum 06.02.2028 in unserer intensivmedi...
+Metriken (K=1):
+  -> Klassisch:  precision@k=1.000 recall@k=1.000 f1@k=1.000
+  -> RAGAS:      Context-Precision=1.000 Context-Recall=1.000
+  -> Struktur:   Block-Integrity=1.000 Reference-Completeness=1.000
