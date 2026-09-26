@@ -6,16 +6,31 @@ CEVAMED is developed as bachelorwork and an  experimental Projekt to investigate
 GraSCCo  is a collection of artificially generated semi-structured and unstructured German-language clinical summaries. These summaries are formulated as letters from the hospital to the patient's GP after in-patient or out-patient care. Details:
 
 ## Chunking strategieis
-testing 4 chunking strategies Fixed-token, recursive, semantic, architecutural
+testing 6 chunking strategies:
+**Charachter Text Splitter (CTS)**
+**Transformer Token Chunker (TTC)**
+**Recursive Token Chunker (RTC)**
+**Kamradt Semantic Chunker (KSC)**
+**Recursive Token Chunker (RTC)**
+**Cluster Semantic Chunker (CSC)**
+
 
 
 ## Evaluation Metrics
 
-- **Precision**: Measures the proportion of predicted chunks that contain ground-truth information, evaluating how many returned chunks are actually correct.
+- **Precision@k**: Measures the proportion of predicted chunks that contain ground-truth information, evaluating how many returned chunks are actually correct.
 
-- **Recall**: Measures the proportion of ground-truth chunks correctly identified, evaluating how many relevant chunks the system finds.
+- **Recall@k**: Measures the proportion of ground-truth chunks correctly identified, evaluating how many relevant chunks the system finds.
 
-- **hit@k**: Checks if at least one relevant chunk appears in the top-*k* results, measuring early retrieval success.
+- **Ragas-context-precision@k**
+
+- **Ragas-context-recall**
+
+- **Block Integrity (BI)**
+
+- **reference completness (RC)**
+
+- **intrachunk cohesion (ICC)**
 
 
 
